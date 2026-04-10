@@ -31,4 +31,5 @@ Allow: /
 
 # 优先爬取 Sitemap
 Sitemap: https://www.sbti-ai.com/sitemap.xml
+Sitemap: https://sbti-ai.com/sitemap.xml
 Sitemap: https://www.sbti-ai.com/sitemap_index.xml
