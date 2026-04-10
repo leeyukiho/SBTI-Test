@@ -3381,6 +3381,12 @@ button:disabled {
     pointer-events: auto; /* 激活时恢复交互 */
 }
 
+/* 背景滚动锁定类 */
+body.modal-open {
+    overflow: hidden !important;
+    height: 100%;
+}
+
 .share-card-container {
     max-width: 420px;
     width: 100%;

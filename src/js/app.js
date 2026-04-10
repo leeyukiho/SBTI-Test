@@ -72,6 +72,13 @@ let questionList, progressBar, progressText, submitBtn, testHint;
 
 // ─── 屏幕切换 ─────────────────────────────────────────────
 function showScreen(name, pushState = true) {
+    // 切换屏幕时同步清理海报模态框状态
+    const modal = document.getElementById('posterModal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.classList.remove('modal-open');
+    }
+
     Object.entries(screens).forEach(([key, el]) => {
         el.classList.toggle('active', key === name);
     });
@@ -510,9 +517,9 @@ function openShareModal(result) {
         charImg.src = `./image/${type.code}.png`;
     }
 
-    // 双重保险：设置显式 display 并通过类名控制动画
-    modal.style.display = 'flex';
+    // 切换显示状态并锁定背景滚动
     modal.classList.add('active');
+    document.body.classList.add('modal-open');
 
     // 记录分享动作（如有埋点可在此执行）
     console.log('Open Share Poster:', type.code);
@@ -607,7 +614,10 @@ document.addEventListener('DOMContentLoaded', () => {
     bindBtn('downloadPosterBtn', savePosterAsImage);
     bindBtn('closePosterBtn', () => {
         const modal = document.getElementById('posterModal');
-        if (modal) modal.classList.remove('active');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.classList.remove('modal-open');
+        }
     });
 
     // 导航与移动端控制
