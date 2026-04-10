@@ -1,0 +1,10 @@
+name = "sbti-ai-analysis"
+main = "index.js"
+compatibility_date = "2024-09-23"
+
+# 绑定 Cloudflare Workers AI（免费，无需额外费用）
+[ai]
+binding = "AI"
+
+# 路由配置（部署后 Worker 子域，也可绑定自定义域）
+# 如已有自定义域，可在 CF Dashboard > Workers > Triggers 中配置

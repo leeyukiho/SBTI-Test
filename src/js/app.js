@@ -14,6 +14,9 @@ import {
 
 import { computeResult } from './algorithm.js';
 
+// ─── AI Worker 接口地址（部署后替换为你的 Worker 域名）─────
+const AI_WORKER_URL = 'https://sbti-ai-analysis.<你的CF用户名>.workers.dev/analyze';
+
 // ─── 应用状态 ─────────────────────────────────────────────
 const app = {
     shuffledQuestions: [],
@@ -173,9 +176,33 @@ function renderDimList(result) {
 }
 
 /**
+ * 调用 AI Worker 获取个性化解读
+ * @param {Object} result - computeResult 返回值
+ * @returns {Promise<string>}
+ */
+async function fetchAiAnalysis(result) {
+    const type = result.finalType;
+    const payload = {
+        typeCode:   type.code,
+        typeCn:     type.cn,
+        similarity: result.bestNormal?.similarity ?? 100,
+        exact:      result.bestNormal?.exact ?? 15,
+        levels:     result.levels,
+    };
+    const resp = await fetch(AI_WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+    });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    return data.analysis || '';
+}
+
+/**
  * 渲染结果页
  */
-function renderResult() {
+async function renderResult() {
     // 调用算法层，传入当前答案和题库
     const result = computeResult(app.answers, questions);
     const type   = result.finalType;
@@ -206,6 +233,31 @@ function renderResult() {
 
     renderDimList(result);
     showScreen('result');
+
+    // ── AI 解读：骨架屏 loading → 填充正文 ──────────────────
+    const aiBox  = document.getElementById('aiAnalysisBox');
+    const aiText = document.getElementById('aiAnalysisText');
+    aiBox.classList.remove('ai-hidden');
+    aiText.textContent = '';
+    aiBox.classList.add('ai-loading');
+
+    try {
+        const analysis = await fetchAiAnalysis(result);
+        aiBox.classList.remove('ai-loading');
+        // 逐字打印效果
+        let i = 0;
+        const print = () => {
+            if (i < analysis.length) {
+                aiText.textContent += analysis[i++];
+                setTimeout(print, 18);
+            }
+        };
+        print();
+    } catch (err) {
+        aiBox.classList.remove('ai-loading');
+        aiText.textContent = '（AI 解读服务暂时开小差，请刷新重试）';
+        console.error('AI 解读失败：', err);
+    }
 }
 
 // ─── 测试启动 ─────────────────────────────────────────────
