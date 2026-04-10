@@ -1,0 +1,22 @@
+{
+  "name": "SBTI 人格实验室",
+  "short_name": "SBTI",
+  "description": "全网爆火的赛博性格分析实验：15维度深度建模 + AI毒舌精准锐评。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#17211a",
+  "icons": [
+    {
+      "src": "/image/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/image/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "portrait"
+}
