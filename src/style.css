@@ -2301,6 +2301,351 @@ button:disabled {
 }
 
 /* ═══════════════════════════════════════════════════════════
+   Home 首页大视窗 (官网质感)
+   ═══════════════════════════════════════════════════════════ */
+.index-hero-banner {
+    position: relative;
+    padding: 60px 40px;
+    background: #0f1612; /* 深沉的极客实验室风格基底 */
+    border-radius: 28px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    color: #ffffff;
+    box-shadow: 0 32px 64px -16px rgba(15, 22, 18, 0.4);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.hero-glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    animation: driftOrb 12s infinite alternate ease-in-out;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.orb-1 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.4), transparent 70%);
+    top: -200px;
+    right: -100px;
+}
+
+.orb-2 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.3), transparent 70%);
+    bottom: -100px;
+    left: -100px;
+    animation-delay: -5s;
+}
+
+@keyframes driftOrb {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-40px, 30px) scale(1.1); }
+}
+
+.index-hero-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #a7f3d0;
+    margin-bottom: 24px;
+    backdrop-filter: blur(8px);
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #10b981;
+    animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+    0% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    70% { opacity: 0.4; box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.index-hero-title {
+    font-size: clamp(32px, 6vw, 56px);
+    line-height: 1.15;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+    color: #fff;
+    background: linear-gradient(135deg, #ffffff 0%, #a7f3d0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.index-hero-sub {
+    font-size: 17px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.7);
+    max-width: 800px;
+    margin-bottom: 36px;
+}
+
+.index-hero-sub strong {
+    color: #fff;
+}
+
+.highlight-text {
+    color: #a78bfa !important;
+    text-shadow: 0 0 16px rgba(167, 139, 250, 0.4);
+}
+
+.index-hero-actions {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.hero-btn-primary {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    font-size: 17px;
+    font-weight: 700;
+    padding: 16px 36px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-btn-primary:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.hero-btn-primary span {
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.hero-btn-secondary {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 16px 32px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s;
+}
+
+.hero-btn-secondary:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+}
+
+.hero-counter-strip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+}
+
+.hero-counter-strip .fire-icon {
+    font-size: 24px;
+}
+
+.hero-counter-strip .counter-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.hero-counter-strip .counter-num {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    color: #fff;
+    line-height: 1.1;
+    transition: transform 0.2s;
+}
+
+.hero-counter-strip .counter-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Bento Box (便当盒网格)
+   ═══════════════════════════════════════════════════════════ */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(180px, auto);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.bento-card {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255,255,255, 0.8);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 4px 24px rgba(39, 59, 45, 0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bento-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.bento-card.hoverable:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 48px rgba(39, 59, 45, 0.1);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.bento-card.span-2 {
+    grid-column: span 2;
+}
+
+.bento-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+}
+
+.bento-icon.types-icon { text-shadow: 0 8px 16px rgba(16, 185, 129, 0.3); }
+.bento-icon.rank-icon { text-shadow: 0 8px 16px rgba(245, 158, 11, 0.3); }
+.bento-icon.about-icon { text-shadow: 0 8px 16px rgba(59, 130, 246, 0.3); }
+
+.bento-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--accent-strong);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+}
+
+.bento-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.bento-disclaimer {
+    background: transparent;
+    border: 1px solid rgba(94, 127, 100, 0.2);
+    border-radius: 16px;
+    padding: 16px;
+    font-size: 12px;
+    color: #7a867e;
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+.feature-panel {
+    justify-content: center;
+}
+
+.feature-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.feature-header h3 {
+    font-size: 20px;
+    color: var(--accent-strong);
+}
+
+.feature-icon {
+    font-size: 28px;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.feature-list li {
+    font-size: 14px;
+    color: #4a5e51;
+    line-height: 1.6;
+    position: relative;
+    padding-left: 16px;
+}
+
+.feature-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.feature-list li strong {
+    color: var(--accent-strong);
+}
+
+.ai-panel {
+    background: linear-gradient(to bottom right, rgba(255,255,255,0.8), rgba(230, 246, 238, 0.6));
+}
+
+.vs-panel {
+    grid-column: span 1; /* 虽然叫做 span-2，在默认 3 列我们要改一下网格结构 */
+}
+
+/* ═══════════════════════════════════════════════════════════
    响应式适配
    ═══════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
@@ -2313,7 +2658,12 @@ button:disabled {
     .dim-model-group:last-child { grid-column: auto; }
     .ai-flow { flex-direction: column; }
     .ai-flow-arrow { display: none; }
-    .nav-shortcut-grid { grid-template-columns: 1fr 1fr; }
+    
+    .bento-grid { grid-template-columns: 1fr; }
+    .bento-card.span-2, .vs-panel { grid-column: span 1; }
+    .index-hero-banner { padding: 40px 20px; }
+    .index-hero-actions { flex-direction: column; width: 100%; }
+    .hero-btn-primary, .hero-btn-secondary { width: 100%; }
 }
 
 @media (max-width: 480px) {

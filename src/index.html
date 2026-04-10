@@ -242,78 +242,90 @@
             <a href="index.html#test" class="nav-mobile-link nav-mobile-cta">⚡ 立即开始测试</a>
         </div>
     </nav>
-    <main class="shell">
-        <!-- 全局顶部导航 -->
-        <header class="main-header">
-            <div class="logo">🧬 SBTI 人格实验室</div>
-            <div class="header-ai-badge">DeepSeek AI 强力驱动</div>
-        </header>
-
+    <main class="page-shell">
         <section id="intro" class="screen active">
-            <!-- 主视觉 Banner -->
-            <div class="hero card">
-                <div class="eyebrow">全网最无情的性格透视镜</div>
-                <!-- h1 是百度/Google 最重视的标题标签，必须包含核心关键词 -->
-                <h1>SBTI人格测试：<br>比MBTI更狠，免费AI毒舌锐评</h1>
-                <p class="sub">15个硬核维度精准扫射，抛弃刻板的四字母标签。不仅一针见血判定你的隐藏人设，还为你生成千人千面的 <strong>AI 毒舌批斗报告</strong>。还有神秘<strong>隐藏人格</strong>等你解锁。</p>
-
-                <div class="hero-actions">
-                    <button id="startBtn" class="btn-primary" style="font-size: 16px; padding: 16px 32px;">⚡ 立即开始测试 (约 3
-                        分钟)</button>
-                    <button id="freshStartBtn" class="btn-secondary"
-                        style="font-size: 16px; padding: 16px 32px; display: none;">从头重新测试</button>
-                </div>
-
-                <!-- 伪实时测试人次计数器 -->
-                <div class="counter-strip">
-                    <span class="counter-fire">🔥</span>
-                    <span class="counter-num" id="heroCounter">2,187,430</span>
-                    <span class="counter-label">人次完成测试 · 实时更新</span>
-                </div>
-
-                <!-- 三子页面快捷跳转 -->
-                <div class="nav-shortcut-grid">
-                    <a href="types.html" class="nav-shortcut-card">
-                        <span class="nav-shortcut-icon">🧬</span>
-                        <span class="nav-shortcut-title">全部 27 种人格</span>
-                        <span class="nav-shortcut-desc">含稀有度、解锁条件和详细人格介绍</span>
-                    </a>
-                    <a href="rankings.html" class="nav-shortcut-card">
-                        <span class="nav-shortcut-icon">🏆</span>
-                        <span class="nav-shortcut-title">人格排行榜</span>
-                        <span class="nav-shortcut-desc">你的人格在218万人中有多稀有？</span>
-                    </a>
-                    <a href="about.html" class="nav-shortcut-card">
-                        <span class="nav-shortcut-icon">📖</span>
-                        <span class="nav-shortcut-title">关于测试</span>
-                        <span class="nav-shortcut-desc">15维度原理 · MBTI对比 · AI解析机制</span>
-                    </a>
-                </div>
-
-                <div class="disclaimer-banner"
-                    style="margin-top: 20px; font-size: 13px; color: #7a867e; text-align: center;">
-                    💡 测试说明：虽然部分网友反馈本工具比MBTI更精准，但 SBTI 性格测试本质仍是一种基于 DeepSeek AI 算法的赛博娱乐。AI
-                    分析生成的毒舌结果不具备严肃的心理学与医学临床参考价值，请各位在体验 AI 精准判定时保持放松心态，切勿因测试结果陷入纠纷或焦虑。
-                </div>
-
-                <div class="hero-grid">
-                    <div class="mini-panel">
-                        <h3>🎯 为什么不是 MBTI？</h3>
-                        <ul>
-                            <li>MBTI 只给你贴 16 个美好的标签</li>
-                            <li>SBTI 把你的痛点扒得底裤不剩</li>
-                            <li>引入极端的特殊分层与隐藏的独立人格池</li>
-                        </ul>
+            <!-- 沉浸式首屏主视觉 (Hero) -->
+            <div class="index-hero-banner">
+                <div class="hero-glow-orb orb-1"></div>
+                <div class="hero-glow-orb orb-2"></div>
+                
+                <div class="index-hero-content">
+                    <div class="hero-eyebrow">
+                        <span class="pulse-dot"></span>
+                        实时统计：全网最无情的性格透视镜
                     </div>
-                    <div class="mini-panel">
-                        <h3>🤖 AI 毒舌加持</h3>
-                        <ul>
-                            <li>深度解析你的 15 维细分性格参数</li>
-                            <li>生成"损但真诚"的量身定制灵魂拷问</li>
-                            <li>十四万种结果分型，告别千篇一律</li>
-                        </ul>
+                    
+                    <h1 class="index-hero-title">SBTI人格测试：<br>比MBTI更狠，免费AI毒舌锐评</h1>
+                    <p class="index-hero-sub">15个硬核维度精准扫射，抛弃刻板的四字母标签。不仅一针见血判定你的隐藏人设，还为你生成千人千面的 <strong>DeepSeek AI 专属毒舌批斗报告</strong>。更有多种特殊<strong class="highlight-text">隐藏人格</strong>等你解锁。</p>
+
+                    <div class="index-hero-actions">
+                        <button id="startBtn" class="hero-btn-primary">⚡ 立即开始测试 <span>(约3分钟)</span></button>
+                        <button id="freshStartBtn" class="hero-btn-secondary" style="display: none;">🔄 从头重新测试</button>
+                    </div>
+
+                    <!-- 动态计数器 -->
+                    <div class="hero-counter-strip">
+                        <div class="fire-icon">🔥</div>
+                        <div class="counter-text">
+                            <span class="counter-num" id="heroCounter">2,187,430</span>
+                            <span class="counter-label">人次已完成性格透视测试</span>
+                        </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Bento Box 功能模块网格 -->
+            <div class="bento-grid">
+                <!-- 导航模块群 -->
+                <a href="types.html" class="bento-card hoverable">
+                    <div class="bento-icon types-icon">🧬</div>
+                    <h3 class="bento-title">全部 27 种人格图鉴</h3>
+                    <p class="bento-desc">包含常规人格与隐藏人格，详细查看稀有度分布和触发条件。</p>
+                </a>
+                
+                <a href="rankings.html" class="bento-card hoverable">
+                    <div class="bento-icon rank-icon">🏆</div>
+                    <h3 class="bento-title">实时人格排行榜</h3>
+                    <p class="bento-desc">看一看你的人格在全球数百万名玩家中，到底有多稀有？</p>
+                </a>
+                
+                <a href="about.html" class="bento-card hoverable">
+                    <div class="bento-icon about-icon">📖</div>
+                    <h3 class="bento-title">背后的惊艳原理</h3>
+                    <p class="bento-desc">深度了解15维度模型设计、与MBTI的本质区别及AI算法机制。</p>
+                </a>
+
+                <!-- 差异化特性模块 (跨列) -->
+                <div class="bento-card span-2 feature-panel ai-panel">
+                    <div class="feature-header">
+                        <span class="feature-icon">🤖</span>
+                        <h3>DeepSeek AI 毒舌加持</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li><strong>深度算法：</strong>精准解析15维细分性格参数，远超时下流行的表面类型。</li>
+                        <li><strong>千人千面：</strong>生成的专属灵魂拷问报告“损但真诚”，告别千篇一律的废话。</li>
+                        <li><strong>独家彩蛋：</strong>触发吃喝拉撒甚至酒精控制等分支题型，体验更狂野的隐藏结局。</li>
+                    </ul>
+                </div>
+                
+                <div class="bento-card span-2 feature-panel vs-panel">
+                    <div class="feature-header">
+                        <span class="feature-icon">🎯</span>
+                        <h3>为什么它能平替 MBTI？</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li><strong>撕去伪装：</strong>MBTI 给你贴 16 个美好的滤镜标签，而 SBTI 把你的深层痛点扒得底裤不剩。</li>
+                        <li><strong>全新维度：</strong>引入更贴近东亚现实生活的生存技能切面与独特分层维度。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 免责声明 -->
+            <div class="bento-disclaimer">
+                💡 <strong>测试说明：</strong>虽然部分网友反馈本工具比MBTI更精准，但 SBTI 性格测试本质仍是一种基于大语言模型 AI 算法的赛博娱乐。AI
+                分析生成的毒舌结果不具备严肃的心理学与医学临床参考价值，请各位在体验 AI 精准判定时保持放松心态，切勿因测试结果陷入纠纷或焦虑。
+            </div>
+
 
                 <!-- ══════════════════════════════════════════════════
                      FAQ 区域：高频长尾词覆盖 + FAQ Schema 内容对齐
