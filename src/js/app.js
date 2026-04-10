@@ -472,3 +472,11 @@ bindBtn('submitBtn',    handleSubmit);
 bindBtn('restartBtn',   startTest);
 bindBtn('toTopBtn',     () => showScreen('intro'));
 bindBtn('aiTriggerBtn', triggerAiAnalysis);
+
+const navStartHandler = (e) => {
+    e.preventDefault();
+    resumeOrStartTest();
+};
+bindBtn('navStartBtn', navStartHandler);
+bindBtn('navMobileStartBtn', navStartHandler);
+
