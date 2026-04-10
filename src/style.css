@@ -41,18 +41,26 @@ body {
     color: var(--text);
     min-height: 100vh;
     background-color: var(--bg-base);
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: -20%; left: -20%; width: 140%; height: 140%;
+    z-index: -1;
+    pointer-events: none;
     background-image: 
         radial-gradient(at 0% 0%, var(--bg-mesh-1) 0px, transparent 50%),
         radial-gradient(at 100% 0%, var(--bg-mesh-2) 0px, transparent 50%),
         radial-gradient(at 100% 100%, var(--bg-mesh-1) 0px, transparent 50%),
         radial-gradient(at 0% 100%, var(--bg-mesh-2) 0px, transparent 50%);
-    background-attachment: fixed;
+    background-size: 100% 100%;
     animation: bgBreathe 20s ease-in-out infinite alternate;
 }
 
 @keyframes bgBreathe {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 100% 100%; }
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-10%, -10%); }
 }
 
 .shell {
@@ -2719,6 +2727,17 @@ button:disabled {
    响应式适配
    ═══════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
+    /* 移动端性能优化：移除沉重的由于滚动导致的滤镜重绘毛玻璃效果，解决白屏和闪烁 */
+    .card, .question, .hero-counter-strip {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(255, 255, 255, 0.95);
+    }
+    .topbar {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+    
     .types-grid { grid-template-columns: repeat(2, 1fr); }
     .types-grid--hidden { grid-template-columns: 1fr; }
     .rarity-grid { grid-template-columns: repeat(2, 1fr); }

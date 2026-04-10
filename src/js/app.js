@@ -124,7 +124,6 @@ function getVisibleQuestions() {
  * @returns {string}
  */
 function getQuestionMetaLabel(q) {
-    if (q.special) return '补充题';
     return '维度已隐藏';
 }
 
