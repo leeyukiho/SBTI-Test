@@ -27,7 +27,7 @@ const DIM_NAMES = {
     So1: '社交主动性', So2: '人际边界感', So3: '表达与真实度'
 };
 
-/** 构造毒舌锐评 Prompt */
+/** 构造毒舌锐评 Prompt (单人) */
 function buildPrompt(result) {
     const { typeCode, typeCn, similarity, exact, levels } = result;
     const levelLabel = { L: '极低', M: '中等', H: '极高' };
@@ -59,6 +59,25 @@ ${dimLines}
 - 绝对禁止使用"虽然...但是..."这种高情商废话！全程火力全开！
 - 绝对禁止使用礼貌词汇（如"您"），你是在审视一个试图隐藏自己的凡人。
 - 拒绝排版分点（1., 2.），要像连珠炮一样直接输出一段文字，让人喘不过气。`;
+}
+
+/** 构造双人性格碰撞（CP关系）Prompt */
+function buildCpPrompt(typeA, typeB) {
+    return `你是一个顶级毒舌的人格分析师，专门看人不顺眼，尤其擅长拆穿人际关系中的虚伪与自我感动。现在有两个人在一起了，他们的人格类型分别是：
+- A人：${typeA.code}（${typeA.cn}）
+- B人：${typeB.code}（${typeB.cn}）
+
+## 你的任务
+请针对这两个人格在一起的【相处现场】写一段 250 字左右的毒舌锐评。
+
+【要求】：
+1. 风格必须犀利、刻薄、有梗，拒绝任何温情的、高情商的废话。
+2. 核心分析：这两个性格在一起最容易发生什么碰撞？是谁在忍谁？还是两个人都已经在报警的路上了？
+3. 必须包含一个讽刺性的【CP名】（放在开头，类似于“薛定谔的恩爱组合”）。
+4. 场景化吐槽：结合两人的典型特征，描述他们吵架、冷战或互相折磨的日常（比如：一个在疯狂输出，一个在原地装死）。
+5. 结果不需要详细分析每个维度，要侧重于由于人格标签带来的【化学反应】。
+6. 收尾给出一句针对这对组合的【尖酸忠告】。
+7. 拒绝使用“虽然...但是”这种逻辑。全程火力全开！`;
 }
 
 /** 调用 DeepSeek API */
@@ -106,117 +125,98 @@ export default {
         const origin = request.headers.get('Origin') || '';
         const cors = buildCorsHeaders(origin);
 
-        // ─── 1. 最优先：处理 OPTIONS 预检，不进任何其他逻辑 ─────
+        // 1. 处理 OPTIONS 预检
         if (request.method === 'OPTIONS') {
             return new Response(null, { status: 204, headers: cors });
         }
 
-        // ─── 2. 全局 try-catch，确保任何错误也带 CORS 头返回 ────
         try {
             // 健康检查
             if (request.method === 'GET' && url.pathname === '/health') {
                 return new Response(
-                    JSON.stringify({ status: 'ok', service: 'SBTI AI Worker', version: '4.0' }),
+                    JSON.stringify({ status: 'ok', service: 'SBTI AI Worker', version: '5.0' }),
                     { status: 200, headers: { ...cors, 'Content-Type': 'application/json' } }
                 );
             }
 
-            // 只开放 POST /analyze
-            if (request.method !== 'POST' || url.pathname !== '/analyze') {
-                return new Response(
-                    JSON.stringify({ error: '接口不存在' }),
-                    { status: 404, headers: { ...cors, 'Content-Type': 'application/json' } }
-                );
+            // 限制方法
+            if (request.method !== 'POST') {
+                return new Response(JSON.stringify({ error: '方法不允许' }), { status: 405, headers: { ...cors, 'Content-Type': 'application/json' } });
             }
 
-            // 解析请求体
-            let body;
-            try {
-                body = await request.json();
-            } catch {
-                return new Response(
-                    JSON.stringify({ error: '请求体格式错误，需要 JSON' }),
-                    { status: 400, headers: { ...cors, 'Content-Type': 'application/json' } }
-                );
-            }
-
-            // 参数校验
-            const { typeCode, typeCn, similarity, exact, levels } = body;
-            if (!typeCode || !typeCn || similarity == null || !levels) {
-                return new Response(
-                    JSON.stringify({ error: '缺少必要字段: typeCode, typeCn, similarity, levels' }),
-                    { status: 422, headers: { ...cors, 'Content-Type': 'application/json' } }
-                );
-            }
-
-            // ─── 3. Cache API（带完整容错，失败自动降级直接调 AI）────
-            let cachedResponse = null;
-            let cacheKey = null;
-            let cache = null;
-
-            try {
-                cache = caches.default;
-                const payloadStr = JSON.stringify({
-                    typeCode, typeCn, similarity, exact, levels,
-                    version: 'v4_sbti_indicator'
-                });
-                const msgUint8 = new TextEncoder().encode(payloadStr);
-                const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-                const hashHex = Array.from(new Uint8Array(hashBuffer))
-                    .map(b => b.toString(16).padStart(2, '0')).join('');
-                cacheKey = new Request(`https://sbti.cache/analyze/${hashHex}`, { method: 'GET' });
-                cachedResponse = await cache.match(cacheKey);
-            } catch (cacheErr) {
-                // Cache API 不可用，静默降级
-                cache = null;
-                cacheKey = null;
-            }
-
-            if (cachedResponse) {
-                // 缓存命中：复制响应并附上最新的 CORS 头
-                const headers = new Headers({ ...cors, 'Content-Type': 'application/json', 'X-Cache': 'HIT' });
-                return new Response(cachedResponse.body, { status: 200, headers });
-            }
-
-            // ─── 4. 调用 DeepSeek ─────────────────────────────────
-            let analysis;
-            try {
-                const prompt = buildPrompt({ typeCode, typeCn, similarity, exact, levels });
-                analysis = await callDeepSeek(env, prompt);
-            } catch (aiErr) {
-                return new Response(
-                    JSON.stringify({ error: 'AI 服务异常', detail: aiErr?.message || String(aiErr) }),
-                    { status: 503, headers: { ...cors, 'Content-Type': 'application/json' } }
-                );
-            }
-
-            const responseBody = JSON.stringify({ analysis });
-
-            // ─── 5. 写入缓存（失败不影响响应）────────────────────
-            if (cache && cacheKey) {
-                try {
-                    const cacheResp = new Response(responseBody, {
-                        status: 200,
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Cache-Control': 's-maxage=2592000',
-                        },
-                    });
-                    ctx.waitUntil(cache.put(cacheKey, cacheResp));
-                } catch (_) {
-                    // 写缓存失败，继续正常返回
+            // 路由策略
+            if (url.pathname === '/analyze') {
+                // ───── 单人分析逻辑 ─────
+                const body = await request.json();
+                const { typeCode, typeCn, similarity, exact, levels } = body;
+                if (!typeCode || !typeCn || similarity == null || !levels) {
+                    return new Response(JSON.stringify({ error: '缺少必要字段' }), { status: 422, headers: { ...cors, 'Content-Type': 'application/json' } });
                 }
+
+                // Cache
+                let cache = caches.default, cacheKey = null, cachedResponse = null;
+                try {
+                    const payloadStr = JSON.stringify({ typeCode, typeCn, similarity, exact, levels, v: 'v4' });
+                    const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(payloadStr));
+                    const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+                    cacheKey = new Request(`https://sbti.cache/analyze/${hashHex}`, { method: 'GET' });
+                    cachedResponse = await cache.match(cacheKey);
+                } catch (e) { cache = null; }
+
+                if (cachedResponse) {
+                    return new Response(cachedResponse.body, { status: 200, headers: { ...cors, 'Content-Type': 'application/json', 'X-Cache': 'HIT' } });
+                }
+
+                const prompt = buildPrompt({ typeCode, typeCn, similarity, exact, levels });
+                const analysis = await callDeepSeek(env, prompt);
+                const responseBody = JSON.stringify({ analysis });
+
+                if (cache && cacheKey) {
+                    ctx.waitUntil(cache.put(cacheKey, new Response(responseBody, { status: 200, headers: { 'Content-Type': 'application/json', 'Cache-Control': 's-maxage=2592000' } })));
+                }
+                return new Response(responseBody, { status: 200, headers: { ...cors, 'Content-Type': 'application/json', 'X-Cache': 'MISS' } });
+
+            } else if (url.pathname === '/analyze-cp') {
+                // ───── 双人碰撞逻辑 ─────
+                const body = await request.json();
+                const { typeA, typeB } = body;
+                if (!typeA || !typeB || !typeA.code || !typeB.code) {
+                    return new Response(JSON.stringify({ error: '缺少 typeA 或 typeB' }), { status: 422, headers: { ...cors, 'Content-Type': 'application/json' } });
+                }
+
+                // 排序以保证 A+B 和 B+A 共享缓存名，随机选择变体索引 v0-v9
+                const sortedTypes = [typeA.code, typeB.code].sort();
+                const vIdx = Math.floor(Math.random() * 10);
+                const cacheKeyRaw = `cp:${sortedTypes[0]}:${sortedTypes[1]}:v${vIdx}`;
+
+                let cache = caches.default, cacheKey = null, cachedResponse = null;
+                try {
+                    const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(cacheKeyRaw + "_v5")); 
+                    const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+                    cacheKey = new Request(`https://sbti.cache/analyze-cp/${hashHex}`, { method: 'GET' });
+                    cachedResponse = await cache.match(cacheKey);
+                } catch (e) { cache = null; }
+
+                if (cachedResponse) {
+                    return new Response(cachedResponse.body, { status: 200, headers: { ...cors, 'Content-Type': 'application/json', 'X-Cache': 'HIT', 'X-Variant': vIdx } });
+                }
+
+                const prompt = buildCpPrompt(typeA, typeB);
+                const analysis = await callDeepSeek(env, prompt);
+                const responseBody = JSON.stringify({ analysis, variant: vIdx });
+
+                if (cache && cacheKey) {
+                    ctx.waitUntil(cache.put(cacheKey, new Response(responseBody, { status: 200, headers: { 'Content-Type': 'application/json', 'Cache-Control': 's-maxage=2592000' } })));
+                }
+                return new Response(responseBody, { status: 200, headers: { ...cors, 'Content-Type': 'application/json', 'X-Cache': 'MISS' } });
+
+            } else {
+                return new Response(JSON.stringify({ error: '接口不存在' }), { status: 404, headers: { ...cors, 'Content-Type': 'application/json' } });
             }
 
-            return new Response(responseBody, {
-                status: 200,
-                headers: { ...cors, 'Content-Type': 'application/json', 'X-Cache': 'MISS' },
-            });
-
-        } catch (globalErr) {
-            // 兜底：确保任何未知异常都带 CORS 头返回，而不是被 CF 拦截为裸 500
+        } catch (err) {
             return new Response(
-                JSON.stringify({ error: 'Worker 内部异常', detail: globalErr?.message || String(globalErr) }),
+                JSON.stringify({ error: 'Internal Error', detail: err.message }),
                 { status: 500, headers: { ...cors, 'Content-Type': 'application/json' } }
             );
         }

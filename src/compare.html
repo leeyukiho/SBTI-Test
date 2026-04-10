@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>性格碰撞 - SBTI 两人人格分析 | 专属毒舌 CP 报告</title>
+    <meta name="description" content="SBTI 性格碰撞实验室：输入两个 SBTI 人格类型，生成独一无二的毒舌相处分析。探索你们的赛博兼容性，直面真实的相处车祸现场。" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@700;900&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    <link rel="stylesheet" href="/style.css?v=1.6">
+    <style>
+        /* 碰撞页面专项增强样式 */
+        .compare-hero {
+            padding: 60px 20px;
+            text-align: center;
+            background: radial-gradient(circle at top, rgba(108, 141, 113, 0.15), transparent);
+        }
+
+        .compare-selectors {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px auto;
+            max-width: 900px;
+        }
+
+        .person-card {
+            flex: 1;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .person-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-strong);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .person-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 6px;
+            background: var(--accent-strong);
+            opacity: 0.8;
+        }
+
+        .vs-divider {
+            font-family: 'Outfit', sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--accent-strong);
+            text-shadow: 0 0 20px rgba(108, 141, 113, 0.3);
+            font-style: italic;
+            z-index: 2;
+        }
+
+        .type-select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.8);
+            font-family: inherit;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .type-select:focus {
+            border-color: var(--accent-strong);
+        }
+
+        .person-img-wrap {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: #f0f4f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 3px solid white;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+        }
+
+        .person-img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+
+        .analyze-trigger-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn-collision {
+            background: linear-gradient(135deg, var(--accent-strong), #4a6b51);
+            color: white;
+            padding: 18px 48px;
+            font-size: 20px;
+            font-weight: 800;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(108, 141, 113, 0.4);
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .btn-collision:hover {
+            transform: scale(1.05) rotate(-1deg);
+            box-shadow: 0 15px 40px rgba(108, 141, 113, 0.6);
+        }
+
+        .btn-collision:active {
+            transform: scale(0.98);
+        }
+
+        .btn-collision:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .compatibility-result {
+            max-width: 800px;
+            margin: 40px auto;
+            display: none;
+        }
+
+        .roast-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--accent-strong);
+            padding: 40px;
+            border-radius: 32px;
+            position: relative;
+            line-height: 1.8;
+            font-size: 17px;
+            color: #333;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+        }
+
+        .roast-label {
+            position: absolute;
+            top: -15px;
+            left: 40px;
+            background: var(--accent-strong);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .typed-cursor {
+            font-weight: 200;
+            color: var(--accent-strong);
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+
+        @media (max-width: 768px) {
+            .compare-selectors { flex-direction: column; }
+            .vs-divider { margin: 10px 0; }
+            .person-card { width: 100%; }
+        }
+
+        .retry-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 24px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="global-nav">
+        <div class="nav-inner">
+            <a href="/index.html" class="nav-logo">
+                <img src="/image/logo.png" alt="SBTI Logo">
+                SBTI 人格实验室
+            </a>
+            <div class="nav-links">
+                <a href="/index.html" class="nav-link">首页</a>
+                <a href="/types.html" class="nav-link">人格类型</a>
+                <a href="/compare.html" class="nav-link nav-link--active">性格碰撞</a>
+                <a href="/rankings.html" class="nav-link">人格排行榜</a>
+                <a href="/index.html#test" class="nav-link nav-cta">开始测试 ⚡</a>
+            </div>
+            <button class="nav-hamburger" id="navHamburger">☰</button>
+        </div>
+        <div class="nav-mobile-menu" id="navMobileMenu">
+            <a href="/index.html" class="nav-mobile-link">🏠 首页</a>
+            <a href="/types.html" class="nav-mobile-link">🧬 人格类型</a>
+            <a href="/compare.html" class="nav-mobile-link active">💥 性格碰撞</a>
+            <a href="/rankings.html" class="nav-mobile-link">🏆 排行榜</a>
+            <a href="/index.html#test" class="nav-mobile-link nav-mobile-cta">⚡ 开始测试</a>
+        </div>
+    </nav>
+
+    <main class="page-shell">
+        <header class="compare-hero">
+            <h1 class="index-hero-title" style="font-size: clamp(2rem, 5vw, 3.5rem);">
+                Personality Collision<br>
+                <span class="index-hero-subtitle">SBTI 性格碰撞实验室</span>
+            </h1>
+            <p style="color: var(--muted); max-width: 600px; margin: 20px auto;">
+                别猜了，你们在一起就是一场注定的事故。选择两个 SBTI 人格，解锁 <strong>DeepSeek AI</strong> 为你们量身定制的<strong>专属关系锐评报告</strong>。
+            </p>
+        </header>
+
+        <section class="compare-selectors">
+            <div class="person-card" id="cardA">
+                <span style="font-size: 12px; color: var(--muted); font-weight: 600;">角色 A</span>
+                <div class="person-img-wrap">
+                    <img src="/image/placeholder.png" id="imgA" class="person-img" alt="Person A">
+                </div>
+                <select id="selectA" class="type-select">
+                    <option value="">载入中...</option>
+                </select>
+                <div id="introA" style="font-size: 13px; color: var(--muted); margin-top: 12px; height: 40px; overflow: hidden;">选择一个人格...</div>
+            </div>
+
+            <div class="vs-divider">VS</div>
+
+            <div class="person-card" id="cardB">
+                <span style="font-size: 12px; color: var(--muted); font-weight: 600;">角色 B</span>
+                <div class="person-img-wrap">
+                    <img src="/image/placeholder.png" id="imgB" class="person-img" alt="Person B">
+                </div>
+                <select id="selectB" class="type-select">
+                    <option value="">载入中...</option>
+                </select>
+                <div id="introB" style="font-size: 13px; color: var(--muted); margin-top: 12px; height: 40px; overflow: hidden;">选择一个人格...</div>
+            </div>
+        </section>
+
+        <div class="analyze-trigger-section">
+            <button id="collisionBtn" class="btn-collision">💥 开启性格碰撞分析</button>
+            <p id="loadingTip" style="display:none; color: var(--accent-strong); margin-top:10px; font-weight:600;">正在连线 AI 情感拆解师...</p>
+        </div>
+
+        <section class="compatibility-result" id="resultSection">
+            <div class="roast-card">
+                <div class="roast-label">专属关系锐评 (DeepSeek AI)</div>
+                <div id="roastContent" style="white-space: pre-wrap;"></div>
+            </div>
+            <div class="retry-actions" id="retryActions">
+                <button id="reRoastBtn" class="btn-secondary" style="border-radius: 50px; padding: 12px 30px;">🔄 再撞一次 (刷新变体)</button>
+            </div>
+        </section>
+
+        <footer class="main-footer" style="margin-top: 60px;">
+            <div class="credits">
+                基于 SBTI 15 维度模型 · 驱动引擎 DeepSeek-v3 AI<br>
+                © 2026 SBTI 人格实验室 版权所有
+            </div>
+        </footer>
+    </main>
+
+    <script type="module">
+        import { TYPE_LIBRARY, TYPE_IMAGES } from './js/dataset.js';
+
+        const selectA = document.getElementById('selectA');
+        const selectB = document.getElementById('selectB');
+        const imgA = document.getElementById('imgA');
+        const imgB = document.getElementById('imgB');
+        const introA = document.getElementById('introA');
+        const introB = document.getElementById('introB');
+        const collisionBtn = document.getElementById('collisionBtn');
+        const resultSection = document.getElementById('resultSection');
+        const roastContent = document.getElementById('roastContent');
+        const loadingTip = document.getElementById('loadingTip');
+        const retryActions = document.getElementById('retryActions');
+
+        // 初始化选择列表
+        function initSelectors() {
+            const types = Object.values(TYPE_LIBRARY);
+            const optionsHtml = types.map(t => `<option value="${t.code}">${t.code}（${t.cn}）</option>`).join('');
+            
+            selectA.innerHTML = '<option value="" disabled selected>请选择人格 A</option>' + optionsHtml;
+            selectB.innerHTML = '<option value="" disabled selected>请选择人格 B</option>' + optionsHtml;
+        }
+
+        function updateCard(select, img, intro) {
+            const code = select.value;
+            const data = TYPE_LIBRARY[code];
+            if (data) {
+                img.src = TYPE_IMAGES[code] || '/image/logo.png';
+                intro.textContent = data.intro || '';
+            }
+        }
+
+        selectA.addEventListener('change', () => updateCard(selectA, imgA, introA));
+        selectB.addEventListener('change', () => updateCard(selectB, imgB, introB));
+
+        // 打字机效果
+        function typeWriter(text, element) {
+            element.textContent = '';
+            let i = 0;
+            const speed = 20; // 毫秒
+            
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                }
+            }
+            type();
+        }
+
+        async function triggerAnalysis() {
+            const codeA = selectA.value;
+            const codeB = selectB.value;
+
+            if (!codeA || !codeB) {
+                alert('请先选择两个角色！');
+                return;
+            }
+
+            collisionBtn.disabled = true;
+            loadingTip.style.display = 'block';
+            resultSection.style.display = 'none';
+            retryActions.style.display = 'none';
+
+            try {
+                const typeA = { code: codeA, cn: TYPE_LIBRARY[codeA].cn };
+                const typeB = { code: codeB, cn: TYPE_LIBRARY[codeB].cn };
+
+                const resp = await fetch('https://api.sbti-ai.com/analyze-cp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ typeA, typeB })
+                });
+
+                if (!resp.ok) throw new Error('API 服务不可用');
+
+                const data = await resp.json();
+                
+                loadingTip.style.display = 'none';
+                resultSection.style.display = 'block';
+                typeWriter(data.analysis, roastContent);
+                
+                setTimeout(() => {
+                    retryActions.style.display = 'flex';
+                }, 2000);
+
+            } catch (err) {
+                alert('系统拥挤，请稍后再试：' + err.message);
+                collisionBtn.disabled = false;
+                loadingTip.style.display = 'none';
+            } finally {
+                collisionBtn.disabled = false;
+            }
+        }
+
+        collisionBtn.addEventListener('click', triggerAnalysis);
+        document.getElementById('reRoastBtn').addEventListener('click', triggerAnalysis);
+
+        initSelectors();
+
+        // 移动端菜单
+        document.getElementById('navHamburger').onclick = () => {
+            document.getElementById('navMobileMenu').classList.toggle('active');
+        };
+    </script>
+</body>
+</html>
