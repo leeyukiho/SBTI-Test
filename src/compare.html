@@ -10,7 +10,8 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@700;900&display=swap"
+        rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/image/favicon.png">
     <link rel="stylesheet" href="/style.css?v=1.6">
@@ -53,7 +54,10 @@
         .person-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 6px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
             background: var(--accent-strong);
             opacity: 0.8;
         }
@@ -90,19 +94,17 @@
             height: 120px;
             margin: 0 auto;
             border-radius: 50%;
-            background: #f0f4f0;
+            background: linear-gradient(135deg, #f0f4f0, #e0e8e0);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             border: 3px solid white;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
-        }
-
-        .person-img {
-            width: 80%;
-            height: 80%;
-            object-fit: contain;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+            font-family: 'Outfit', sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--accent-strong);
         }
 
         .analyze-trigger-section {
@@ -145,6 +147,14 @@
             display: none;
         }
 
+        .intro-text {
+            font-size: 14px;
+            color: var(--muted);
+            margin-top: 16px;
+            line-height: 1.6;
+            min-height: 40px;
+        }
+
         .roast-card {
             background: rgba(255, 255, 255, 0.9);
             border: 2px solid var(--accent-strong);
@@ -154,7 +164,7 @@
             line-height: 1.8;
             font-size: 17px;
             color: #333;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
         }
 
         .roast-label {
@@ -176,12 +186,32 @@
             animation: blink 0.7s infinite;
         }
 
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
 
         @media (max-width: 768px) {
-            .compare-selectors { flex-direction: column; }
-            .vs-divider { margin: 10px 0; }
-            .person-card { width: 100%; }
+            .compare-selectors {
+                flex-direction: column;
+            }
+
+            .vs-divider {
+                margin: 10px 0;
+            }
+
+            .person-card {
+                width: 100%;
+            }
         }
 
         .retry-actions {
@@ -226,54 +256,52 @@
                 <span class="index-hero-subtitle">SBTI 性格碰撞实验室</span>
             </h1>
             <p style="color: var(--muted); max-width: 600px; margin: 20px auto;">
-                别猜了，你们在一起就是一场注定的事故。选择两个 SBTI 人格，解锁 <strong>DeepSeek AI</strong> 为你们量身定制的<strong>专属关系锐评报告</strong>。
+                别猜了，你们在一起就是一场注定的事故。选择两个 SBTI 人格，解锁 <strong>AI</strong> 为你们量身定制的<strong>专属关系锐评报告</strong>。
             </p>
         </header>
 
         <section class="compare-selectors">
             <div class="person-card" id="cardA">
                 <span style="font-size: 12px; color: var(--muted); font-weight: 600;">角色 A</span>
-                <div class="person-img-wrap">
-                    <img src="/image/placeholder.png" id="imgA" class="person-img" alt="Person A">
-                </div>
+                <div class="person-img-wrap" id="dispA">A</div>
                 <select id="selectA" class="type-select">
                     <option value="">载入中...</option>
                 </select>
-                <div id="introA" style="font-size: 13px; color: var(--muted); margin-top: 12px; height: 40px; overflow: hidden;">选择一个人格...</div>
+                <div id="introA" class="intro-text">选择一个人格...</div>
             </div>
 
             <div class="vs-divider">VS</div>
 
             <div class="person-card" id="cardB">
                 <span style="font-size: 12px; color: var(--muted); font-weight: 600;">角色 B</span>
-                <div class="person-img-wrap">
-                    <img src="/image/placeholder.png" id="imgB" class="person-img" alt="Person B">
-                </div>
+                <div class="person-img-wrap" id="dispB">B</div>
                 <select id="selectB" class="type-select">
                     <option value="">载入中...</option>
                 </select>
-                <div id="introB" style="font-size: 13px; color: var(--muted); margin-top: 12px; height: 40px; overflow: hidden;">选择一个人格...</div>
+                <div id="introB" class="intro-text">选择一个人格...</div>
             </div>
         </section>
 
         <div class="analyze-trigger-section">
             <button id="collisionBtn" class="btn-collision">💥 开启性格碰撞分析</button>
-            <p id="loadingTip" style="display:none; color: var(--accent-strong); margin-top:10px; font-weight:600;">正在连线 AI 情感拆解师...</p>
+            <p id="loadingTip" style="display:none; color: var(--accent-strong); margin-top:10px; font-weight:600;">正在连线
+                AI 情感拆解师...</p>
         </div>
 
         <section class="compatibility-result" id="resultSection">
             <div class="roast-card">
-                <div class="roast-label">专属关系锐评 (DeepSeek AI)</div>
+                <div class="roast-label">专属关系锐评 (AI 分析)</div>
                 <div id="roastContent" style="white-space: pre-wrap;"></div>
             </div>
             <div class="retry-actions" id="retryActions">
-                <button id="reRoastBtn" class="btn-secondary" style="border-radius: 50px; padding: 12px 30px;">🔄 再撞一次 (刷新变体)</button>
+                <button id="reRoastBtn" class="btn-secondary"
+                    style="border-radius: 50px; padding: 12px 30px;">换个风格再撞一次</button>
             </div>
         </section>
 
         <footer class="main-footer" style="margin-top: 60px;">
             <div class="credits">
-                基于 SBTI 15 维度模型 · 驱动引擎 DeepSeek-v3 AI<br>
+                基于 SBTI 15 维度模型 · 驱动引擎 人工智能<br>
                 © 2026 SBTI 人格实验室 版权所有
             </div>
         </footer>
@@ -284,8 +312,6 @@
 
         const selectA = document.getElementById('selectA');
         const selectB = document.getElementById('selectB');
-        const imgA = document.getElementById('imgA');
-        const imgB = document.getElementById('imgB');
         const introA = document.getElementById('introA');
         const introB = document.getElementById('introB');
         const collisionBtn = document.getElementById('collisionBtn');
@@ -298,29 +324,28 @@
         function initSelectors() {
             const types = Object.values(TYPE_LIBRARY);
             const optionsHtml = types.map(t => `<option value="${t.code}">${t.code}（${t.cn}）</option>`).join('');
-            
+
             selectA.innerHTML = '<option value="" disabled selected>请选择人格 A</option>' + optionsHtml;
             selectB.innerHTML = '<option value="" disabled selected>请选择人格 B</option>' + optionsHtml;
         }
 
-        function updateCard(select, img, intro) {
+        function updateCard(select, intro) {
             const code = select.value;
             const data = TYPE_LIBRARY[code];
             if (data) {
-                img.src = TYPE_IMAGES[code] || '/image/logo.png';
                 intro.textContent = data.intro || '';
             }
         }
 
-        selectA.addEventListener('change', () => updateCard(selectA, imgA, introA));
-        selectB.addEventListener('change', () => updateCard(selectB, imgB, introB));
+        selectA.addEventListener('change', () => updateCard(selectA, introA));
+        selectB.addEventListener('change', () => updateCard(selectB, introB));
 
         // 打字机效果
         function typeWriter(text, element) {
             element.textContent = '';
             let i = 0;
             const speed = 20; // 毫秒
-            
+
             function type() {
                 if (i < text.length) {
                     element.textContent += text.charAt(i);
@@ -359,11 +384,11 @@
                 if (!resp.ok) throw new Error('API 服务不可用');
 
                 const data = await resp.json();
-                
+
                 loadingTip.style.display = 'none';
                 resultSection.style.display = 'block';
                 typeWriter(data.analysis, roastContent);
-                
+
                 setTimeout(() => {
                     retryActions.style.display = 'flex';
                 }, 2000);
@@ -388,4 +413,5 @@
         };
     </script>
 </body>
+
 </html>
