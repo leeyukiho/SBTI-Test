@@ -292,18 +292,29 @@ button:disabled {
     justify-content: space-between;
     align-items: center;
     gap: 16px;
-    margin-bottom: 18px;
+    margin-bottom: 24px;
     flex-wrap: wrap;
+    position: sticky;
+    top: 12px;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 18px 24px;
+    border-radius: 20px;
+    border: 1px solid var(--panel-border);
+    box-shadow: 0 8px 24px rgba(47,73,56,0.06), inset 0 1px 2px rgba(255,255,255,0.9);
 }
 
 .progress {
     flex: 1;
     min-width: 240px;
-    height: 10px;
-    background: #edf3ee;
+    height: 12px;
+    background: rgba(237, 246, 239, 0.8);
     border-radius: 999px;
     overflow: hidden;
     position: relative;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .progress>span {
@@ -324,16 +335,32 @@ button:disabled {
 
 .question-list {
     display: grid;
-    gap: 16px;
+    gap: 24px;
 }
 
 .question {
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    border-radius: 20px;
-    padding: 24px;
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(12px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+    border: none;
+    border-radius: 24px;
+    padding: 32px;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(47, 73, 56, 0.04), inset 0 1px 2px rgba(255,255,255,0.8);
+    transition: transform 0.4s ease;
+    animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* 根据 nth-child 添加 staggered 动效延迟，最多覆盖前10题单次渲染量 */
+.question:nth-child(1) { animation-delay: 0.05s; }
+.question:nth-child(2) { animation-delay: 0.1s; }
+.question:nth-child(3) { animation-delay: 0.15s; }
+.question:nth-child(4) { animation-delay: 0.2s; }
+.question:nth-child(5) { animation-delay: 0.25s; }
+.question:nth-child(n+6) { animation-delay: 0.3s; }
+
+@keyframes slideUpFade {
+    0% { opacity: 0; transform: translateY(40px) scale(0.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .question-meta {
@@ -341,9 +368,10 @@ button:disabled {
     justify-content: space-between;
     align-items: center;
     gap: 12px;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
     color: var(--muted);
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 500;
 }
 
 .badge {
@@ -351,53 +379,141 @@ button:disabled {
     align-items: center;
     gap: 6px;
     border-radius: 999px;
-    padding: 6px 10px;
-    background: var(--soft);
-    border: 1px solid var(--line);
+    padding: 6px 12px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.5));
+    border: 1px solid rgba(255,255,255,1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    color: var(--accent-strong);
+    font-weight: 700;
+}
+
+.question-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
 }
 
 .question-title {
-    font-size: 16px;
-    line-height: 1.7;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    color: #1a261e;
     white-space: pre-wrap;
+    padding: 0;
 }
 
 .options {
     display: grid;
-    gap: 10px;
-    margin-top: 14px;
-}
-
-.option {
-    display: flex;
-    align-items: flex-start;
     gap: 12px;
-    padding: 16px 18px;
-    border-radius: 14px;
-    border: 1px solid rgba(108, 141, 113, 0.15);
+}
+
+.option-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    border-radius: 18px;
+    border: 2px solid rgba(108, 141, 113, 0.15);
     background: rgba(255, 255, 255, 0.8);
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
 }
 
-.option:hover {
-    border-color: var(--accent);
-    background: #fff;
-    transform: translateX(4px);
-    box-shadow: 0 8px 16px rgba(108, 141, 113, 0.08);
+/* 隐藏默认 radio */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
 }
 
-.option input {
-    margin-top: 3px;
-    accent-color: var(--accent-strong);
-    transform: scale(1.1);
-    flex-shrink: 0;
+.option-card:hover {
+    transform: translateY(-2px);
+    background: #ffffff;
+    border-color: rgba(108, 141, 113, 0.3);
+    box-shadow: 0 12px 24px rgba(47, 73, 56, 0.06);
+}
+
+.option-card:active {
+    transform: scale(0.98);
 }
 
 .option-code {
     font-weight: 800;
-    color: var(--accent-strong);
-    min-width: 22px;
+    font-size: 15px;
+    color: var(--muted);
+    background: var(--bg-base);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.option-text {
+    flex: 1;
+    font-size: 15px;
+    line-height: 1.6;
+    font-weight: 500;
+    color: #3b4d41;
+}
+
+.radio-indicator {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid rgba(108, 141, 113, 0.3);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: #fff;
+}
+
+.radio-indicator::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent-strong);
+    transform: scale(0);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 选中状态！CSS原生支持，极速响应 */
+.option-card:has(input:checked) {
+    border-color: var(--accent-strong);
+    background: linear-gradient(135deg, #ffffff 0%, rgba(237, 246, 239, 0.6) 100%);
+    box-shadow: 0 8px 32px rgba(94, 127, 100, 0.15), 0 0 0 1px var(--accent-strong);
+}
+
+.option-card:has(input:checked) .option-code {
+    background: var(--accent-strong);
+    color: #fff;
+}
+
+.option-card:has(input:checked) .radio-indicator {
+    border-color: var(--accent-strong);
+}
+
+.option-card:has(input:checked) .radio-indicator::after {
+    transform: scale(1);
+}
+
+.option-card:has(input:checked) .option-text {
+    color: #17211a;
+    font-weight: 700;
 }
 
 .actions-bottom {

@@ -136,23 +136,26 @@ function renderQuestions() {
         card.className = 'question';
         card.innerHTML = `
           <div class="question-meta">
-            <div class="badge">第 ${index + 1} 题</div>
-            <div>${getQuestionMetaLabel(q)}</div>
+            <div class="badge">第 <span class="num">${index + 1}</span> 题</div>
+            <div class="dim-label">${getQuestionMetaLabel(q)}</div>
           </div>
-          <div class="question-title">${q.text}</div>
-          <div class="options">
-            ${q.options.map((opt, i) => {
-            const code = ['A', 'B', 'C', 'D'][i] || String(i + 1);
-            const checked = app.answers[q.id] === opt.value ? 'checked' : '';
-            return `
-                <label class="option">
-                  <input type="radio" name="${q.id}" value="${opt.value}" ${checked} />
-                  <div class="option-code">${code}</div>
-                  <div>${opt.label}</div>
-                </label>
-              `;
-        }).join('')}
-          </div>
+          <fieldset class="question-fieldset">
+            <legend class="question-title">${q.text}</legend>
+            <div class="options">
+              ${q.options.map((opt, i) => {
+              const code = ['A', 'B', 'C', 'D'][i] || String(i + 1);
+              const checked = app.answers[q.id] === opt.value ? 'checked' : '';
+              return `
+                  <label class="option-card">
+                    <input type="radio" name="${q.id}" value="${opt.value}" ${checked} class="sr-only"/>
+                    <div class="option-code">${code}</div>
+                    <div class="option-text">${opt.label}</div>
+                    <div class="radio-indicator"></div>
+                  </label>
+                `;
+          }).join('')}
+            </div>
+          </fieldset>
         `;
         questionList.appendChild(card);
     });
