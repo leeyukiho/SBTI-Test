@@ -233,10 +233,9 @@ function renderResult() {
 
     renderDimList(result);
 
-    // 重置 AI 区块为待触发状态，保存结果供按钮使用
+    // 保存结果，重置 AI 区块为待触发状态
     app.lastResult = result;
     resetAiZone();
-
     showScreen('result');
 }
 
@@ -244,14 +243,14 @@ function renderResult() {
  * 重置 AI 区块回初始待触发状态
  */
 function resetAiZone() {
-    document.getElementById('aiTriggerZone').classList.remove('ai-zone-hidden');
-    document.getElementById('aiLoadingZone').classList.add('ai-zone-hidden');
+    const actionZone = document.getElementById('aiActionZone');
     const aiText = document.getElementById('aiAnalysisText');
-    aiText.classList.add('ai-zone-hidden');
-    aiText.textContent = '';
     const btn = document.getElementById('aiTriggerBtn');
+    actionZone.style.display = '';
+    aiText.style.display = 'none';
+    aiText.textContent = '';
     btn.disabled = false;
-    btn.textContent = '🧬 召唤 AI 毒舌锐评';
+    btn.innerHTML = '🧬 召唤 AI 毒舌锐评';
 }
 
 /**
@@ -261,22 +260,19 @@ async function triggerAiAnalysis() {
     const result = app.lastResult;
     if (!result) return;
 
-    const btn = document.getElementById('aiTriggerBtn');
-    const triggerZone = document.getElementById('aiTriggerZone');
-    const loadingZone = document.getElementById('aiLoadingZone');
+    const actionZone = document.getElementById('aiActionZone');
     const aiText = document.getElementById('aiAnalysisText');
+    const btn = document.getElementById('aiTriggerBtn');
 
-    // 切换到 loading 状态
+    // 切换到 loading 状态：按钮变为加载中
     btn.disabled = true;
-    triggerZone.classList.add('ai-zone-hidden');
-    loadingZone.classList.remove('ai-zone-hidden');
-    aiText.classList.add('ai-zone-hidden');
+    btn.innerHTML = '⏳ 正在读取你的牛马基因…';
 
     try {
         const analysis = await fetchAiAnalysis(result);
-        // 隐藏 loading，显示结果
-        loadingZone.classList.add('ai-zone-hidden');
-        aiText.classList.remove('ai-zone-hidden');
+        // 隐藏按钮区，显示结果
+        actionZone.style.display = 'none';
+        aiText.style.display = 'block';
         aiText.textContent = '';
         // 逐字打印效果
         let i = 0;
@@ -288,10 +284,8 @@ async function triggerAiAnalysis() {
         };
         print();
     } catch (err) {
-        loadingZone.classList.add('ai-zone-hidden');
-        triggerZone.classList.remove('ai-zone-hidden');
         btn.disabled = false;
-        btn.textContent = '⚠️ 锐评失败，再试一次';
+        btn.innerHTML = '⚠️ 锐评失败，再试一次';
         console.error('AI 解读失败：', err);
     }
 }
