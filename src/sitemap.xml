@@ -23,6 +23,15 @@
       <mobile:mobile/>
    </url>
 
+   <!-- 人格碰撞实验室：核心关系分析工具 -->
+   <url>
+      <loc>https://www.sbti-ai.com/compare.html</loc>
+      <lastmod>2026-04-10</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.9</priority>
+      <mobile:mobile/>
+   </url>
+
    <!-- 人格排行榜页：实时测试数据统计 -->
    <url>
       <loc>https://www.sbti-ai.com/rankings.html</loc>

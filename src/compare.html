@@ -4,8 +4,77 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>人格碰撞 - SBTI 两人人格分析 | 专属毒舌 CP 报告</title>
-    <meta name="description" content="SBTI 人格碰撞实验室：输入两个 SBTI 人格类型，生成独一无二的毒舌相处分析。探索你们的赛博兼容性，直面真实的相处车祸现场。" />
+    <title>人格碰撞 - SBTI性格测试两人关系分析 | 赛博CP兼容性深度报告</title>
+    <meta name="description" content="SBTI人格碰撞实验室是一款基于AI的两人性格关系分析工具。输入任何SBTI人格代码，瞬间生成精准、毒舌的CP关系深度解读。探索你们的赛博匹配度，直面最真实的灵魂交锋。" />
+    <meta name="keywords" content="人格碰撞,SBTI测试,SBTI关系分析,CP测试,性格兼容性,AI锐评,关系实验室,赛博匹配度,MBTI平替" />
+    <link rel="canonical" href="https://www.sbti-ai.com/compare.html" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.sbti-ai.com/compare.html" />
+    <meta property="og:title" content="人格碰撞 - SBTI 两人关系深度实验室" />
+    <meta property="og:description" content="AI 驱动的赛博性格碰撞实验：输入两人代码，解锁专属毒舌关系报告。是天作之合还是命中克星？测完便知。" />
+    <meta property="og:image" content="https://www.sbti-ai.com/image/logo.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://www.sbti-ai.com/compare.html" />
+    <meta property="twitter:title" content="人格碰撞 - SBTI 两人关系深度实验室" />
+    <meta property="twitter:description" content="AI 驱动的赛博性格碰撞实验：输入两人代码，解锁专属毒舌关系报告。" />
+    <meta property="twitter:image" content="https://www.sbti-ai.com/image/logo.png" />
+
+    <!-- 结构化数据 (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "SBTI 人格碰撞实验室",
+      "alternateName": "SBTI CP Analysis",
+      "url": "https://www.sbti-ai.com/compare.html",
+      "applicationCategory": "LifestyleApplication",
+      "description": "基于 AI 引擎的两人 SBTI 人格关系分析工具，提供多风格（毒舌/温和）的关系解读报告。",
+      "operatingSystem": "All",
+      "inLanguage": "zh-CN"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "首页",
+        "item": "https://www.sbti-ai.com/"
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "人格碰撞",
+        "item": "https://www.sbti-ai.com/compare.html"
+      }]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "SBTI 人格碰撞是如何分析两人关系的？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "人格碰撞实验室通过提取两人 SBTI 测试的 15 维度原始分值，利用 AI 大模型进行深度关联建模。分析涵盖性格互补性、潜在冲突点及日常相处建议。"
+        }
+      },{
+        "@type": "Question",
+        "name": "人格碰撞支持哪些分析风格？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "目前支持‘🌶️ 毒舌锐评’和‘🍃 温和疗愈’两种风格，用户可以根据喜好自由切换。"
+        }
+      }]
+    }
+    </script>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -335,9 +404,38 @@
                 <div id="roastContent" style="white-space: pre-wrap;"></div>
             </div>
             <div class="retry-actions" id="retryActions">
+                <button id="copyResultBtn" class="btn-secondary"
+                    style="border-radius: 50px; padding: 12px 30px; background: var(--accent-strong); color: white; border: none;">📋 复制分析结果</button>
                 <button id="reRoastBtn" class="btn-secondary"
                     style="border-radius: 50px; padding: 12px 30px;">换个风格再撞一次</button>
             </div>
+        </section>
+
+        <!-- SEO FAQ 区域 -->
+        <section class="seo-faq" style="max-width: 800px; margin: 60px auto 20px; padding: 0 20px;">
+            <h2 style="font-family: 'Outfit', sans-serif; font-size: 24px; margin-bottom: 24px; color: var(--accent-strong);">
+                常见问题解析 <span>Q&A</span></h2>
+            
+            <details style="margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                <summary style="font-weight: 600; cursor: pointer; padding: 10px 0;">什么是 SBTI 人格碰撞？分析结果准吗？</summary>
+                <p style="color: var(--muted); font-size: 14px; line-height: 1.6; padding: 10px 0;">
+                    SBTI 人格碰撞是基于 15 维度心理建模的深度关系分析工具。与传统的 MBTI 兼容性表不同，它通过 AI 引擎对两人的具体分值进行底层逻辑拆解。分析结果旨在揭示两人相处中可能出现的化学反应，虽然带有一定的“毒舌”娱乐色彩，但也反映了真实的性格交互模式。
+                </p>
+            </details>
+
+            <details style="margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                <summary style="font-weight: 600; cursor: pointer; padding: 10px 0;">如何解读“毒舌锐评”和“温和疗愈”报告？</summary>
+                <p style="color: var(--muted); font-size: 14px; line-height: 1.6; padding: 10px 0;">
+                    “毒舌锐评”模式会一针见血地指出两人的性格冲突点，适合直面问题（或纯属找乐子）；“温和疗愈”模式则侧重于双方的互补优势，提供建设性的相处建议。AI 会根据两人的 SBTI 代码动态生成内容，确保千人千面。
+                </p>
+            </details>
+
+            <details style="margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                <summary style="font-weight: 600; cursor: pointer; padding: 10px 0;">我可以分享碰撞报告给朋友吗？</summary>
+                <p style="color: var(--muted); font-size: 14px; line-height: 1.6; padding: 10px 0;">
+                    当然可以！生成报告后，您可以长按文字复制，或者直接截屏分享。目前我们正在开发一键分享卡片功能，敬请期待。
+                </p>
+            </details>
         </section>
 
         <footer class="main-footer" style="margin-top: 60px;">
@@ -475,6 +573,23 @@
         });
 
         initSelectors();
+        
+        // 复制功能
+        document.getElementById('copyResultBtn').addEventListener('click', () => {
+            const content = roastContent.textContent;
+            const typeA = selectA.options[selectA.selectedIndex].text;
+            const typeB = selectB.options[selectB.selectedIndex].text;
+            const shareText = `【SBTI 人格碰撞报告】\n角色 A: ${typeA}\n角色 B: ${typeB}\n\nAI 分析结果：\n${content}\n\n立即测试你的赛博兼容性：https://www.sbti-ai.com/compare.html`;
+            
+            navigator.clipboard.writeText(shareText).then(() => {
+                const btn = document.getElementById('copyResultBtn');
+                const originalText = btn.textContent;
+                btn.textContent = '✅ 已复制到剪贴板';
+                setTimeout(() => btn.textContent = originalText, 2000);
+            }).catch(err => {
+                alert('复制失败，请手动截屏分享');
+            });
+        });
 
         // 处理 URL 参数
         (function handleUrlParams() {
