@@ -32,7 +32,6 @@
 html, body {
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
 }
 
 html {
@@ -45,6 +44,7 @@ body {
     color: var(--text);
     min-height: 100vh;
     background-color: var(--bg-base);
+    overflow-x: hidden;
 }
 
 body::before {

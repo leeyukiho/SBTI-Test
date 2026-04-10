@@ -42,17 +42,17 @@ SBTI 是基于15个维度的娱乐向人格测试。
 ${dimLines}
 
 ## 你的任务
-写一段约200字的点评，要求：
+写一段约200字的锐评，要求：
 1. 【调性风格】：像极度了解对方底细的损友，开场方式要千变万化（禁止每次都用"好家伙"、"哎哟"等固定词汇起手，可以直接贴脸输出或从某个奇怪的角度切入）。要求犀利、有梗、适度扎心但不可辱骂。
 2. 【内容重点】：结合具体的维度数据（挑几个最极端、最矛盾的维度），用当代互联网最新鲜的黑话调侃ta的行为模式。结尾给一句"损但真诚"的忠告。
-3. 【排版要求】：⚠️绝对不能分段！绝对不能换行！所有文字必须连成完整的一大段连续输出！
+3. 【排版要求】：可以分段，但是中间不能有空行。
 4. 【自由发挥】：不要受限于常规的性格分析套路，可以适当放飞自我。
 
 ## 避坑铁律（触发即失败）
 - 绝对禁止使用 "您"。
 - 绝对禁止使用 "好家伙" 或类似的陈词滥调作为固定开场白。
 - 绝对禁止出现 "优点是...缺点是..." 或 "总的来说..." 这样的刻板句式。
-- 全程中文，禁止换行，直接输出正文段落。`;
+- 全程中文，直接输出正文段落。`;
 }
 
 /** 调用 DeepSeek API */
@@ -137,7 +137,7 @@ export default {
         const cache = caches.default;
         // 把会影响评价的字段打成一个特征字符串
         const payloadStr = JSON.stringify({ typeCode, typeCn, similarity, exact, levels });
-        
+
         // 生成对应哈希当做 Cache Key (Cache API 必须用 GET Request 做 Key)
         const msgUint8 = new TextEncoder().encode(payloadStr);
         const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
@@ -170,7 +170,7 @@ export default {
         }
 
         const responseData = JSON.stringify({ analysis });
-        
+
         // 构造返回用户的响应（带 MISS）
         const finalResponse = new Response(responseData, {
             status: 200,
@@ -181,7 +181,7 @@ export default {
         // Cache API 需要缓存响应带 Cache-Control 头部
         const cacheResponse = new Response(responseData, {
             status: 200,
-            headers: { 
+            headers: {
                 'Content-Type': 'application/json',
                 'Cache-Control': 's-maxage=2592000' // 放缓存里存一个月 (30天)
             }

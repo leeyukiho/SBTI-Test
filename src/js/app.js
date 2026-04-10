@@ -469,7 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
     checkSavedState();
     // 首次进入写入初始状态记录
     if (!history.state || !history.state.screen) {
-        history.replaceState({ screen: 'intro' }, '', '#intro');
+        history.replaceState({ screen: 'intro' }, '', window.location.pathname + window.location.search);
     }
 });
 
@@ -493,7 +493,21 @@ bindBtn('aiTriggerBtn', triggerAiAnalysis);
 const navStartHandler = (e) => {
     e.preventDefault();
     resumeOrStartTest();
+    // 关闭可能打开的移动端菜单
+    const menu = document.getElementById('navMobileMenu');
+    if (menu) menu.classList.remove('active');
 };
 bindBtn('navStartBtn', navStartHandler);
 bindBtn('navMobileStartBtn', navStartHandler);
 
+// 劫持首页导航链接，如果已在首页则执行无刷新滚动
+document.querySelectorAll('a[href="index.html"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+        if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
+            e.preventDefault();
+            showScreen('intro');
+            const menu = document.getElementById('navMobileMenu');
+            if (menu) menu.classList.remove('active');
+        }
+    });
+});
