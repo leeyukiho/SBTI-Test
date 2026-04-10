@@ -2,6 +2,7 @@
  * app.js — 应用层，负责 DOM 渲染、交互与事件绑定
  * 依赖 dataset.js（数据）与 algorithm.js（算法）
  */
+console.log('[SBTI] app.js 模块开始加载');
 
 import {
     questions,
@@ -257,6 +258,7 @@ function resetAiZone() {
  * 手动触发 AI 毒舌锐评
  */
 async function triggerAiAnalysis() {
+    console.log('[SBTI] 锐评按钮点击，lastResult =', app.lastResult);
     const result = app.lastResult;
     if (!result) {
         alert('⚠️ 请先完成测试再召唤 AI 锐评！');
@@ -327,10 +329,22 @@ function startTest(preview = false) {
     showScreen('test');
 }
 
-// ─── 事件绑定 ─────────────────────────────────────────────
-document.getElementById('startBtn').addEventListener('click', () => startTest(false));
-document.getElementById('backIntroBtn').addEventListener('click', () => showScreen('intro'));
-document.getElementById('submitBtn').addEventListener('click', renderResult);
-document.getElementById('restartBtn').addEventListener('click', () => startTest(false));
-document.getElementById('toTopBtn').addEventListener('click', () => showScreen('intro'));
-document.getElementById('aiTriggerBtn').addEventListener('click', triggerAiAnalysis);
+// ─── 安全事件绑定（防止单个 null 引发后续绑定全部失败）─────
+function bindBtn(id, handler) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.addEventListener('click', handler);
+        console.log(`[SBTI] 绑定成功: #${id}`);
+    } else {
+        console.error(`[SBTI] 元素未找到: #${id}`);
+    }
+}
+
+bindBtn('startBtn',     () => startTest(false));
+bindBtn('backIntroBtn', () => showScreen('intro'));
+bindBtn('submitBtn',    renderResult);
+bindBtn('restartBtn',   () => startTest(false));
+bindBtn('toTopBtn',     () => showScreen('intro'));
+bindBtn('aiTriggerBtn', triggerAiAnalysis);
+
+console.log('[SBTI] app.js 模块加载完毕');
