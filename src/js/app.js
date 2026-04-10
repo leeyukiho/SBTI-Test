@@ -79,11 +79,15 @@ const submitBtn = document.getElementById('submitBtn');
 const testHint = document.getElementById('testHint');
 
 // ─── 屏幕切换 ─────────────────────────────────────────────
-function showScreen(name) {
+function showScreen(name, pushState = true) {
     Object.entries(screens).forEach(([key, el]) => {
         el.classList.toggle('active', key === name);
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    if (pushState) {
+        history.pushState({ screen: name }, '', `#${name}`);
+    }
 }
 
 // ─── 工具函数 ─────────────────────────────────────────────
@@ -427,7 +431,22 @@ function bindBtn(id, handler) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', checkSavedState);
+document.addEventListener('DOMContentLoaded', () => {
+    checkSavedState();
+    // 首次进入写入初始状态记录
+    if (!history.state || !history.state.screen) {
+        history.replaceState({ screen: 'intro' }, '', '#intro');
+    }
+});
+
+// 监听浏览器返回按钮（移动端侧边滑动返回 / 物理返回键）
+window.addEventListener('popstate', (e) => {
+    if (e.state && e.state.screen) {
+        showScreen(e.state.screen, false);
+    } else {
+        showScreen('intro', false);
+    }
+});
 
 bindBtn('startBtn',     resumeOrStartTest);
 bindBtn('freshStartBtn', startTest);
