@@ -3373,9 +3373,13 @@ button:disabled {
     justify-content: center;
     padding: 20px;
     contain: content; /* 强制层隔离，防止内容泄漏影响主页面布局 */
+    pointer-events: none; /* 隐藏时禁止拦截点击 */
 }
 
-.share-modal.active { display: flex !important; }
+.share-modal.active { 
+    display: flex !important; 
+    pointer-events: auto; /* 激活时恢复交互 */
+}
 
 .share-card-container {
     max-width: 420px;

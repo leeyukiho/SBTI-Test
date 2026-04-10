@@ -378,6 +378,7 @@ function renderResult() {
     resetAiZone();
 
     // 动态更新 Personality Collision 链接 (NEW)
+    const collisionLink = document.getElementById('collisionLink');
     if (collisionLink) {
         collisionLink.href = `https://cp.sbti-ai.com/?codeA=${encodeURIComponent(type.code)}`;
     }
@@ -392,11 +393,15 @@ function resetAiZone() {
     const actionZone = document.getElementById('aiActionZone');
     const aiText = document.getElementById('aiAnalysisText');
     const btn = document.getElementById('aiTriggerBtn');
-    actionZone.style.display = '';
-    aiText.style.display = 'none';
-    aiText.textContent = '';
-    btn.disabled = false;
-    btn.innerHTML = '🧬 立即生成专属 AI 毒舌锐评';
+    if (actionZone) actionZone.style.display = '';
+    if (aiText) {
+        aiText.style.display = 'none';
+        aiText.textContent = '';
+    }
+    if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '🧬 立即生成专属 AI 毒舌锐评';
+    }
 }
 
 /**
@@ -423,7 +428,8 @@ async function triggerAiAnalysis() {
         btn.disabled = true;
         btn.textContent = '⏳ 正在读取你的牛马基因…';
 
-        // 格式优化：不要隔行（\n\n），可以换行（\n）
+        // 获取 AI 分析结果
+        const analysis = await fetchAiAnalysis(result);
         const cleanedAnalysis = analysis.replace(/\n\s*\n+/g, '\n');
 
         // 隐藏按钮区，显示结果
@@ -548,8 +554,8 @@ function openShareModal(result) {
         charImg.src = `/image/character/${type.code}.png`;
     }
 
-    // 双重保险：移除可能的内联 display 锁定，并通过类名控制显隐
-    modal.style.display = ''; 
+    // 双重保险：设置显式 display 并通过类名控制动画
+    modal.style.display = 'flex'; 
     modal.classList.add('active');
 
     // 记录分享动作（如有埋点可在此执行）
