@@ -25,3 +25,6 @@ dist-worker/
 
 # Serverless/Cloudflare
 .wrangler/
+
+# Scratch
+scratch/
