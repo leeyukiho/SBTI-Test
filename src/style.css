@@ -348,7 +348,7 @@ button:disabled {
     -webkit-backdrop-filter: blur(20px);
     box-shadow: 0 8px 32px rgba(47, 73, 56, 0.04), inset 0 1px 2px rgba(255,255,255,0.8);
     transition: transform 0.4s ease;
-    animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    /* 默认无动画：防止滚动时白块闪烁 */
 }
 
 .question:not(.hidden-q) {
@@ -363,16 +363,13 @@ button:disabled {
     display: none !important;
 }
 
-/* 根据 nth-child 添加 staggered 动效延迟，最多覆盖前10题单次渲染量 */
-.question:nth-child(1) { animation-delay: 0.05s; }
-.question:nth-child(2) { animation-delay: 0.1s; }
-.question:nth-child(3) { animation-delay: 0.15s; }
-.question:nth-child(4) { animation-delay: 0.2s; }
-.question:nth-child(5) { animation-delay: 0.25s; }
-.question:nth-child(n+6) { animation-delay: 0.3s; }
+/* 入场动画只通过 JS 添加 .q-enter 类来触发，避免重绘时重播动画 */
+.q-enter {
+    animation: slideUpFade 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 
 @keyframes slideUpFade {
-    0% { opacity: 0; transform: translateY(40px) scale(0.98); }
+    0% { opacity: 0; transform: translateY(32px) scale(0.98); }
     100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 

@@ -194,6 +194,28 @@ function renderQuestions() {
         });
     });
 
+    // 使用 IntersectionObserver 实现"进入视口时才触发入场动画"
+    // 动画完成后立即移除 .q-enter 类，防止后续点击/类切换时重播动画
+    const animatedCards = new Set();
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting || animatedCards.has(entry.target)) return;
+            animatedCards.add(entry.target);
+            observer.unobserve(entry.target);
+            const delay = Math.min((animatedCards.size - 1) * 35, 100);
+            setTimeout(() => {
+                entry.target.classList.add('q-enter');
+                entry.target.addEventListener('animationend', () => {
+                    entry.target.classList.remove('q-enter');
+                }, { once: true });
+            }, delay);
+        });
+    }, { threshold: 0.01, rootMargin: '0px 0px -20px 0px' });
+
+    questionList.querySelectorAll('.question:not(.hidden-q)').forEach(card => {
+        observer.observe(card);
+    });
+
     updateProgress();
 }
 
