@@ -258,7 +258,10 @@ function resetAiZone() {
  */
 async function triggerAiAnalysis() {
     const result = app.lastResult;
-    if (!result) return;
+    if (!result) {
+        alert('⚠️ 请先完成测试再召唤 AI 锐评！');
+        return;
+    }
 
     const actionZone = document.getElementById('aiActionZone');
     const aiText = document.getElementById('aiAnalysisText');
