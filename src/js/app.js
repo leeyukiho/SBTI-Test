@@ -15,7 +15,7 @@ import {
 import { computeResult } from './algorithm.js';
 
 // ─── AI Worker 接口地址（部署后替换为你的 Worker 域名）─────
-const AI_WORKER_URL = 'https://sbti-ai-analysis.<你的CF用户名>.workers.dev/analyze';
+const AI_WORKER_URL = 'sbti-test-ai-analysis.leeyukiho-bdf.workers.dev';
 
 // ─── 应用状态 ─────────────────────────────────────────────
 const app = {
@@ -27,14 +27,14 @@ const app = {
 // ─── DOM 节点引用 ──────────────────────────────────────────
 const screens = {
     intro: document.getElementById('intro'),
-    test:  document.getElementById('test'),
+    test: document.getElementById('test'),
     result: document.getElementById('result')
 };
 const questionList = document.getElementById('questionList');
-const progressBar  = document.getElementById('progressBar');
+const progressBar = document.getElementById('progressBar');
 const progressText = document.getElementById('progressText');
-const submitBtn    = document.getElementById('submitBtn');
-const testHint     = document.getElementById('testHint');
+const submitBtn = document.getElementById('submitBtn');
+const testHint = document.getElementById('testHint');
 
 // ─── 屏幕切换 ─────────────────────────────────────────────
 function showScreen(name) {
@@ -100,16 +100,16 @@ function renderQuestions() {
           <div class="question-title">${q.text}</div>
           <div class="options">
             ${q.options.map((opt, i) => {
-                const code = ['A', 'B', 'C', 'D'][i] || String(i + 1);
-                const checked = app.answers[q.id] === opt.value ? 'checked' : '';
-                return `
+            const code = ['A', 'B', 'C', 'D'][i] || String(i + 1);
+            const checked = app.answers[q.id] === opt.value ? 'checked' : '';
+            return `
                 <label class="option">
                   <input type="radio" name="${q.id}" value="${opt.value}" ${checked} />
                   <div class="option-code">${code}</div>
                   <div>${opt.label}</div>
                 </label>
               `;
-            }).join('')}
+        }).join('')}
           </div>
         `;
         questionList.appendChild(card);
@@ -142,13 +142,13 @@ function renderQuestions() {
  */
 function updateProgress() {
     const visibleQuestions = getVisibleQuestions();
-    const total  = visibleQuestions.length;
-    const done   = visibleQuestions.filter(q => app.answers[q.id] !== undefined).length;
+    const total = visibleQuestions.length;
+    const done = visibleQuestions.filter(q => app.answers[q.id] !== undefined).length;
     const percent = total ? (done / total) * 100 : 0;
-    progressBar.style.width  = `${percent}%`;
+    progressBar.style.width = `${percent}%`;
     progressText.textContent = `${done} / ${total}`;
     const complete = done === total && total > 0;
-    submitBtn.disabled  = !complete;
+    submitBtn.disabled = !complete;
     testHint.textContent = complete
         ? '都做完了。现在可以把你的电子魂魄交给结果页审判。'
         : '全选完才会放行。世界已经够乱了，起码把题做完整。';
@@ -161,7 +161,7 @@ function updateProgress() {
 function renderDimList(result) {
     const dimList = document.getElementById('dimList');
     dimList.innerHTML = dimensionOrder.map(dim => {
-        const level       = result.levels[dim];
+        const level = result.levels[dim];
         const explanation = DIM_EXPLANATIONS[dim][level];
         return `
           <div class="dim-item">
@@ -183,11 +183,11 @@ function renderDimList(result) {
 async function fetchAiAnalysis(result) {
     const type = result.finalType;
     const payload = {
-        typeCode:   type.code,
-        typeCn:     type.cn,
+        typeCode: type.code,
+        typeCn: type.cn,
         similarity: result.bestNormal?.similarity ?? 100,
-        exact:      result.bestNormal?.exact ?? 15,
-        levels:     result.levels,
+        exact: result.bestNormal?.exact ?? 15,
+        levels: result.levels,
     };
     const resp = await fetch(AI_WORKER_URL, {
         method: 'POST',
@@ -205,22 +205,22 @@ async function fetchAiAnalysis(result) {
 async function renderResult() {
     // 调用算法层，传入当前答案和题库
     const result = computeResult(app.answers, questions);
-    const type   = result.finalType;
+    const type = result.finalType;
 
     document.getElementById('resultModeKicker').textContent = result.modeKicker;
-    document.getElementById('resultTypeName').textContent   = `${type.code}（${type.cn}）`;
-    document.getElementById('matchBadge').textContent       = result.badge;
-    document.getElementById('resultTypeSub').textContent    = result.sub;
-    document.getElementById('resultDesc').textContent       = type.desc;
-    document.getElementById('posterCaption').textContent    = type.intro;
-    document.getElementById('funNote').textContent          = result.special
+    document.getElementById('resultTypeName').textContent = `${type.code}（${type.cn}）`;
+    document.getElementById('matchBadge').textContent = result.badge;
+    document.getElementById('resultTypeSub').textContent = result.sub;
+    document.getElementById('resultDesc').textContent = type.desc;
+    document.getElementById('posterCaption').textContent = type.intro;
+    document.getElementById('funNote').textContent = result.special
         ? '本测试仅供娱乐。隐藏人格和傻乐兜底都属于作者故意埋的损招，请勿把它当成医学、心理学、相学、命理学或灵异学依据。'
         : '本测试仅供娱乐，别拿它当诊断、面试、相亲、分手、招魂、算命或人生判决书。你可以笑，但别太当真。';
 
     // 图片处理
-    const posterBox   = document.getElementById('posterBox');
+    const posterBox = document.getElementById('posterBox');
     const posterImage = document.getElementById('posterImage');
-    const imageSrc    = TYPE_IMAGES[type.code];
+    const imageSrc = TYPE_IMAGES[type.code];
     if (imageSrc) {
         posterImage.src = imageSrc;
         posterImage.alt = `${type.code}（${type.cn}）`;
@@ -235,7 +235,7 @@ async function renderResult() {
     showScreen('result');
 
     // ── AI 解读：骨架屏 loading → 填充正文 ──────────────────
-    const aiBox  = document.getElementById('aiAnalysisBox');
+    const aiBox = document.getElementById('aiAnalysisBox');
     const aiText = document.getElementById('aiAnalysisText');
     aiBox.classList.remove('ai-hidden');
     aiText.textContent = '';
@@ -267,9 +267,9 @@ async function renderResult() {
  */
 function startTest(preview = false) {
     app.previewMode = preview;
-    app.answers     = {};
+    app.answers = {};
     const shuffledRegular = shuffle(questions);
-    const insertIndex     = Math.floor(Math.random() * shuffledRegular.length) + 1;
+    const insertIndex = Math.floor(Math.random() * shuffledRegular.length) + 1;
     app.shuffledQuestions = [
         ...shuffledRegular.slice(0, insertIndex),
         specialQuestions[0],
