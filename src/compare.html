@@ -577,18 +577,42 @@
         // 复制功能
         document.getElementById('copyResultBtn').addEventListener('click', () => {
             const content = roastContent.textContent;
+            if (!content) {
+                alert('请先生成报告再复制！');
+                return;
+            }
             const typeA = selectA.options[selectA.selectedIndex].text;
             const typeB = selectB.options[selectB.selectedIndex].text;
             const shareText = `【SBTI 人格碰撞报告】\n角色 A: ${typeA}\n角色 B: ${typeB}\n\nAI 分析结果：\n${content}\n\n立即测试你的赛博兼容性：https://www.sbti-ai.com/compare.html`;
             
-            navigator.clipboard.writeText(shareText).then(() => {
-                const btn = document.getElementById('copyResultBtn');
+            const btn = document.getElementById('copyResultBtn');
+            const showFeedback = () => {
                 const originalText = btn.textContent;
                 btn.textContent = '✅ 已复制到剪贴板';
                 setTimeout(() => btn.textContent = originalText, 2000);
-            }).catch(err => {
-                alert('复制失败，请手动截屏分享');
-            });
+            };
+
+            const fallbackCopy = (text) => {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showFeedback();
+                } catch (err) {
+                    alert('复制失败，请手动截屏分享');
+                }
+                document.body.removeChild(textArea);
+            };
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(shareText).then(showFeedback).catch(() => fallbackCopy(shareText));
+            } else {
+                fallbackCopy(shareText);
+            }
         });
 
         // 处理 URL 参数

@@ -515,23 +515,52 @@ bindBtn('restartBtn',   startTest);
 bindBtn('toTopBtn',     () => showScreen('intro'));
 bindBtn('aiTriggerBtn', triggerAiAnalysis);
 
-// 分享测试结果功能
-bindBtn('shareResultBtn', () => {
+// 核心分享逻辑（支持多入口触发）
+function executeResultShare() {
     const result = app.lastResult;
-    if (!result) return;
+    if (!result) {
+        alert('⚠️ 请先完成测试！');
+        return;
+    }
     
     const type = result.finalType;
     const shareText = `【SBTI 赛博人格报告】\n我的人格类型是：${type.code}（${type.cn}）\n匹配度：${result.badge}\n人设简介：${type.intro}\n\n你想知道自己是什么“牛马”或者“大神”吗？\n你也快来测测吧，准到离谱！\n👇 点击链接立即开始：\nhttps://www.sbti-ai.com/`;
     
-    navigator.clipboard.writeText(shareText).then(() => {
-        const btn = document.getElementById('shareResultBtn');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '✅ 已复制分享文案';
-        setTimeout(() => btn.innerHTML = originalText, 2500);
-    }).catch(err => {
-        alert('复制失败，请手动截屏分享');
-    });
-});
+    const showFeedback = () => {
+        const btns = [document.getElementById('shareResultBtnTop'), document.getElementById('shareResultBtn')];
+        btns.forEach(btn => {
+            if (!btn) return;
+            const oldHtml = btn.innerHTML;
+            btn.innerHTML = '✅ 已复制，快去分享吧';
+            setTimeout(() => btn.innerHTML = oldHtml, 2500);
+        });
+    };
+
+    const fallbackCopy = (text) => {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed"; 
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showFeedback();
+        } catch (err) {
+            alert('复制失败，请手动截屏分享');
+        }
+        document.body.removeChild(textArea);
+    };
+
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(shareText).then(showFeedback).catch(() => fallbackCopy(shareText));
+    } else {
+        fallbackCopy(shareText);
+    }
+}
+
+bindBtn('shareResultBtn', executeResultShare);
+bindBtn('shareResultBtnTop', executeResultShare);
 
 const navStartHandler = (e) => {
     e.preventDefault();
