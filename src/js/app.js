@@ -2,7 +2,6 @@
  * app.js — 应用层，负责 DOM 渲染、交互与事件绑定
  * 依赖 dataset.js（数据）与 algorithm.js（算法）
  */
-console.log('[SBTI] app.js 模块开始加载');
 
 import {
     questions,
@@ -21,8 +20,7 @@ const AI_WORKER_URL = 'https://sbti-test-ai-analysis.leeyukiho-bdf.workers.dev/a
 // ─── 应用状态 ─────────────────────────────────────────────
 const app = {
     shuffledQuestions: [],
-    answers: {},
-    previewMode: false
+    answers: {}
 };
 
 // ─── DOM 节点引用 ──────────────────────────────────────────
@@ -80,7 +78,7 @@ function getVisibleQuestions() {
  */
 function getQuestionMetaLabel(q) {
     if (q.special) return '补充题';
-    return app.previewMode ? dimensionMeta[q.dim].name : '维度已隐藏';
+    return '维度已隐藏';
 }
 
 // ─── 渲染逻辑 ─────────────────────────────────────────────
@@ -258,7 +256,6 @@ function resetAiZone() {
  * 手动触发 AI 毒舌锐评
  */
 async function triggerAiAnalysis() {
-    console.log('[SBTI] 锐评按钮点击，lastResult =', app.lastResult);
     const result = app.lastResult;
     if (!result) {
         alert('⚠️ 请先完成测试再获取 AI 锐评！');
@@ -271,7 +268,6 @@ async function triggerAiAnalysis() {
 
     // 防御：DOM 元素缺失时直接报错
     if (!actionZone || !aiText || !btn) {
-        console.error('[AI锐评] DOM 元素未找到，请检查 HTML 结构');
         return;
     }
 
@@ -306,17 +302,14 @@ async function triggerAiAnalysis() {
             aiText.style.display = 'block';
             aiText.textContent = `[错误] ${err.message || String(err)}`;
         }
-        console.error('[AI锐评] 请求失败：', err);
     }
 }
 
 // ─── 测试启动 ─────────────────────────────────────────────
 /**
  * 初始化并进入测试页
- * @param {boolean} preview - 是否显示维度标签（开发用）
  */
-function startTest(preview = false) {
-    app.previewMode = preview;
+function startTest() {
     app.answers = {};
     const shuffledRegular = shuffle(questions);
     const insertIndex = Math.floor(Math.random() * shuffledRegular.length) + 1;
@@ -334,17 +327,12 @@ function bindBtn(id, handler) {
     const el = document.getElementById(id);
     if (el) {
         el.addEventListener('click', handler);
-        console.log(`[SBTI] 绑定成功: #${id}`);
-    } else {
-        console.error(`[SBTI] 元素未找到: #${id}`);
     }
 }
 
-bindBtn('startBtn',     () => startTest(false));
+bindBtn('startBtn',     startTest);
 bindBtn('backIntroBtn', () => showScreen('intro'));
 bindBtn('submitBtn',    renderResult);
-bindBtn('restartBtn',   () => startTest(false));
+bindBtn('restartBtn',   startTest);
 bindBtn('toTopBtn',     () => showScreen('intro'));
 bindBtn('aiTriggerBtn', triggerAiAnalysis);
-
-console.log('[SBTI] app.js 模块加载完毕');

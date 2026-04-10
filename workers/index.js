@@ -162,7 +162,6 @@ export default {
             const prompt = buildPrompt({ typeCode, typeCn, similarity, exact, levels });
             analysis = await callDeepSeek(env, prompt);
         } catch (err) {
-            console.error('AI 调用失败：', err);
             const errMsg = err?.message || String(err);
             return new Response(JSON.stringify({ error: 'AI 服务异常', detail: errMsg }), {
                 status: 503,
