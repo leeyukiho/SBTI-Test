@@ -15,7 +15,7 @@ import {
 import { computeResult } from './algorithm.js';
 
 // ─── AI Worker 接口地址（部署后替换为你的 Worker 域名）─────
-const AI_WORKER_URL = 'sbti-test-ai-analysis.leeyukiho-bdf.workers.dev';
+const AI_WORKER_URL = 'https://sbti-test-ai-analysis.leeyukiho-bdf.workers.dev/analyze';
 
 // ─── 应用状态 ─────────────────────────────────────────────
 const app = {
