@@ -548,6 +548,8 @@ function openShareModal(result) {
         charImg.src = `/image/character/${type.code}.png`;
     }
 
+    // 双重保险：移除可能的内联 display 锁定，并通过类名控制显隐
+    modal.style.display = ''; 
     modal.classList.add('active');
 
     // 记录分享动作（如有埋点可在此执行）

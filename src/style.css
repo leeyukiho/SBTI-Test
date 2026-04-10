@@ -3368,10 +3368,11 @@ button:disabled {
     background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(12px);
     z-index: 2000;
-    display: none !important;
+    display: none;
     align-items: center;
     justify-content: center;
     padding: 20px;
+    contain: content; /* 强制层隔离，防止内容泄漏影响主页面布局 */
 }
 
 .share-modal.active { display: flex !important; }
