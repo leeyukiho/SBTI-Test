@@ -16,7 +16,7 @@
 
    <!-- 人格类型总览页：27种人格完整图鉴 -->
    <url>
-      <loc>https://www.sbti-ai.com/types.html</loc>
+      <loc>https://www.sbti-ai.com/types</loc>
       <lastmod>2026-04-10</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.9</priority>
@@ -34,7 +34,7 @@
 
    <!-- 人格排行榜页：实时测试数据统计 -->
    <url>
-      <loc>https://www.sbti-ai.com/rankings.html</loc>
+      <loc>https://www.sbti-ai.com/rankings</loc>
       <lastmod>2026-04-10</lastmod>
       <changefreq>daily</changefreq>
       <priority>0.85</priority>
@@ -43,7 +43,7 @@
 
    <!-- 关于测试页：SBTI原理与AI说明 -->
    <url>
-      <loc>https://www.sbti-ai.com/about.html</loc>
+      <loc>https://www.sbti-ai.com/about</loc>
       <lastmod>2026-04-10</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.8</priority>
@@ -69,163 +69,163 @@
    </url>
 
     <url>
-        <loc>https://www.sbti-ai.com/types/ctrl.html</loc>
+        <loc>https://www.sbti-ai.com/types/ctrl</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/atm-er.html</loc>
+        <loc>https://www.sbti-ai.com/types/atm-er</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/dior-s.html</loc>
+        <loc>https://www.sbti-ai.com/types/dior-s</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/boss.html</loc>
+        <loc>https://www.sbti-ai.com/types/boss</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/than-k.html</loc>
+        <loc>https://www.sbti-ai.com/types/than-k</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/oh-no.html</loc>
+        <loc>https://www.sbti-ai.com/types/oh-no</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/gogo.html</loc>
+        <loc>https://www.sbti-ai.com/types/gogo</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/sexy.html</loc>
+        <loc>https://www.sbti-ai.com/types/sexy</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/love-r.html</loc>
+        <loc>https://www.sbti-ai.com/types/love-r</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/mum.html</loc>
+        <loc>https://www.sbti-ai.com/types/mum</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/fake.html</loc>
+        <loc>https://www.sbti-ai.com/types/fake</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/ojbk.html</loc>
+        <loc>https://www.sbti-ai.com/types/ojbk</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/malo.html</loc>
+        <loc>https://www.sbti-ai.com/types/malo</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/joke-r.html</loc>
+        <loc>https://www.sbti-ai.com/types/joke-r</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/woc.html</loc>
+        <loc>https://www.sbti-ai.com/types/woc</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/thin-k.html</loc>
+        <loc>https://www.sbti-ai.com/types/thin-k</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/shit.html</loc>
+        <loc>https://www.sbti-ai.com/types/shit</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/zzzz.html</loc>
+        <loc>https://www.sbti-ai.com/types/zzzz</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/poor.html</loc>
+        <loc>https://www.sbti-ai.com/types/poor</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/monk.html</loc>
+        <loc>https://www.sbti-ai.com/types/monk</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/imsb.html</loc>
+        <loc>https://www.sbti-ai.com/types/imsb</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/solo.html</loc>
+        <loc>https://www.sbti-ai.com/types/solo</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/fuck.html</loc>
+        <loc>https://www.sbti-ai.com/types/fuck</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/dead.html</loc>
+        <loc>https://www.sbti-ai.com/types/dead</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/imfw.html</loc>
+        <loc>https://www.sbti-ai.com/types/imfw</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/hhhh.html</loc>
+        <loc>https://www.sbti-ai.com/types/hhhh</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://www.sbti-ai.com/types/drunk.html</loc>
+        <loc>https://www.sbti-ai.com/types/drunk</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
