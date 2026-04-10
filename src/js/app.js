@@ -202,7 +202,7 @@ async function fetchAiAnalysis(result) {
 /**
  * 渲染结果页
  */
-async function renderResult() {
+function renderResult() {
     // 调用算法层，传入当前答案和题库
     const result = computeResult(app.answers, questions);
     const type = result.finalType;
@@ -232,18 +232,52 @@ async function renderResult() {
     }
 
     renderDimList(result);
-    showScreen('result');
 
-    // ── AI 解读：骨架屏 loading → 填充正文 ──────────────────
-    const aiBox = document.getElementById('aiAnalysisBox');
+    // 重置 AI 区块为待触发状态，保存结果供按钮使用
+    app.lastResult = result;
+    resetAiZone();
+
+    showScreen('result');
+}
+
+/**
+ * 重置 AI 区块回初始待触发状态
+ */
+function resetAiZone() {
+    document.getElementById('aiTriggerZone').classList.remove('ai-zone-hidden');
+    document.getElementById('aiLoadingZone').classList.add('ai-zone-hidden');
     const aiText = document.getElementById('aiAnalysisText');
-    aiBox.classList.remove('ai-hidden');
+    aiText.classList.add('ai-zone-hidden');
     aiText.textContent = '';
-    aiBox.classList.add('ai-loading');
+    const btn = document.getElementById('aiTriggerBtn');
+    btn.disabled = false;
+    btn.textContent = '🧬 召唤 AI 毒舌锐评';
+}
+
+/**
+ * 手动触发 AI 毒舌锐评
+ */
+async function triggerAiAnalysis() {
+    const result = app.lastResult;
+    if (!result) return;
+
+    const btn = document.getElementById('aiTriggerBtn');
+    const triggerZone = document.getElementById('aiTriggerZone');
+    const loadingZone = document.getElementById('aiLoadingZone');
+    const aiText = document.getElementById('aiAnalysisText');
+
+    // 切换到 loading 状态
+    btn.disabled = true;
+    triggerZone.classList.add('ai-zone-hidden');
+    loadingZone.classList.remove('ai-zone-hidden');
+    aiText.classList.add('ai-zone-hidden');
 
     try {
         const analysis = await fetchAiAnalysis(result);
-        aiBox.classList.remove('ai-loading');
+        // 隐藏 loading，显示结果
+        loadingZone.classList.add('ai-zone-hidden');
+        aiText.classList.remove('ai-zone-hidden');
+        aiText.textContent = '';
         // 逐字打印效果
         let i = 0;
         const print = () => {
@@ -254,8 +288,10 @@ async function renderResult() {
         };
         print();
     } catch (err) {
-        aiBox.classList.remove('ai-loading');
-        aiText.textContent = '（AI 解读服务暂时开小差，请刷新重试）';
+        loadingZone.classList.add('ai-zone-hidden');
+        triggerZone.classList.remove('ai-zone-hidden');
+        btn.disabled = false;
+        btn.textContent = '⚠️ 锐评失败，再试一次';
         console.error('AI 解读失败：', err);
     }
 }
@@ -285,3 +321,4 @@ document.getElementById('backIntroBtn').addEventListener('click', () => showScre
 document.getElementById('submitBtn').addEventListener('click', renderResult);
 document.getElementById('restartBtn').addEventListener('click', () => startTest(false));
 document.getElementById('toTopBtn').addEventListener('click', () => showScreen('intro'));
+document.getElementById('aiTriggerBtn').addEventListener('click', triggerAiAnalysis);

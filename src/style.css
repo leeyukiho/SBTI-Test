@@ -822,16 +822,14 @@ button:disabled {
 
 /* 骨架屏 */
 .ai-skeleton {
-    display: none;
-}
-
-.ai-loading .ai-skeleton {
     display: grid;
     gap: 10px;
+    margin-top: 14px;
 }
 
-.ai-loading .ai-text {
-    display: none;
+/* 区块隐藏 */
+.ai-zone-hidden {
+    display: none !important;
 }
 
 .skeleton-line {
@@ -845,6 +843,86 @@ button:disabled {
 @keyframes shimmer {
     0%   { background-position: 200% 0; }
     100% { background-position: -200% 0; }
+}
+
+/* ── 触发区 ── */
+.ai-trigger-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 0 6px;
+    text-align: center;
+}
+
+.ai-trigger-warning {
+    font-size: 14px;
+    font-weight: 700;
+    color: #b85c38;
+    margin: 0;
+    letter-spacing: 0.02em;
+}
+
+.ai-trigger-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.7;
+}
+
+.btn-ai-trigger {
+    margin-top: 6px;
+    background: linear-gradient(135deg, #4d6a53, #7aaa82);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 13px 28px;
+    border-radius: 14px;
+    border: none;
+    box-shadow: 0 8px 24px rgba(77, 106, 83, 0.25);
+    letter-spacing: 0.02em;
+    transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+}
+
+.btn-ai-trigger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(77, 106, 83, 0.32);
+}
+
+.btn-ai-trigger:disabled {
+    opacity: 0.55;
+    transform: none;
+    cursor: not-allowed;
+}
+
+/* ── loading 区 ── */
+.ai-loading-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    text-align: center;
+}
+
+.ai-dna-spinner {
+    font-size: 32px;
+    animation: dna-spin 1.2s ease-in-out infinite;
+    display: inline-block;
+}
+
+@keyframes dna-spin {
+    0%   { transform: rotate(0deg) scale(1); }
+    50%  { transform: rotate(180deg) scale(1.18); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+.ai-loading-text {
+    font-size: 14px;
+    color: var(--accent-strong);
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.01em;
 }
 
 /* 正文打印文字 */

@@ -75,18 +75,35 @@
                     </div>
 
                     <!-- AI 个性化解读区块 -->
-                    <div class="ai-analysis-box ai-hidden" id="aiAnalysisBox">
+                    <div class="ai-analysis-box" id="aiAnalysisBox">
                         <div class="ai-analysis-header">
-                            <span class="ai-badge">✦ AI 专属解读</span>
-                            <span class="ai-subtitle">由 Cloudflare Workers AI 驱动</span>
+                            <span class="ai-badge">✦ AI 毒舌锐评</span>
+                            <span class="ai-subtitle">由 DeepSeek AI 驱动</span>
                         </div>
-                        <div class="ai-skeleton" id="aiSkeleton">
-                            <div class="skeleton-line" style="width:92%"></div>
-                            <div class="skeleton-line" style="width:78%"></div>
-                            <div class="skeleton-line" style="width:85%"></div>
-                            <div class="skeleton-line" style="width:60%"></div>
+
+                        <!-- 待触发状态 -->
+                        <div id="aiTriggerZone" class="ai-trigger-zone">
+                            <p class="ai-trigger-warning">⚠️ 心脏病患者慎点</p>
+                            <p class="ai-trigger-desc">AI 将对你的人格结果进行毫不留情的锐评，后果自负。</p>
+                            <button id="aiTriggerBtn" class="btn-ai-trigger">🧬 召唤 AI 毒舌锐评</button>
                         </div>
-                        <p id="aiAnalysisText" class="ai-text"></p>
+
+                        <!-- 加载中状态（隐藏） -->
+                        <div id="aiLoadingZone" class="ai-loading-zone ai-zone-hidden">
+                            <div class="ai-dna-spinner">
+                                <span>🧬</span>
+                            </div>
+                            <p class="ai-loading-text">正在读取你的牛马基因，请稍候…</p>
+                            <div class="ai-skeleton">
+                                <div class="skeleton-line" style="width:92%"></div>
+                                <div class="skeleton-line" style="width:78%"></div>
+                                <div class="skeleton-line" style="width:85%"></div>
+                                <div class="skeleton-line" style="width:60%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 结果区（隐藏） -->
+                        <p id="aiAnalysisText" class="ai-text ai-zone-hidden"></p>
                     </div>
 
                     <div class="dim-box">
