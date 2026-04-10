@@ -2929,6 +2929,60 @@ button:disabled {
     .type-golden-phrase::after { right: -10px; }
 }
 
+/* ─── 页面面包屑导航 (Breadcrumb) ────────────────────────────────────── */
+.breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 100px auto 20px;
+    padding: 0 24px;
+    max-width: 1000px;
+    font-size: 13px;
+    color: var(--muted);
+    position: relative;
+    z-index: 5;
+}
+
+.breadcrumb-nav a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.breadcrumb-nav a:hover {
+    color: var(--accent-strong);
+}
+
+.breadcrumb-nav .sep {
+    opacity: 0.4;
+    font-size: 10px;
+    margin: 0 4px;
+}
+
+.breadcrumb-nav .current {
+    color: var(--accent-strong);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+    .breadcrumb-nav {
+        margin-top: 80px;
+        margin-bottom: 0;
+        font-size: 12px;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+        gap: 6px;
+    }
+    .breadcrumb-nav::-webkit-scrollbar { display: none; }
+}
+
 /* ═══════════════════════════════════════════════════════════
    响应式适配
    ═══════════════════════════════════════════════════════════ */
