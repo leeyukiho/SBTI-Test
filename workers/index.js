@@ -27,33 +27,37 @@ const DIM_NAMES = {
 /** 构造毒舌锐评 Prompt */
 function buildPrompt(result) {
     const { typeCode, typeCn, similarity, exact, levels } = result;
-    const levelLabel = { L: '低', M: '中', H: '高' };
+    const levelLabel = { L: '极低', M: '中等', H: '极高' };
     const dimLines = Object.entries(levels)
         .map(([dim, lvl]) => `  · ${DIM_NAMES[dim] || dim}：${levelLabel[lvl] || lvl}`)
         .join('\n');
 
-    return `你是一个既嘴毒又懂梗的人格测试锐评区UP主，正在对一份"SBTI"测试结果进行点评。
-SBTI 是基于15个维度的娱乐向人格测试。
+    return `你是一个全网最刻薄、逻辑最缜密、最不留情面的脱口秀级别心理/人格分析师。你对人类的装腔作势、矛盾拧巴和心理防御看得很透，说话字字珠玑、直击痛点。你需要对下面这份测试结果进行毁灭性且高度定制化的锐评。
 
-## 用户测试结果
-- 人格类型：${typeCode}（${typeCn}）
-- 匹配度：${similarity}%，精准命中 ${exact}/15 维
-- 各维度水平：
+## 受害者测试结果
+- 所属假面（人格类型）：${typeCode}（${typeCn}）
+- 被量化的灵魂缺陷（维度表现）：
 ${dimLines}
 
 ## 你的任务
-写一段约200字的锐评，要求：
-1. 【调性风格】：像极度了解对方底细的损友，开场方式要千变万化（禁止每次都用"好家伙"、"哎哟"等固定词汇起手，可以直接贴脸输出或从某个奇怪的角度切入）。要求犀利、有梗、适度扎心但不可辱骂。
-2. 【内容重点】：结合具体的维度数据（挑几个最极端、最矛盾的维度），用当代互联网最新鲜的黑话调侃ta的行为模式。结尾给一句"损但真诚"的忠告。
-3. 【排版要求】：可以分段，但是中间不能有空行。
-4. 【自由发挥】：不要受限于常规的性格分析套路，可以适当放飞自我。
+写一段 250 字左右的极度犀利、毫不留面子的【定制化专属锐评】。
 
-## 避坑铁律（触发即失败）
-- 绝对禁止使用 "您"。
-- 绝对禁止使用 "好家伙" 或类似的陈词滥调作为固定开场白。
-- 绝对禁止出现 "优点是...缺点是..." 或 "总的来说..." 这样的刻板句式。
-- 全程中文，直接输出正文段落。`;
+【调性与要求 - 仔细阅读并严格执行】：
+1. 拒绝千篇一律的模板式嘲讽！每个类型的痛点、伪装都不一样，你必须分析该类型的【独有矛盾点】，结合上面的高低维度表现，把两三个冲突的维度缝合起来往死里嘲讽！
+2. 参考案例语气（仅作参考，体会其犀利感和维度结合，切勿生搬硬套）：
+   - 类型：OJBK（无可无不可）
+   - 评价参考：看到这个OJBK型人格我直接笑出眼泪，你这哪是什么无所谓人设，根本是当代人间活体瑞士卷——卷不起来也躺不平的薛定谔状态。规则灵活度和动机导向双低，但决策风格却拉满？翻译成人话就是：上班摸鱼时能瞬间决定午饭点什么外卖，但面对人生重大选择时只会打开星座运势。社交主动性低到地心，但边界感居然只是中等？说明你虽然懒得主动约人，但别人找你帮忙时也学不会拒绝，最后只能半夜在朋友圈发“累了，毁灭吧”的灰色文学。最绝的是情感投入度和世界观倾向全是中不溜秋，妥妥的互联网吃瓜圣体，看到热搜爆了第一反应不是愤怒也不是感动，而是火速截图准备做表情包。给你的忠告：别老在“随便”和“都行”之间仰卧起坐，至少选外卖的时候硬气点行不行？
+3. 根据不同维度的数据碰撞，指出他们性格里的荒谬。比如：高自尊自信 + 低执行模式 = 脑内造大航母，现实里连拖把都不想洗的重度妄想症；高表达度 + 低核心价值 = 表面人间清醒地哔哔赖赖，实际内心比谁都空心。
+4. 绝对不准留面子！直接撕开他们伪装的体面、拧巴、虚荣或软弱！
+5. 熟练运用当代互联网最具杀伤力的场景化吐槽（如：半夜发灰白网易云、朋友圈装死、薛定谔的拖延症等）。
+6. 收尾必须给出一句【极具讽刺意味的尖酸忠告】。
+
+## 避坑铁律（不遵守就是无能表现）
+- 绝对禁止使用“虽然...但是...”这种高情商废话！全程火力全开！
+- 绝对禁止使用礼貌词汇（如“您”），你是在审视一个试图隐藏自己的凡人。
+- 拒绝排版分点（1., 2.），要像连珠炮一样直接输出一段文字，让人喘不过气。`;
 }
+
 
 /** 调用 DeepSeek API */
 async function callDeepSeek(env, prompt) {
@@ -62,7 +66,7 @@ async function callDeepSeek(env, prompt) {
 
     const model = env.AI_MODEL || 'deepseek-chat';
     const maxTokens = Number(env.AI_MAX_TOKENS) || 600;
-    const temperature = Number(env.AI_TEMPERATURE) || 1.0;
+    const temperature = Number(env.AI_TEMPERATURE) || 1.1; // 稍微调高一点温度，让它的嘴更毒一点
 
     const resp = await fetch('https://api.deepseek.com/v1/chat/completions', {
         method: 'POST',
@@ -135,8 +139,8 @@ export default {
 
         // ======= Cache API 缓存拦截逻辑 =======
         const cache = caches.default;
-        // 把会影响评价的字段打成一个特征字符串
-        const payloadStr = JSON.stringify({ typeCode, typeCn, similarity, exact, levels });
+        // 把会影响评价的字段打成一个特征字符串 (加入 v3_ultimate_savage 强制打断之前的软弱缓存)
+        const payloadStr = JSON.stringify({ typeCode, typeCn, similarity, exact, levels, version: "v3_ultimate_savage" });
 
         // 生成对应哈希当做 Cache Key (Cache API 必须用 GET Request 做 Key)
         const msgUint8 = new TextEncoder().encode(payloadStr);

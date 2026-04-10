@@ -308,8 +308,10 @@
                         做完测试后即可解锁隐藏功能：系统将基于你的全部答题数据，为你生成一份千人千面、毫不留情的 AI 毒舌性格批斗报告。
                     </p>
                 </div>
-                
-                <div class="bento-card hoverable feature-panel" style="justify-content: center; align-items: center; text-align: center; background: rgba(255,255,255,0.4);" onclick="document.getElementById('navStartBtn').click();">
+
+                <div class="bento-card hoverable feature-panel"
+                    style="justify-content: center; align-items: center; text-align: center; background: rgba(255,255,255,0.4);"
+                    onclick="document.getElementById('navStartBtn').click();">
                     <h3 style="font-size: 18px; color: var(--accent-strong); margin-bottom: 8px;">⚡ 立即开测</h3>
                     <p style="font-size: 12px; color: var(--muted);">仅需 3 分钟</p>
                 </div>
@@ -389,12 +391,12 @@
                             style="text-decoration: underline; color: inherit;">B站 @蛆肉儿串儿</a>
                     </p>
 
-                    <p style="margin-top: 6px;">
+                    <p style="margin-top: 12px;">
                         ⚠️ <strong>站点维护声明：</strong>本站所有的网页托管资源、域名解析及 DeepSeek AI
                         深度分析算力开销均为站长自费承担。免费开放为了大家图个乐子，请绝对不要使用恶意爬虫脚本滥刷 API 请求。
                     </p>
 
-                    <p style="margin-top: 6px;">
+                    <p style="margin-top: 12px;">
                         👉 <strong>加入用户交流与答复群：</strong>想分享你变态的性格结果、反馈 BUG、交流MBTI区别，或者催促站长研发新功能？欢迎加入官方 QQ 交流群：<strong
                             style="color: #3e5e45; user-select: all; font-size: 14px;">1083724085</strong>。<br>
                         如果这个测试工具对你有帮助，进群打赏站长买包辣条也是极好的！
@@ -514,32 +516,32 @@
 
         // 核心全球同步统计算法 (所有人看到的都是相同的数字)
         function getSynchronizedFakeData() {
-            const BASE_COUNT = 2182030; 
+            const BASE_COUNT = 128530;
             const START_DAY = 20492; // 基准启动日：2026-04-10
-            
+
             // 采用统一的东八区时间，保证所有人同一时刻截断日期一致
             const utc8Time = Date.now() + 8 * 3600 * 1000;
             const daysSinceEpoch = Math.floor(utc8Time / 86400000);
             const msInToday = utc8Time % 86400000;
-            
+
             // 基于天数种子的确定性伪随机数生成器
             function seededRandom(seed) {
                 const x = Math.sin(seed) * 10000;
                 return x - Math.floor(x);
             }
-            
+
             let total = BASE_COUNT;
-            
+
             // 累加过去每天的随机增量 (每天在 4000 ~ 8000 间波动)
             for (let i = START_DAY; i < daysSinceEpoch; i++) {
                 total += Math.floor(4000 + seededRandom(i) * 4000);
             }
-            
+
             // 今天的增量与其在一天的进度
             const todayTarget = Math.floor(4000 + seededRandom(daysSinceEpoch) * 4000);
             const todayProgress = msInToday / 86400000;
             const addedToday = Math.floor(todayTarget * todayProgress);
-            
+
             return {
                 totalCount: total + addedToday,
                 todayCount: addedToday
@@ -550,7 +552,7 @@
         (function () {
             const el = document.getElementById('heroCounter');
             if (!el) return;
-            
+
             let currentData = getSynchronizedFakeData();
             el.textContent = currentData.totalCount.toLocaleString();
 
