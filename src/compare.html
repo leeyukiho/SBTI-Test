@@ -535,6 +535,9 @@
                 if (!resp.ok) throw new Error('API 服务不可用');
 
                 const data = await resp.json();
+                
+                // 格式优化：不要隔行（\n\n），可以换行（\n）
+                const cleanedAnalysis = data.analysis.replace(/\n\s*\n+/g, '\n');
 
                 loadingTip.style.display = 'none';
                 resultSection.style.display = 'block';
@@ -543,7 +546,7 @@
                 const roastLabel = document.querySelector('.roast-label');
                 roastLabel.textContent = currentStyle === 'gentle' ? '专属关系深度分析 (温和模式)' : '专属关系锐评 (毒舌模式)';
                 
-                typeWriter(data.analysis, roastContent);
+                typeWriter(cleanedAnalysis, roastContent);
 
                 setTimeout(() => {
                     retryActions.style.display = 'flex';

@@ -424,7 +424,8 @@ async function triggerAiAnalysis() {
         btn.disabled = true;
         btn.textContent = '⏳ 正在读取你的牛马基因…';
 
-        const analysis = await fetchAiAnalysis(result);
+        // 格式优化：不要隔行（\n\n），可以换行（\n）
+        const cleanedAnalysis = analysis.replace(/\n\s*\n+/g, '\n');
 
         // 隐藏按钮区，显示结果
         actionZone.style.display = 'none';
@@ -434,8 +435,8 @@ async function triggerAiAnalysis() {
         // 逐字打印效果
         let i = 0;
         const print = () => {
-            if (i < analysis.length) {
-                aiText.textContent += analysis[i++];
+            if (i < cleanedAnalysis.length) {
+                aiText.textContent += cleanedAnalysis[i++];
                 setTimeout(print, 18);
             }
         };
