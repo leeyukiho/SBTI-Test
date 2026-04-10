@@ -3,10 +3,11 @@
  * 隔离 AI API Key，对外仅暴露 /analyze 接口
  */
 
-/** CORS 响应头生成（来源列表从 env.ALLOWED_ORIGINS 读取，逗号分隔）*/
+/** CORS 响应头生成（来源列表从 env.ALLOWED_ORIGINS 读取，逗号分隔；未命中则直接放行请求来源）*/
 function corsHeaders(origin, env) {
     const list = (env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
-    const allowed = list.includes(origin) ? origin : (list[0] || '*');
+    // 白名单命中 → 返回该 origin；未配置白名单或命中失败 → 放行请求来源（避免新域名被误拦截）
+    const allowed = (list.length === 0 || list.includes(origin)) ? (origin || '*') : list[0];
     return {
         'Access-Control-Allow-Origin': allowed,
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
