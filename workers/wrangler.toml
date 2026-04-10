@@ -20,4 +20,4 @@ AI_MAX_TOKENS = "600"
 AI_TEMPERATURE = "1.0"
 
 # 允许跨域调用的来源，多个用英文逗号分隔，不要有空格
-ALLOWED_ORIGINS = "https://sbti-test-9tx.pages.dev,https://sbti.pages.dev,https://sbti.985201314.xyz,http://localhost:5500,http://127.0.0.1:5500,http://localhost:8080"
+ALLOWED_ORIGINS = "https://sbti-test-9tx.pages.dev,https://sbti.pages.dev,https://www.sbti-ai.com,https://sbti-ai.com,http://localhost:5500,http://127.0.0.1:5500,http://localhost:8080"
