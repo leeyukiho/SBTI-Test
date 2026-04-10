@@ -335,6 +335,24 @@ function renderResult() {
     document.getElementById('resultTypeSub').textContent = result.sub;
     document.getElementById('resultDesc').textContent = type.desc;
     document.getElementById('posterCaption').textContent = type.intro;
+
+    // SEO 内链注入：引导用户和爬虫去专属人格独立单页
+    const slug = type.code.toLowerCase().replace(/[^a-z0-9-]/g, '');
+    let existingLink = document.getElementById('seoDetailLink');
+    if (!existingLink) {
+        existingLink = document.createElement('a');
+        existingLink.id = 'seoDetailLink';
+        existingLink.style.display = 'inline-block';
+        // 使用相对路径适配 GitHub Pages 与自建站
+        existingLink.style.marginTop = '15px';
+        existingLink.style.color = 'var(--accent-strong)';
+        existingLink.style.textDecoration = 'none';
+        existingLink.style.fontWeight = 'bold';
+        existingLink.style.borderBottom = '1px dashed var(--accent-strong)';
+        document.getElementById('resultDesc').parentNode.appendChild(existingLink);
+    }
+    existingLink.href = `types/${slug}.html`;
+    existingLink.innerHTML = `👉 点击查看【${type.code} (${type.cn})】的专属深度图鉴与全维分析`;
     document.getElementById('funNote').textContent = result.special
         ? '本测试仅供娱乐。隐藏人格和傻乐兜底都属于作者故意埋的损招，请勿把它当成医学、心理学、相学、命理学或灵异学依据。'
         : '本测试仅供娱乐，别拿它当诊断、面试、相亲、分手、招魂、算命或人生判决书。你可以笑，但别太当真。';
