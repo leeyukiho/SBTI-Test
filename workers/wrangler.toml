@@ -1,4 +1,4 @@
-name = "sbti-ai-analysis"
+name = 'sbti-test-ai-analysis'
 main = "index.js"
 compatibility_date = "2024-09-23"
 
