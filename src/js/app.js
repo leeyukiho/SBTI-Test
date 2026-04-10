@@ -23,6 +23,49 @@ const app = {
     answers: {}
 };
 
+const LS_ANSWERS_KEY = 'sbti_answers';
+const LS_QUESTIONS_KEY = 'sbti_questions';
+
+function saveState() {
+    localStorage.setItem(LS_ANSWERS_KEY, JSON.stringify(app.answers));
+    localStorage.setItem(LS_QUESTIONS_KEY, JSON.stringify(app.shuffledQuestions));
+    checkSavedState();
+}
+
+function loadState() {
+    try {
+        const a = localStorage.getItem(LS_ANSWERS_KEY);
+        const q = localStorage.getItem(LS_QUESTIONS_KEY);
+        if (a && q) {
+            app.answers = JSON.parse(a);
+            app.shuffledQuestions = JSON.parse(q);
+            return true;
+        }
+    } catch(e) {}
+    return false;
+}
+
+function clearState() {
+    localStorage.removeItem(LS_ANSWERS_KEY);
+    localStorage.removeItem(LS_QUESTIONS_KEY);
+    checkSavedState();
+}
+
+function checkSavedState() {
+    const hasState = !!localStorage.getItem(LS_ANSWERS_KEY);
+    const startBtn = document.getElementById('startBtn');
+    const freshBtn = document.getElementById('freshStartBtn');
+    if (startBtn && freshBtn) {
+        if (hasState) {
+            startBtn.innerHTML = '⚡ 继续上次未完成的测试';
+            freshBtn.style.display = 'inline-block';
+        } else {
+            startBtn.innerHTML = '⚡ 立即开始测试 (约 3 分钟)';
+            freshBtn.style.display = 'none';
+        }
+    }
+}
+
 // ─── DOM 节点引用 ──────────────────────────────────────────
 const screens = {
     intro: document.getElementById('intro'),
@@ -125,10 +168,12 @@ function renderQuestions() {
                 if (Number(value) !== 3) {
                     delete app.answers['drink_gate_q2'];
                 }
+                saveState();
                 renderQuestions();
                 return;
             }
 
+            saveState();
             updateProgress();
         });
     });
@@ -146,11 +191,49 @@ function updateProgress() {
     const percent = total ? (done / total) * 100 : 0;
     progressBar.style.width = `${percent}%`;
     progressText.textContent = `${done} / ${total}`;
+    
     const complete = done === total && total > 0;
-    submitBtn.disabled = !complete;
-    testHint.textContent = complete
-        ? '都做完了。现在可以把你的电子魂魄交给结果页审判。'
-        : '全选完才会放行。世界已经够乱了，起码把题做完整。';
+    submitBtn.disabled = false; // 始终允许点击以触发检查
+    
+    if (!testHint.style.color || testHint.style.color === '') {
+        testHint.textContent = complete
+            ? '都做完了。现在可以把你的电子魂魄交给结果页审判。'
+            : '系统会在提交时帮你检查遗漏选项';
+    }
+}
+
+function handleSubmit() {
+    const visibleQuestions = getVisibleQuestions();
+    const missingIndex = visibleQuestions.findIndex(q => app.answers[q.id] === undefined);
+    
+    if (missingIndex !== -1) {
+        const questionCards = questionList.querySelectorAll('.question');
+        if (questionCards[missingIndex]) {
+            questionCards[missingIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            questionCards.forEach(card => {
+                const oldAlert = card.querySelector('.missing-alert');
+                if (oldAlert) oldAlert.remove();
+            });
+
+            const alertMsg = document.createElement('div');
+            alertMsg.className = 'missing-alert';
+            alertMsg.style.color = '#ff4d4f';
+            alertMsg.style.marginTop = '12px';
+            alertMsg.style.fontWeight = 'bold';
+            alertMsg.textContent = '👆 这道题还没选呢！请补充';
+            questionCards[missingIndex].appendChild(alertMsg);
+        }
+        testHint.textContent = '❌ 有题目未完成，已为您滚动到该题上方';
+        testHint.style.color = '#ff4d4f';
+        setTimeout(() => {
+            testHint.style.color = '';
+            updateProgress();
+        }, 3000);
+        return;
+    }
+    
+    renderResult();
 }
 
 /**
@@ -318,11 +401,22 @@ function startTest() {
         specialQuestions[0],
         ...shuffledRegular.slice(insertIndex)
     ];
+    clearState();
+    saveState();
     renderQuestions();
     showScreen('test');
 }
 
-// ─── 安全事件绑定（防止单个 null 引发后续绑定全部失败）─────
+function resumeOrStartTest() {
+    if (loadState()) {
+        renderQuestions();
+        showScreen('test');
+    } else {
+        startTest();
+    }
+}
+
+// ─── 初始化与安全事件绑定 ────────────────────────────────────
 function bindBtn(id, handler) {
     const el = document.getElementById(id);
     if (el) {
@@ -330,9 +424,12 @@ function bindBtn(id, handler) {
     }
 }
 
-bindBtn('startBtn',     startTest);
-bindBtn('backIntroBtn', () => showScreen('intro'));
-bindBtn('submitBtn',    renderResult);
+document.addEventListener('DOMContentLoaded', checkSavedState);
+
+bindBtn('startBtn',     resumeOrStartTest);
+bindBtn('freshStartBtn', startTest);
+bindBtn('backIntroBtn', () => { showScreen('intro'); checkSavedState(); });
+bindBtn('submitBtn',    handleSubmit);
 bindBtn('restartBtn',   startTest);
 bindBtn('toTopBtn',     () => showScreen('intro'));
 bindBtn('aiTriggerBtn', triggerAiAnalysis);
