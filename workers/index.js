@@ -1,12 +1,11 @@
 /**
- * Cloudflare Worker — SBTI AI 个性化解读服务
- * 隔离 AI API Key，对外仅暴露 /analyze 接口
+ * Cloudflare Worker — SBTI AI 锐评服务
+ * 调用 DeepSeek API，对外仅暴露 POST /analyze 接口
  */
 
-/** CORS 响应头生成（来源列表从 env.ALLOWED_ORIGINS 读取，逗号分隔；未命中则直接放行请求来源）*/
+/** CORS 响应头（白名单未命中则直接放行请求来源） */
 function corsHeaders(origin, env) {
     const list = (env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
-    // 白名单命中 → 返回该 origin；未配置白名单或命中失败 → 放行请求来源（避免新域名被误拦截）
     const allowed = (list.length === 0 || list.includes(origin)) ? (origin || '*') : list[0];
     return {
         'Access-Control-Allow-Origin': allowed,
@@ -16,50 +15,74 @@ function corsHeaders(origin, env) {
     };
 }
 
-/** 构造 Prompt —— 根据测试结果组装高质量中文提示词 */
+/** 构造毒舌锐评 Prompt */
 function buildPrompt(result) {
     const { typeCode, typeCn, similarity, exact, levels } = result;
-
-    // 将维度等级转换为可读文本
     const levelLabel = { L: '低', M: '中', H: '高' };
     const dimLines = Object.entries(levels)
         .map(([dim, lvl]) => `  · ${dim}：${levelLabel[lvl] || lvl}`)
         .join('\n');
 
-    return `你是一个犀利幽默但洞察深刻的性格分析师，正在为用户解读一份名为"SBTI"的人格测试结果。SBTI 是一套基于15个维度构建的娱乐向人格体系，分为若干类型，每个类型有中文名称和代号。
+    return `你是一个嘴臭但眼毒的人格测试毒评博主，正在对一份"SBTI"人格测试结果进行锐评。
+SBTI 是一套基于15个维度的娱乐向人格测试体系，不是 MBTI。
 
-## 用户的测试结果
-- **人格类型**：${typeCode}（${typeCn}）
-- **匹配度**：${similarity}%，精准命中 ${exact}/15 维
-- **各维度水平**：
+## 用户测试结果
+- 人格类型：${typeCode}（${typeCn}）
+- 匹配度：${similarity}%，精准命中 ${exact}/15 维
+- 各维度水平：
 ${dimLines}
 
 ## 你的任务
-请用以下风格为用户写一段约200字的个性化解读：
-1. **开头**：用一句神来之笔的话点出这个类型的核心气质
-2. **中段**：结合匹配度和维度分布，点评用户的典型行为模式（可以适当调侃）
-3. **结尾**：给出一句真诚但带点损的"人生建议"
+用"毒舌+玩梗+锐评"风格写一段约200字的人格解读，要求：
+1. 第一句话必须是一针见血的"灵魂暴击"，直接点出这类人最典型的黑色特征
+2. 中间结合维度数据，用互联网黑话/梗文化调侃用户的行为模式（比如"抽象"、"纯纯"、"赛博"等当代网络用语）
+3. 结尾用一句"损但真诚"的人生忠告收场
+4. 可以适当使用表情符号增加节目效果
 
-**风格要求**：锋芒毕露但不刻薄，幽默但有真知灼见，像朋友说话而不是机器。禁止列举无意义的优缺点清单，禁止使用"您"，禁止套话。直接输出解读正文，不要任何前缀说明。`;
+## 铁律
+- 禁止使用"您"
+- 禁止出现"优点是...缺点是..."这种无聊格式
+- 禁止废话开场（不要说"好的，我来解读"之类）
+- 禁止输出任何前缀说明
+- 全程中文，直接输出正文`;
 }
 
-/** 调用 Cloudflare AI Workers (Workers AI) */
-async function runAI(env, prompt) {
-    // llama-3.3-70b：CF Workers AI 免费层最稳定，支持中文
-    const model = env.AI_MODEL || '@cf/meta/llama-3.3-70b-instruct-fp8';
-    const maxTokens = Number(env.AI_MAX_TOKENS) || 600;
-    const temperature = Number(env.AI_TEMPERATURE) || 0.85;
+/** 调用 DeepSeek API */
+async function callDeepSeek(env, prompt) {
+    const apiKey = env.DEEPSEEK_API_KEY;
+    if (!apiKey) throw new Error('DEEPSEEK_API_KEY 未配置');
 
-    const response = await env.AI.run(model, {
-        messages: [
-            { role: 'system', content: '你是一个犀利幽默的人格分析师，擅长用简洁有趣的语言解读性格测试结果。请全程使用中文回答。' },
-            { role: 'user', content: prompt }
-        ],
-        max_tokens: maxTokens,
-        temperature,
+    const model = env.AI_MODEL || 'deepseek-chat';
+    const maxTokens = Number(env.AI_MAX_TOKENS) || 600;
+    const temperature = Number(env.AI_TEMPERATURE) || 1.0;
+
+    const resp = await fetch('https://api.deepseek.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+            model,
+            messages: [
+                {
+                    role: 'system',
+                    content: '你是一个嘴臭但眼毒的人格测试毒评博主，擅长用毒舌、玩梗、锐评的方式解读人格测试结果。全程中文，风格犀利有梗。'
+                },
+                { role: 'user', content: prompt }
+            ],
+            max_tokens: maxTokens,
+            temperature,
+        }),
     });
-    // 兼容不同模型的返回结构
-    return response.response || response.result || response.content || response.text || '';
+
+    if (!resp.ok) {
+        const errBody = await resp.text();
+        throw new Error(`DeepSeek API 错误 ${resp.status}: ${errBody}`);
+    }
+
+    const data = await resp.json();
+    return data.choices?.[0]?.message?.content || '';
 }
 
 /** 主请求处理器 */
@@ -93,7 +116,7 @@ export default {
             });
         }
 
-        // 基本参数校验
+        // 参数校验
         const { typeCode, typeCn, similarity, exact, levels } = body;
         if (!typeCode || !typeCn || similarity == null || !levels) {
             return new Response(JSON.stringify({ error: '缺少必要字段' }), {
@@ -102,14 +125,13 @@ export default {
             });
         }
 
-        // 调用 AI
+        // 调用 DeepSeek
         let analysis;
         try {
             const prompt = buildPrompt({ typeCode, typeCn, similarity, exact, levels });
-            analysis = await runAI(env, prompt);
+            analysis = await callDeepSeek(env, prompt);
         } catch (err) {
             console.error('AI 调用失败：', err);
-            // 暴露真实错误信息，便于排查
             const errMsg = err?.message || String(err);
             return new Response(JSON.stringify({ error: 'AI 服务异常', detail: errMsg }), {
                 status: 503,
