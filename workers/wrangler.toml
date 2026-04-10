@@ -1,5 +1,5 @@
 name = 'sbti-test-ai-analysis'
-main = "ai-analysis/index.js"
+main = "index.js"
 compatibility_date = "2024-09-23"
 
 # ── 绑定 Cloudflare Workers AI（免费，无需额外 API Key）──────
