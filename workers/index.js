@@ -3,15 +3,30 @@
  * 调用 DeepSeek API，对外仅暴露 POST /analyze 接口
  */
 
-/** CORS 响应头（白名单未命中则直接放行请求来源） */
+/** CORS 响应头（极致健壮版：优先返回 Origin 确保匹配，兜底使用 *） */
 function corsHeaders(origin, env) {
-    const list = (env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
-    const allowed = (list.length === 0 || list.includes(origin)) ? (origin || '*') : list[0];
+    // 允许的来源列表（从环境变量读取）
+    const allowedOrigins = (env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
+    
+    // 如果没有配置白名单，则默认允许所有
+    // 如果配置了白名单且当前 Origin 在其中，则返回该 Origin
+    // 否则返回白名单中的第一个（或者 *）
+    let allowed = '*';
+    if (allowedOrigins.length === 0) {
+        allowed = origin || '*';
+    } else if (allowedOrigins.includes(origin)) {
+        allowed = origin;
+    } else {
+        allowed = allowedOrigins[0];
+    }
+
     return {
         'Access-Control-Allow-Origin': allowed,
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
         'Access-Control-Max-Age': '86400',
+        'Access-Control-Expose-Headers': 'Content-Length, X-JSON',
+        'Vary': 'Origin'
     };
 }
 
