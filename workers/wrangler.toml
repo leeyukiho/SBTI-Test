@@ -13,7 +13,7 @@ binding = "AI"
 #   最强中文：@cf/qwen/qwen3-30b-a3b-fp8
 #   推理最强：@cf/deepseek-ai/deepseek-r1-distill-qwen-32b
 #   参数最大：@cf/qwen/qwen2.5-72b-instruct-fp8
-AI_MODEL = "@cf/qwen/qwen2.5-72b-instruct-fp8"
+AI_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8"
 
 # AI 最大输出 token 数
 AI_MAX_TOKENS = "512"

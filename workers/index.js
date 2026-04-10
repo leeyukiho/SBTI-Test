@@ -45,21 +45,21 @@ ${dimLines}
 
 /** 调用 Cloudflare AI Workers (Workers AI) */
 async function runAI(env, prompt) {
-    // qwen2.5-72b 稳定输出中文，无"思考模式"干扰
-    const model = env.AI_MODEL || '@cf/qwen/qwen2.5-72b-instruct-fp8';
-    const maxTokens = Number(env.AI_MAX_TOKENS) || 512;
+    // llama-3.3-70b：CF Workers AI 免费层最稳定，支持中文
+    const model = env.AI_MODEL || '@cf/meta/llama-3.3-70b-instruct-fp8';
+    const maxTokens = Number(env.AI_MAX_TOKENS) || 600;
     const temperature = Number(env.AI_TEMPERATURE) || 0.85;
 
     const response = await env.AI.run(model, {
         messages: [
-            { role: 'system', content: '你是一个犀利幽默的人格分析师，擅长用简洁有趣的语言解读性格测试结果。' },
+            { role: 'system', content: '你是一个犀利幽默的人格分析师，擅长用简洁有趣的语言解读性格测试结果。请全程使用中文回答。' },
             { role: 'user', content: prompt }
         ],
         max_tokens: maxTokens,
         temperature,
     });
     // 兼容不同模型的返回结构
-    return response.response || response.result || response.content || response.text || JSON.stringify(response) || '';
+    return response.response || response.result || response.content || response.text || '';
 }
 
 /** 主请求处理器 */
@@ -109,7 +109,9 @@ export default {
             analysis = await runAI(env, prompt);
         } catch (err) {
             console.error('AI 调用失败：', err);
-            return new Response(JSON.stringify({ error: 'AI 服务暂时不可用，请稍后重试' }), {
+            // 暴露真实错误信息，便于排查
+            const errMsg = err?.message || String(err);
+            return new Response(JSON.stringify({ error: 'AI 服务异常', detail: errMsg }), {
                 status: 503,
                 headers: { ...headers, 'Content-Type': 'application/json' }
             });
