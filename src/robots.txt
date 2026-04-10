@@ -27,10 +27,7 @@ Allow: /
 User-agent: Googlebot
 Allow: /
 
-# 禁止爬取 JS/CSS 源文件（节省爬取配额、保护核心逻辑）
-Disallow: /js/
-Disallow: /*.js$
-Disallow: /*.css$
+
 
 # 优先爬取 Sitemap
 Sitemap: https://www.sbti-ai.com/sitemap.xml
