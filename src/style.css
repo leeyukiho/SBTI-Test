@@ -964,21 +964,61 @@ button:disabled {
 
 @media (max-width: 600px) {
     .shell {
-        padding: 14px 12px 42px;
+        padding: 12px 10px 42px;
     }
 
     .hero,
     .test-wrap,
     .result-wrap {
-        padding: 16px;
+        padding: 14px;
     }
 
     .hero h1 {
         font-size: 32px;
     }
 
+    .question {
+        padding: 20px 16px;
+        border-radius: 18px;
+    }
+
     .question-title {
-        font-size: 15px;
+        font-size: 16px;
+        margin-bottom: 18px;
+    }
+
+    .topbar {
+        padding: 12px 16px;
+        border-radius: 16px;
+        top: 8px;
+        margin-bottom: 20px;
+    }
+
+    .option-card {
+        padding: 14px 16px;
+        gap: 12px;
+        border-radius: 14px;
+    }
+
+    .option-code {
+        width: 26px;
+        height: 26px;
+        font-size: 13px;
+        border-radius: 8px;
+    }
+
+    .option-text {
+        font-size: 14px;
+    }
+
+    .radio-indicator {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .radio-indicator::after {
+        width: 8px;
+        height: 8px;
     }
 
     .dim-grid,
