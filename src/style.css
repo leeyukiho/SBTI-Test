@@ -845,8 +845,8 @@ button:disabled {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 10px 0 4px;
+    gap: 14px;
+    padding: 18px 0 8px;
     text-align: center;
 }
 
@@ -856,31 +856,68 @@ button:disabled {
     color: #b85c38;
     margin: 0;
     letter-spacing: 0.02em;
+    opacity: 0.85;
+}
+
+/* 按钮光晕脉冲动画 */
+@keyframes ai-pulse {
+    0%, 100% { box-shadow: 0 8px 28px rgba(77, 106, 83, 0.28), 0 0 0 0 rgba(122, 170, 130, 0.5); }
+    50%       { box-shadow: 0 12px 36px rgba(77, 106, 83, 0.38), 0 0 0 10px rgba(122, 170, 130, 0); }
 }
 
 .btn-ai-trigger {
-    background: linear-gradient(135deg, #4d6a53, #7aaa82);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    /* 渐变背景 */
+    background: linear-gradient(135deg, #3e5e45 0%, #5f9468 50%, #7aaa82 100%);
     color: #fff;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
-    padding: 13px 28px;
-    border-radius: 14px;
+    padding: 15px 36px;
+    border-radius: 16px;
     border: none;
-    box-shadow: 0 8px 24px rgba(77, 106, 83, 0.25);
-    letter-spacing: 0.02em;
-    transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+    letter-spacing: 0.04em;
+    /* 脉冲光晕 */
+    animation: ai-pulse 2.4s ease-in-out infinite;
+    transition: transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease, opacity .18s ease;
     cursor: pointer;
+    /* 光泽遮罩 */
+    overflow: hidden;
+}
+
+/* 顶部高光条 */
+.btn-ai-trigger::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 80%;
+    height: 40%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.22) 0%, transparent 100%);
+    border-radius: 0 0 50% 50%;
+    pointer-events: none;
 }
 
 .btn-ai-trigger:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(77, 106, 83, 0.32);
+    transform: translateY(-3px) scale(1.03);
+    animation-play-state: paused;
+    box-shadow: 0 18px 44px rgba(77, 106, 83, 0.4), 0 0 0 4px rgba(122, 170, 130, 0.18);
+}
+
+.btn-ai-trigger:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 4px 12px rgba(77, 106, 83, 0.25);
 }
 
 .btn-ai-trigger:disabled {
-    opacity: 0.65;
+    opacity: 0.6;
     transform: none;
     cursor: not-allowed;
+    animation: none;
+    box-shadow: 0 4px 12px rgba(77, 106, 83, 0.15);
 }
 
 /* 正文打印文字 */
