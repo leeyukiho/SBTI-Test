@@ -251,7 +251,7 @@ function resetAiZone() {
     aiText.style.display = 'none';
     aiText.textContent = '';
     btn.disabled = false;
-    btn.innerHTML = '🧬 召唤 AI 毒舌锐评';
+    btn.innerHTML = '🧬 AI 毒舌锐评此性格';
 }
 
 /**
@@ -261,7 +261,7 @@ async function triggerAiAnalysis() {
     console.log('[SBTI] 锐评按钮点击，lastResult =', app.lastResult);
     const result = app.lastResult;
     if (!result) {
-        alert('⚠️ 请先完成测试再召唤 AI 锐评！');
+        alert('⚠️ 请先完成测试再获取 AI 锐评！');
         return;
     }
 
