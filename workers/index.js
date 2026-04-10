@@ -51,13 +51,17 @@ ${dimLines}
 
 /** 调用 Cloudflare AI Workers (Workers AI) */
 async function runAI(env, prompt) {
-    const response = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
+    const model = env.AI_MODEL || '@cf/qwen/qwen3-30b-a3b-fp8';
+    const maxTokens = Number(env.AI_MAX_TOKENS) || 512;
+    const temperature = Number(env.AI_TEMPERATURE) || 0.85;
+
+    const response = await env.AI.run(model, {
         messages: [
             { role: 'system', content: '你是一个犀利幽默的人格分析师，擅长用简洁有趣的语言解读性格测试结果。' },
             { role: 'user', content: prompt }
         ],
-        max_tokens: 512,
-        temperature: 0.85,
+        max_tokens: maxTokens,
+        temperature,
     });
     return response.response || response.result || '';
 }
