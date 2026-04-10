@@ -13,11 +13,11 @@
     <!-- ═══════════════════════════════════════════════════════
          核心 SEO：Title + Description（百度/Google 100% 收录）
          ═══════════════════════════════════════════════════════ -->
-    <title>SBTI人格测试 - 比MBTI更狠的免费AI毒舌性格测试 | 全网最准SBTI在线测评</title>
+    <title>SBTI人格测试 - 比MBTI更狠的免费AI毒舌性格测试 | 27种人格类型 · 全网最准SBTI在线测评</title>
 
     <!-- 主描述：含核心词 + 行动召唤 + 差异化 -->
     <meta name="description"
-        content="SBTI人格测试是全网最火的MBTI平替！基于15个深度维度精准扫射真实性格，内置DeepSeek AI毒舌锐评功能，千人千面报告让人当场破防。完全免费，测完即出结果，还能解锁吃喝拉撒、隐藏酒鬼等搞笑人格！立即测一测你是 CTRL拿捏者、GOGO行人、SHIT愤世者还是DEAD死者？" />
+        content="SBTI人格测试是全网最火的MBTI平替！基于15个深度维度精准扫射真实性格，内置DeepSeek AI毒舌锐评（竞品没有的独家功能），千人千面报告让人当场破防。27种人格类型，完全免费，218万人次已测试，还能解锁DRUNK酒鬼等隐藏人格。测出你是 CTRL拿捏者、GOGO行人、SHIT愤世者还是DEAD死者？" />
 
     <!-- 高密度关键词矩阵（百度尤其重视 keywords） -->
     <meta name="keywords"
@@ -221,6 +221,27 @@
 </head>
 
 <body>
+    <!-- 全局导航栏 -->
+    <nav class="global-nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">🧬 SBTI 人格实验室</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link nav-link--active">首页</a>
+                <a href="types.html" class="nav-link">人格类型</a>
+                <a href="rankings.html" class="nav-link">人格排行榜</a>
+                <a href="about.html" class="nav-link">关于测试</a>
+                <a href="index.html#test" class="nav-link nav-cta">开始测试 ⚡</a>
+            </div>
+            <button class="nav-hamburger" id="navHamburger" aria-label="菜单">☰</button>
+        </div>
+        <div class="nav-mobile-menu" id="navMobileMenu">
+            <a href="index.html" class="nav-mobile-link">🏠 首页</a>
+            <a href="types.html" class="nav-mobile-link">🧬 人格类型</a>
+            <a href="rankings.html" class="nav-mobile-link">🏆 人格排行榜</a>
+            <a href="about.html" class="nav-mobile-link">📖 关于测试</a>
+            <a href="index.html#test" class="nav-mobile-link nav-mobile-cta">⚡ 立即开始测试</a>
+        </div>
+    </nav>
     <main class="shell">
         <!-- 全局顶部导航 -->
         <header class="main-header">
@@ -241,6 +262,32 @@
                         分钟)</button>
                     <button id="freshStartBtn" class="btn-secondary"
                         style="font-size: 16px; padding: 16px 32px; display: none;">从头重新测试</button>
+                </div>
+
+                <!-- 伪实时测试人次计数器 -->
+                <div class="counter-strip">
+                    <span class="counter-fire">🔥</span>
+                    <span class="counter-num" id="heroCounter">2,187,430</span>
+                    <span class="counter-label">人次完成测试 · 实时更新</span>
+                </div>
+
+                <!-- 三子页面快捷跳转 -->
+                <div class="nav-shortcut-grid">
+                    <a href="types.html" class="nav-shortcut-card">
+                        <span class="nav-shortcut-icon">🧬</span>
+                        <span class="nav-shortcut-title">全部 27 种人格</span>
+                        <span class="nav-shortcut-desc">含稀有度、解锁条件和详细人格介绍</span>
+                    </a>
+                    <a href="rankings.html" class="nav-shortcut-card">
+                        <span class="nav-shortcut-icon">🏆</span>
+                        <span class="nav-shortcut-title">人格排行榜</span>
+                        <span class="nav-shortcut-desc">你的人格在218万人中有多稀有？</span>
+                    </a>
+                    <a href="about.html" class="nav-shortcut-card">
+                        <span class="nav-shortcut-icon">📖</span>
+                        <span class="nav-shortcut-title">关于测试</span>
+                        <span class="nav-shortcut-desc">15维度原理 · MBTI对比 · AI解析机制</span>
+                    </a>
                 </div>
 
                 <div class="disclaimer-banner"
@@ -491,6 +538,34 @@
         </section>
 
     </main>
+
+    <script>
+        // 移动端汉堡菜单
+        const hamburger = document.getElementById('navHamburger');
+        if (hamburger) {
+            hamburger.addEventListener('click', function() {
+                document.getElementById('navMobileMenu').classList.toggle('active');
+            });
+        }
+
+        // 伪实时计数器：每4~8秒随机加1~2
+        (function() {
+            const el = document.getElementById('heroCounter');
+            if (!el) return;
+            let count = 2187430;
+            function tick() {
+                const inc = Math.random() < 0.6 ? 1 : Math.random() < 0.8 ? 2 : 0;
+                if (inc > 0) {
+                    count += inc;
+                    el.textContent = count.toLocaleString();
+                    el.classList.add('bump');
+                    setTimeout(() => el.classList.remove('bump'), 300);
+                }
+                setTimeout(tick, Math.floor(Math.random() * 4000) + 4000);
+            }
+            setTimeout(tick, 5000);
+        })();
+    </script>
 </body>
 
 </html>

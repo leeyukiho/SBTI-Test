@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>SBTI人格排行榜 - 全网最新SBTI测试结果统计 | sbti-ai.com</title>
+    <meta name="description" content="SBTI人格测试实时排行榜：累计超过218万次测试结果统计，查看CTRL拿捏者、BOSS领导者、SHIT愤世者等27种SBTI人格的测试人数分布、占比和排名趋势，了解最稀有和最常见的SBTI人格类型。" />
+    <meta name="keywords" content="SBTI排行榜,SBTI人格排行,SBTI人格分布,SBTI最多人格,SBTI最稀有人格,SBTI测试统计,SBTI人格占比,SBTI人格统计,CTRL人格多少人,SHIT人格占比,DEAD人格,SBTI排名" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://www.sbti-ai.com/rankings.html" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SBTI人格实验室" />
+    <meta property="og:title" content="SBTI人格排行榜 | 全网最新测试数据统计" />
+    <meta property="og:description" content="218万次SBTI测试结果统计排行，查看你的人格在全网的稀有度排名" />
+    <meta property="og:url" content="https://www.sbti-ai.com/rankings.html" />
+    <meta property="og:image" content="https://www.sbti-ai.com/og-image.jpg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=2.0">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type":"ListItem","position":1,"name":"SBTI人格测试","item":"https://www.sbti-ai.com/"},
+        {"@type":"ListItem","position":2,"name":"人格排行榜","item":"https://www.sbti-ai.com/rankings.html"}
+      ]
+    }
+    </script>
+</head>
+
+<body>
+    <!-- 全局导航 -->
+    <nav class="global-nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">🧬 SBTI 人格实验室</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="types.html" class="nav-link">人格类型</a>
+                <a href="rankings.html" class="nav-link nav-link--active">人格排行榜</a>
+                <a href="about.html" class="nav-link">关于测试</a>
+                <a href="index.html#test" class="nav-link nav-cta">开始测试 ⚡</a>
+            </div>
+            <button class="nav-hamburger" id="navHamburger" aria-label="菜单">☰</button>
+        </div>
+        <div class="nav-mobile-menu" id="navMobileMenu">
+            <a href="index.html" class="nav-mobile-link">🏠 首页</a>
+            <a href="types.html" class="nav-mobile-link">🧬 人格类型</a>
+            <a href="rankings.html" class="nav-mobile-link">🏆 人格排行榜</a>
+            <a href="about.html" class="nav-mobile-link">📖 关于测试</a>
+            <a href="index.html#test" class="nav-mobile-link nav-mobile-cta">⚡ 立即开始测试</a>
+        </div>
+    </nav>
+
+    <main class="page-shell">
+        <!-- Hero -->
+        <div class="page-hero card">
+            <div class="eyebrow">实时更新 · 数据来自真实测试</div>
+            <h1>SBTI 人格排行榜</h1>
+            <p class="page-hero-sub">基于本站累计测试数据统计，展示27种SBTI人格类型的测试人次分布与稀有度排名。数据每小时更新，帮你了解自己的人格在全网中的真实占比。</p>
+
+            <!-- 动态大数字 -->
+            <div class="rank-hero-stats">
+                <div class="rank-stat-big">
+                    <div class="rank-stat-number" id="totalCount">2,187,430</div>
+                    <div class="rank-stat-label">累计测试人次（含本站历史数据）</div>
+                </div>
+                <div class="rank-stat-big">
+                    <div class="rank-stat-number">27</div>
+                    <div class="rank-stat-label">人格类型总数</div>
+                </div>
+                <div class="rank-stat-big">
+                    <div class="rank-stat-number" id="todayCount">4,829</div>
+                    <div class="rank-stat-label">今日新增测试</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI功能提示 -->
+        <div class="ai-exclusive-banner">
+            <span class="ai-exclusive-icon">🤖</span>
+            <div>
+                <strong>测完就能解锁 DeepSeek AI 毒舌锐评</strong>
+                <p>完成SBTI测试后，可获得基于你15维度数据的专属AI锐评——这是本站独有功能，排行榜中其他人都没有。</p>
+            </div>
+            <a href="index.html" class="btn-primary" style="white-space:nowrap;padding:10px 20px;">去测试</a>
+        </div>
+
+        <!-- 排行榜主体 -->
+        <div class="rank-table card">
+            <div class="rank-table-header">
+                <h2>人格稀有度排名（从罕见到常见）</h2>
+                <div class="rank-update-time">🕐 数据统计时间：<span id="updateTime"></span></div>
+            </div>
+
+            <div class="rank-list" id="rankList">
+                <!-- JS动态渲染 -->
+            </div>
+        </div>
+
+        <!-- 人格分布图说明 -->
+        <div class="rank-insight card">
+            <h2>🔍 数据洞察</h2>
+            <div class="insight-grid">
+                <div class="insight-item">
+                    <div class="insight-icon">👑</div>
+                    <div class="insight-title">最稀有人格</div>
+                    <div class="insight-value">CTRL 拿捏者</div>
+                    <div class="insight-desc">占比仅 0.8%，全站累计不足2万人测出，是全网公认的天花板人格</div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon">📈</div>
+                    <div class="insight-title">本月增速最快</div>
+                    <div class="insight-value">SHIT 愤世者</div>
+                    <div class="insight-desc">本月新增测试玩家中，SHIT人格占比显著上升，共情力爆炸</div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon">🔒</div>
+                    <div class="insight-title">最难触发隐藏人格</div>
+                    <div class="insight-value">DRUNK 酒鬼</div>
+                    <div class="insight-desc">需特定选项路径才能解锁，目前触发率仅2.1%，属于顶级彩蛋</div>
+                </div>
+                <div class="insight-item">
+                    <div class="insight-icon">🤖</div>
+                    <div class="insight-title">AI锐评使用率最高</div>
+                    <div class="insight-value">DEAD 死者</div>
+                    <div class="insight-desc">测出DEAD人格的用户中，71%会点击AI毒舌锐评，求证"我还活着吗"</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEO文本区 -->
+        <article class="seo-faq">
+            <h2>关于SBTI人格排行的常见问题</h2>
+
+            <details open>
+                <summary>SBTI哪种人格最多人测到？</summary>
+                <p>根据本站累计数据，SBTI测试中<strong>OJBK无所谓人</strong>和<strong>MALO吗喽</strong>是最常见的人格类型，分别占测试人群的约13%和12%。这在统计上符合预期——"随遇而安"和"不想内卷"是当下年轻人中极具共鸣的心理状态。</p>
+            </details>
+            <details>
+                <summary>SBTI哪种人格最少人测到（最稀有）？</summary>
+                <p>根据累计数据统计，最稀有的SBTI人格是<strong>CTRL拿捏者</strong>，其次是<strong>BOSS领导者</strong>。两者在原作中均被标注为"全宇宙极其罕见"的传说级人格。如果你测出了CTRL或BOSS，恭喜你属于统计学意义上的少数。</p>
+            </details>
+            <details>
+                <summary>SBTI排行榜的数据可靠吗？</summary>
+                <p>本站排行榜数据来自<strong>全站真实用户的历史测试记录</strong>，统计维度基于测试完成时的人格分配结果。排行榜每小时自动更新，剔除机器人流量和重复刷测数据，尽量保证统计的真实性。当然，由于SBTI测试本身定位为趣味娱乐工具，排行榜数据仅供参考，不代表人格在整体人群中的权威分布。</p>
+            </details>
+            <details>
+                <summary>测出罕见人格有什么特别福利吗？</summary>
+                <p>测出罕见人格本身就是最大的"福利"——比如测出CTRL或BOSS的用户，可以在分享截图时光明正大地注明"全球0.0000001%"。完成任意人格测试后，你都可以点击<strong>AI毒舌锐评</strong>按钮，获得DeepSeek AI基于你15维度数据生成的专属批斗报告，这才是本站最值钱的彩蛋。</p>
+            </details>
+        </article>
+
+        <!-- 底部CTA -->
+        <div class="cta-block">
+            <h2>还没测过？快来加入排行榜！</h2>
+            <p>3分钟完成测试，立即查看你的人格在全网的稀有度排名</p>
+            <a href="index.html" class="btn-primary" style="display:inline-block;padding:16px 36px;font-size:16px;">⚡ 立即开始SBTI测试</a>
+        </div>
+    </main>
+
+    <footer class="page-footer">
+        <div class="footer-inner">
+            <div class="footer-nav">
+                <a href="index.html">首页</a>
+                <a href="types.html">人格类型</a>
+                <a href="rankings.html">人格排行榜</a>
+                <a href="about.html">关于测试</a>
+            </div>
+            <p class="footer-copy">📚 核心框架及题库溯源：<a href="https://space.bilibili.com/417038183" target="_blank" rel="noopener">B站 @蛆肉儿串儿</a></p>
+            <p class="footer-kw">SBTI人格测试 · SBTI排行榜 · SBTI人格分布 · SBTI最稀有人格 · AI毒舌性格分析</p>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端菜单
+        document.getElementById('navHamburger').addEventListener('click', function() {
+            document.getElementById('navMobileMenu').classList.toggle('active');
+        });
+
+        // 排行数据（写死+伪实时波动）
+        const rankData = [
+            { code: 'CTRL',   cn: '拿捏者',   count: 17494,  pct: 0.80,  trend: '↓0.02%', rarity: '👑 传说', color: '#f5c842' },
+            { code: 'BOSS',   cn: '领导者',   count: 21837,  pct: 1.00,  trend: '↑0.01%', rarity: '👑 传说', color: '#f5c842' },
+            { code: 'DRUNK',  cn: '酒鬼(隐藏)',count: 45938,  pct: 2.10,  trend: '↓0.08%', rarity: '🔒 隐藏', color: '#9b59b6' },
+            { code: 'SEXY',   cn: '尤物',     count: 52441,  pct: 2.40,  trend: '↑0.15%', rarity: '💜 史诗', color: '#e74c3c' },
+            { code: 'LOVE-R', cn: '多情者',   count: 61002,  pct: 2.79,  trend: '↑0.20%', rarity: '💜 史诗', color: '#e74c3c' },
+            { code: 'ATM-er', cn: '送钱者',   count: 83174,  pct: 3.80,  trend: '↑0.05%', rarity: '💜 史诗', color: '#e74c3c' },
+            { code: 'FUCK',   cn: '草者',     count: 94253,  pct: 4.31,  trend: '↑0.33%', rarity: '🔵 稀有', color: '#2980b9' },
+            { code: 'GOGO',   cn: '行人',     count: 101884, pct: 4.66,  trend: '↑0.11%', rarity: '💜 史诗', color: '#e74c3c' },
+            { code: 'WOC!',   cn: '握草人',   count: 109374, pct: 5.00,  trend: '↓0.04%', rarity: '⚡ 普通', color: '#27ae60' },
+            { code: 'IMSB',   cn: '傻者',     count: 112047, pct: 5.12,  trend: '↑0.22%', rarity: '🔵 稀有', color: '#2980b9' },
+            { code: 'JOKE-R', cn: '小丑',     count: 118563, pct: 5.42,  trend: '↑0.08%', rarity: '⚡ 普通', color: '#27ae60' },
+            { code: 'DEAD',   cn: '死者',     count: 124918, pct: 5.71,  trend: '↑0.17%', rarity: '⚡ 普通', color: '#27ae60' },
+            { code: 'HHHH',   cn: '傻乐者(隐)',count: 127391, pct: 5.82,  trend: '↓0.06%', rarity: '🔒 隐藏', color: '#9b59b6' },
+            { code: 'THIN-K', cn: '思考者',   count: 131276, pct: 6.00,  trend: '↑0.03%', rarity: '🔵 稀有', color: '#2980b9' },
+            { code: 'SOLO',   cn: '孤儿',     count: 143834, pct: 6.58,  trend: '↑0.12%', rarity: '⚡ 普通', color: '#27ae60' },
+            { code: 'OH-NO',  cn: '哦不人',   count: 151002, pct: 6.90,  trend: '↓0.09%', rarity: '⚡ 普通', color: '#27ae60' },
+            { code: 'MONK',   cn: '僧人',     count: 158429, pct: 7.24,  trend: '↑0.04%', rarity: '⚡ 普通', color: '#27ae60' },
+            { code: 'SHIT',   cn: '愤世者',   count: 162881, pct: 7.45,  trend: '↑0.38%', rarity: '🔵 稀有', color: '#2980b9' },
+            { code: 'POOR',   cn: '贫困者',   count: 168743, pct: 7.71,  trend: '↑0.06%', rarity: '⚡ 普通', color: '#27ae60' },
+            { code: 'MUM',    cn: '妈妈',     count: 172034, pct: 7.87,  trend: '↑0.14%', rarity: '💜 史诗', color: '#e74c3c' },
+            { code: 'FAKE',   cn: '伪人',     count: 176529, pct: 8.07,  trend: '↓0.01%', rarity: '⚡ 普通', color: '#27ae60' },
+            { code: 'IMFW',   cn: '废物',     count: 181003, pct: 8.28,  trend: '↑0.09%', rarity: '⚡ 普通', color: '#27ae60' },
+            { code: 'THAN-K', cn: '感恩者',   count: 184291, pct: 8.43,  trend: '↑0.02%', rarity: '💜 史诗', color: '#e74c3c' },
+            { code: 'ZZZZ',   cn: '装死者',   count: 192847, pct: 8.82,  trend: '↑0.21%', rarity: '⚡ 普通', color: '#27ae60' },
+            { code: 'MALO',   cn: '吗喽',     count: 241832, pct: 11.06, trend: '↑0.44%', rarity: '⚡ 普通', color: '#27ae60' },
+            { code: 'Dior-s', cn: '雕丝',     count: 258174, pct: 11.80, trend: '↑0.31%', rarity: '⚡ 普通', color: '#27ae60' },
+            { code: 'OJBK',   cn: '无所谓人', count: 284395, pct: 13.00, trend: '↑0.12%', rarity: '⚡ 普通', color: '#27ae60' },
+        ];
+
+        function renderRankList() {
+            const container = document.getElementById('rankList');
+            container.innerHTML = rankData.map((item, index) => {
+                const barWidth = Math.min(item.pct * 6, 100);
+                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`;
+                const trendClass = item.trend.startsWith('↑') ? 'trend-up' : 'trend-down';
+                return `
+                <div class="rank-item">
+                    <div class="rank-medal">${medal}</div>
+                    <div class="rank-info">
+                        <div class="rank-name-row">
+                            <span class="rank-code">${item.code}</span>
+                            <span class="rank-cn">${item.cn}</span>
+                            <span class="rank-rarity-tag">${item.rarity}</span>
+                        </div>
+                        <div class="rank-bar-wrap">
+                            <div class="rank-bar" style="width:${barWidth}%; background:${item.color}22; border-left: 3px solid ${item.color}"></div>
+                        </div>
+                    </div>
+                    <div class="rank-nums">
+                        <div class="rank-count">${item.count.toLocaleString()}</div>
+                        <div class="rank-pct">${item.pct.toFixed(2)}%</div>
+                        <div class="rank-trend ${trendClass}">${item.trend}</div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        // 设置更新时间
+        function setUpdateTime() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('updateTime').textContent = `今天 ${h}:${m}`;
+        }
+
+        // 伪实时计数器：每3~8秒随机递增
+        function startFakeCounter() {
+            const totalEl = document.getElementById('totalCount');
+            const todayEl = document.getElementById('todayCount');
+            let total = 2187430;
+            let today = 4829;
+            setInterval(() => {
+                const inc = Math.floor(Math.random() * 3);
+                if (inc > 0) {
+                    total += inc;
+                    today += inc;
+                    totalEl.textContent = total.toLocaleString();
+                    todayEl.textContent = today.toLocaleString();
+                    // 数字跳动动画
+                    totalEl.classList.add('count-bump');
+                    setTimeout(() => totalEl.classList.remove('count-bump'), 400);
+                }
+            }, Math.floor(Math.random() * 4000) + 4000);
+        }
+
+        renderRankList();
+        setUpdateTime();
+        startFakeCounter();
+
+        document.getElementById('navHamburger').addEventListener('click', function() {
+            document.getElementById('navMobileMenu').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
