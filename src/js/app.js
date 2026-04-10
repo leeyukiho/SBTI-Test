@@ -66,17 +66,9 @@ function checkSavedState() {
     }
 }
 
-// ─── DOM 节点引用 ──────────────────────────────────────────
-const screens = {
-    intro: document.getElementById('intro'),
-    test: document.getElementById('test'),
-    result: document.getElementById('result')
-};
-const questionList = document.getElementById('questionList');
-const progressBar = document.getElementById('progressBar');
-const progressText = document.getElementById('progressText');
-const submitBtn = document.getElementById('submitBtn');
-const testHint = document.getElementById('testHint');
+// ─── DOM 节点引用 (延迟初始化) ───────────────────────────
+let screens = {};
+let questionList, progressBar, progressText, submitBtn, testHint;
 
 // ─── 屏幕切换 ─────────────────────────────────────────────
 function showScreen(name, pushState = true) {
@@ -488,39 +480,6 @@ function resumeOrStartTest() {
     }
 }
 
-// ─── 初始化与安全事件绑定 ────────────────────────────────────
-function bindBtn(id, handler) {
-    const el = document.getElementById(id);
-    if (el) {
-        el.addEventListener('click', handler);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    checkSavedState();
-    // 首次进入写入初始状态记录
-    if (!history.state || !history.state.screen) {
-        history.replaceState({ screen: 'intro' }, '', window.location.pathname + window.location.search);
-    }
-});
-
-// 监听浏览器返回按钮（移动端侧边滑动返回 / 物理返回键）
-window.addEventListener('popstate', (e) => {
-    if (e.state && e.state.screen) {
-        showScreen(e.state.screen, false);
-    } else {
-        showScreen('intro', false);
-    }
-});
-
-bindBtn('startBtn', resumeOrStartTest);
-bindBtn('freshStartBtn', startTest);
-bindBtn('backIntroBtn', () => { showScreen('intro'); checkSavedState(); });
-bindBtn('submitBtn', handleSubmit);
-bindBtn('restartBtn', startTest);
-bindBtn('toTopBtn', () => showScreen('intro'));
-bindBtn('aiTriggerBtn', triggerAiAnalysis);
-
 /**
  * 执行结果分享逻辑，唤起海报模态框
  */
@@ -531,7 +490,6 @@ function executeResultShare() {
         alert('⚠️ 请先完成测试以生成分享海报！');
     }
 }
-
 
 /**
  * 打开分享海报模态框并注入数据
@@ -612,34 +570,83 @@ async function savePosterAsImage() {
     }
 }
 
-bindBtn('shareResultBtn', executeResultShare);
-bindBtn('shareResultBtnTop', executeResultShare);
+// ─── 初始化与安全事件绑定 ────────────────────────────────────
+function bindBtn(id, handler) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.addEventListener('click', handler);
+    }
+}
 
-// 海报模态框专用绑定
-bindBtn('downloadPosterBtn', savePosterAsImage);
-bindBtn('closePosterBtn', () => {
-    const modal = document.getElementById('posterModal');
-    if (modal) modal.classList.remove('active');
-});
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. 初始化 DOM 引用
+    screens = {
+        intro: document.getElementById('intro'),
+        test: document.getElementById('test'),
+        result: document.getElementById('result')
+    };
+    questionList = document.getElementById('questionList');
+    progressBar = document.getElementById('progressBar');
+    progressText = document.getElementById('progressText');
+    submitBtn = document.getElementById('submitBtn');
+    testHint = document.getElementById('testHint');
 
-const navStartHandler = (e) => {
-    e.preventDefault();
-    resumeOrStartTest();
-    // 关闭可能打开的移动端菜单
-    const menu = document.getElementById('navMobileMenu');
-    if (menu) menu.classList.remove('active');
-};
-bindBtn('navStartBtn', navStartHandler);
-bindBtn('navMobileStartBtn', navStartHandler);
+    // 2. 检查保存状态
+    checkSavedState();
 
-// 劫持首页导航链接，如果已在首页则执行无刷新滚动
-document.querySelectorAll('a[href="index.html"]').forEach(link => {
-    link.addEventListener('click', (e) => {
-        if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
-            e.preventDefault();
-            showScreen('intro');
-            const menu = document.getElementById('navMobileMenu');
-            if (menu) menu.classList.remove('active');
-        }
+    // 3. 核心事件绑定
+    bindBtn('startBtn', resumeOrStartTest);
+    bindBtn('freshStartBtn', startTest);
+    bindBtn('backIntroBtn', () => { showScreen('intro'); checkSavedState(); });
+    bindBtn('submitBtn', handleSubmit);
+    bindBtn('restartBtn', startTest);
+    bindBtn('toTopBtn', () => showScreen('intro'));
+    bindBtn('aiTriggerBtn', triggerAiAnalysis);
+    
+    // 分享与海报绑定
+    bindBtn('shareResultBtn', executeResultShare);
+    bindBtn('shareResultBtnTop', executeResultShare);
+    bindBtn('downloadPosterBtn', savePosterAsImage);
+    bindBtn('closePosterBtn', () => {
+        const modal = document.getElementById('posterModal');
+        if (modal) modal.classList.remove('active');
     });
+
+    // 导航与移动端控制
+    const navStartHandler = (e) => {
+        e.preventDefault();
+        resumeOrStartTest();
+        const menu = document.getElementById('navMobileMenu');
+        if (menu) menu.classList.remove('active');
+    };
+    bindBtn('navStartBtn', navStartHandler);
+    bindBtn('navMobileStartBtn', navStartHandler);
+
+    // 首页导航劫持
+    document.querySelectorAll('a[href="index.html"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
+                e.preventDefault();
+                showScreen('intro');
+                const menu = document.getElementById('navMobileMenu');
+                if (menu) menu.classList.remove('active');
+            }
+        });
+    });
+
+    // 4. 处理历史记录状态
+    if (!history.state || !history.state.screen) {
+        history.replaceState({ screen: 'intro' }, '', window.location.pathname + window.location.search);
+    }
 });
+
+// 监听浏览器返回按钮（移动端侧边滑动返回 / 物理返回键）
+window.addEventListener('popstate', (e) => {
+    if (e.state && e.state.screen) {
+        showScreen(e.state.screen, false);
+    } else {
+        showScreen('intro', false);
+    }
+});
+
+// 脚本结束
