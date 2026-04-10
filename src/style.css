@@ -1097,6 +1097,21 @@ button:disabled {
     transition: opacity 0.3s ease;
 }
 
+.featured-ai-box {
+    border: 2px solid rgba(108, 141, 113, 0.6);
+    background: linear-gradient(135deg, #eefaf0 0%, #ffffff 50%, #e6f5e8 100%);
+    box-shadow: 0 12px 32px rgba(47, 73, 56, 0.08), inset 0 2px 4px rgba(255, 255, 255, 0.9);
+    padding: 28px 24px;
+    margin-bottom: 24px;
+    transform: scale(1.01);
+}
+
+.btn-ai-featured {
+    font-size: 18px;
+    padding: 18px 42px;
+    box-shadow: 0 12px 28px rgba(77, 106, 83, 0.3), 0 0 0 4px rgba(122, 170, 130, 0.15);
+}
+
 /* 顶部光晕装饰 */
 .ai-analysis-box::before {
     content: '';

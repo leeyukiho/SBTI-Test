@@ -354,7 +354,7 @@ function resetAiZone() {
     aiText.style.display = 'none';
     aiText.textContent = '';
     btn.disabled = false;
-    btn.innerHTML = '🧬 AI 毒舌锐评此性格';
+    btn.innerHTML = '🧬 立即生成专属 AI 毒舌锐评';
 }
 
 /**
