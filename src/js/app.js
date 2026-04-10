@@ -41,7 +41,7 @@ function loadState() {
             app.shuffledQuestions = JSON.parse(q);
             return true;
         }
-    } catch(e) {}
+    } catch (e) { }
     return false;
 }
 
@@ -84,7 +84,7 @@ function showScreen(name, pushState = true) {
         el.classList.toggle('active', key === name);
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    
+
     if (pushState) {
         history.pushState({ screen: name }, '', `#${name}`);
     }
@@ -148,9 +148,9 @@ function renderQuestions() {
             <legend class="question-title">${q.text}</legend>
             <div class="options">
               ${q.options.map((opt, i) => {
-              const code = ['A', 'B', 'C', 'D'][i] || String(i + 1);
-              const checked = app.answers[q.id] === opt.value ? 'checked' : '';
-              return `
+            const code = ['A', 'B', 'C', 'D'][i] || String(i + 1);
+            const checked = app.answers[q.id] === opt.value ? 'checked' : '';
+            return `
                   <label class="option-card">
                     <input type="radio" name="${q.id}" value="${opt.value}" ${checked} class="sr-only"/>
                     <div class="option-code">${code}</div>
@@ -158,7 +158,7 @@ function renderQuestions() {
                     <div class="radio-indicator"></div>
                   </label>
                 `;
-          }).join('')}
+        }).join('')}
             </div>
           </fieldset>
         `;
@@ -213,10 +213,10 @@ function updateProgress() {
     const percent = total ? (done / total) * 100 : 0;
     progressBar.style.width = `${percent}%`;
     progressText.textContent = `${done} / ${total}`;
-    
+
     const complete = done === total && total > 0;
     submitBtn.disabled = false; // 始终允许点击以触发检查
-    
+
     if (!testHint.style.color || testHint.style.color === '') {
         testHint.textContent = complete
             ? '都做完了。现在可以把你的电子魂魄交给结果页审判。'
@@ -227,12 +227,12 @@ function updateProgress() {
 function handleSubmit() {
     const visibleQuestions = getVisibleQuestions();
     const missingQ = visibleQuestions.find(q => app.answers[q.id] === undefined);
-    
+
     if (missingQ) {
         const targetCard = document.getElementById('dom_' + missingQ.id);
         if (targetCard) {
             targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            
+
             // 清理旧警告
             questionList.querySelectorAll('.missing-alert').forEach(alert => {
                 alert.remove();
@@ -254,7 +254,7 @@ function handleSubmit() {
         }, 3000);
         return;
     }
-    
+
     renderResult();
 }
 
@@ -293,10 +293,10 @@ async function fetchAiAnalysis(result) {
         exact: result.bestNormal?.exact ?? 15,
         levels: result.levels,
     };
-    
+
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 15000);
-    
+
     try {
         const resp = await fetch(AI_WORKER_URL, {
             method: 'POST',
@@ -305,7 +305,7 @@ async function fetchAiAnalysis(result) {
             signal: controller.signal
         });
         clearTimeout(timeoutId);
-        
+
         if (!resp.ok) {
             const txt = await resp.text();
             throw new Error(`HTTP ${resp.status}`);
@@ -410,8 +410,8 @@ async function triggerAiAnalysis() {
     }
 
     const actionZone = document.getElementById('aiActionZone');
-    const aiText    = document.getElementById('aiAnalysisText');
-    const btn       = document.getElementById('aiTriggerBtn');
+    const aiText = document.getElementById('aiAnalysisText');
+    const btn = document.getElementById('aiTriggerBtn');
 
     // 防御：DOM 元素缺失时直接报错
     if (!actionZone || !aiText || !btn) {
@@ -507,23 +507,22 @@ window.addEventListener('popstate', (e) => {
     }
 });
 
-bindBtn('startBtn',     resumeOrStartTest);
+bindBtn('startBtn', resumeOrStartTest);
 bindBtn('freshStartBtn', startTest);
 bindBtn('backIntroBtn', () => { showScreen('intro'); checkSavedState(); });
-bindBtn('submitBtn',    handleSubmit);
-bindBtn('restartBtn',   startTest);
-bindBtn('toTopBtn',     () => showScreen('intro'));
+bindBtn('submitBtn', handleSubmit);
+bindBtn('restartBtn', startTest);
+bindBtn('toTopBtn', () => showScreen('intro'));
 bindBtn('aiTriggerBtn', triggerAiAnalysis);
 
 // 核心分享逻辑（支持多入口触发）
-    if (!result) {
-        alert('⚠️ 请先完成测试！');
-        return;
-    }
-    
-    // 打开精美海报模态框
-    openShareModal(result);
+if (!result) {
+    alert('⚠️ 请先完成测试！');
+    return;
 }
+
+// 打开精美海报模态框
+openShareModal(result);
 
 /**
  * 打开分享海报模态框并注入数据
@@ -533,13 +532,13 @@ function openShareModal(result) {
     if (!modal) return;
 
     const type = result.finalType;
-    
+
     // 注入数据
     document.getElementById('posterTypeCode').textContent = type.code;
-    document.getElementById('posterTypeCn').textContent   = type.cn;
+    document.getElementById('posterTypeCn').textContent = type.cn;
     document.getElementById('posterDescText').textContent = type.intro;
-    document.getElementById('posterDate').textContent     = new Date().toLocaleDateString('zh-CN').replace(/\//g, '.');
-    
+    document.getElementById('posterDate').textContent = new Date().toLocaleDateString('zh-CN').replace(/\//g, '.');
+
     const charImg = document.getElementById('posterCharImg');
     if (charImg) {
         // 如果是本地路径，确保图片已加载
@@ -547,7 +546,7 @@ function openShareModal(result) {
     }
 
     modal.classList.add('active');
-    
+
     // 记录分享动作（如有埋点可在此执行）
     console.log('Open Share Poster:', type.code);
 }
@@ -558,7 +557,7 @@ function openShareModal(result) {
 async function savePosterAsImage() {
     const downloadBtn = document.getElementById('downloadPosterBtn');
     const captureArea = document.getElementById('mainPosterCard');
-    
+
     if (!captureArea || typeof html2canvas === 'undefined') {
         alert('海报引擎加载中，请稍后再次重试');
         return;
