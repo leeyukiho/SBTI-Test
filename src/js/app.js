@@ -315,7 +315,7 @@ async function fetchAiAnalysis(result) {
     } catch (err) {
         clearTimeout(timeoutId);
         if (err.name === 'AbortError') {
-            throw new Error('网络请求超时（国内网络直接访问 workers.dev 可能被墙拦截，请开启代理或绑定自定义域名）');
+            throw new Error('网络请求超时，请重试');
         }
         throw err;
     }

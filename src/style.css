@@ -2929,58 +2929,52 @@ button:disabled {
     .type-golden-phrase::after { right: -10px; }
 }
 
-/* ─── 页面面包屑导航 (Breadcrumb) ────────────────────────────────────── */
-.breadcrumb-nav {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 100px auto 20px;
-    padding: 0 24px;
-    max-width: 1000px;
-    font-size: 13px;
-    color: var(--muted);
-    position: relative;
-    z-index: 5;
-}
-
-.breadcrumb-nav a {
-    color: var(--muted);
-    text-decoration: none;
-    transition: all 0.3s ease;
+/* ─── 页面返回引导 (Back Navigation) ────────────────────────────────────── */
+.back-nav-pill {
     display: inline-flex;
     align-items: center;
-}
-
-.breadcrumb-nav a:hover {
-    color: var(--accent-strong);
-}
-
-.breadcrumb-nav .sep {
-    opacity: 0.4;
-    font-size: 10px;
-    margin: 0 4px;
-}
-
-.breadcrumb-nav .current {
-    color: var(--accent-strong);
+    gap: 10px;
+    margin: 100px 24px 24px;
+    padding: 10px 18px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--panel-border);
+    border-radius: 999px;
+    font-size: 14px;
     font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    color: var(--accent-strong);
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(47, 73, 56, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    z-index: 10;
+}
+
+.back-nav-pill:hover {
+    transform: translateX(-4px);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 24px rgba(47, 73, 56, 0.08), 0 0 15px var(--accent-glow);
+    color: var(--accent);
+}
+
+.back-nav-pill::before {
+    content: "←";
+    font-size: 1.1em;
+    transition: transform 0.3s ease;
+}
+
+.back-nav-pill:hover::before {
+    transform: translateX(-2px);
 }
 
 @media (max-width: 768px) {
-    .breadcrumb-nav {
-        margin-top: 80px;
-        margin-bottom: 0;
-        font-size: 12px;
-        overflow-x: auto;
-        white-space: nowrap;
-        padding-bottom: 8px;
-        -webkit-overflow-scrolling: touch;
-        gap: 6px;
+    .back-nav-pill {
+        margin-top: 84px;
+        margin-left: 20px;
+        font-size: 13px;
+        padding: 8px 16px;
     }
-    .breadcrumb-nav::-webkit-scrollbar { display: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════
