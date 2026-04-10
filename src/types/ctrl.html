@@ -13,7 +13,7 @@
     <link rel="canonical" href="https://www.sbti-ai.com/types/ctrl.html" />
     <link rel="icon" type="image/png" href="/image/favicon.png">
     <link rel="apple-touch-icon" href="/image/favicon.png">
-    <link rel="stylesheet" href="../style.css?v=1.5">
+    <link rel="stylesheet" href="/style.css?v=1.6">
 
     <meta property="og:type" content="article" />
     <meta property="og:title" content="拿捏者 (CTRL) - SBTI 人格全维图鉴 | AI 赛博性格分析实验室" />
@@ -34,47 +34,69 @@
     }
     </script>
 </head>
-<body class="mesh-bg" style="padding-top: 80px;">
+<body class="mesh-bg">
+    <!-- 全局导航栏 -->
     <nav class="global-nav">
         <div class="nav-inner">
-            <a href="../index.html" class="nav-logo">
+            <a href="/index.html" class="nav-logo">
                 <img src="/image/logo.png" alt="SBTI Logo">
                 SBTI 人格实验室
             </a>
             <div class="nav-links">
-                <a href="../index.html" class="nav-link">首页</a>
-                <a href="../types.html" class="nav-link">人格类型</a>
-                <a href="../rankings.html" class="nav-link">人格排行榜</a>
-                <a href="../about.html" class="nav-link">关于测试</a>
+                <a href="/index.html" class="nav-link">首页</a>
+                <a href="/types.html" class="nav-link nav-link--active">人格类型</a>
+                <a href="/rankings.html" class="nav-link">人格排行榜</a>
+                <a href="/about.html" class="nav-link">关于测试</a>
+                <a href="/index.html#test" id="navStartBtn" class="nav-link nav-cta">开始测试 ⚡</a>
             </div>
+            <button class="nav-hamburger" id="navHamburger" aria-label="菜单">☰</button>
+        </div>
+        <div class="nav-mobile-menu" id="navMobileMenu">
+            <a href="/index.html" class="nav-mobile-link">🏠 首页</a>
+            <a href="/types.html" class="nav-mobile-link">🧬 人格类型</a>
+            <a href="/rankings.html" class="nav-mobile-link">🏆 人格排行榜</a>
+            <a href="/about.html" class="nav-mobile-link">📖 关于测试</a>
+            <a href="/index.html#test" id="navMobileStartBtn" class="nav-mobile-link nav-mobile-cta">⚡ 立即开始测试</a>
         </div>
     </nav>
 
-    <main class="type-detail-container">
-        <header class="type-header-hero">
-            <div class="type-code-pill">CTRL</div>
-            <h1 class="type-main-title">拿捏者</h1>
-            <div class="type-golden-phrase">"怎么样，被我拿捏了吧？"</div>
-        </header>
+    <main class="page-shell">
+        <div class="type-detail-container">
+            <header class="type-header-hero">
+                <div class="type-code-pill">CTRL</div>
+                <h1 class="type-main-title">拿捏者</h1>
+                <div class="type-golden-phrase">"怎么样，被我拿捏了吧？"</div>
+            </header>
 
-        <article class="detail-card">
-            <h2 class="detail-section-title">🧬 深度性格全维度档案</h2>
-            <div class="detail-content">
-                <p>恭喜您，您测出了全中国最为罕见的人格，您是宇宙熵增定律的天然反抗者！全世界所谓成功人士里，99.99%都是您的拙劣模仿者。 CTRL人格，是行走的人形自走任务管理器，普通人眼中的”规则”，在您这里只是出厂的基础参数设置；凡人所谓的”计划”，对您而言不过是心血来潮的随手涂鸦。拥有一个CTRL朋友意味着什么？意味着你的人生导航系统会变得更加精准、高效。因为CTRL最会拿捏了！！CTRL会在你人生列车即将脱轨的前一秒，用一个”Ctrl+S”帮你硬核存档，再用一套无法拒绝的逻辑把你强行拽回正轨。他们是您混乱生活最后的备份盘，是宇宙崩塌前唯一还亮着的那个重启键。</p>
-            </div>
-            
-            <div class="back-action-bar">
-                <a href="../index.html#test" class="btn-primary">⚡ 立即测试我的人格</a>
-                <a href="../types.html" class="btn-secondary">返回图鉴图谱</a>
-            </div>
-        </article>
+            <article class="detail-card">
+                <h2 class="detail-section-title">🧬 深度性格全维度档案</h2>
+                <div class="detail-content">
+                    <p>恭喜您，您测出了全中国最为罕见的人格，您是宇宙熵增定律的天然反抗者！全世界所谓成功人士里，99.99%都是您的拙劣模仿者。 CTRL人格，是行走的人形自走任务管理器，普通人眼中的”规则”，在您这里只是出厂的基础参数设置；凡人所谓的”计划”，对您而言不过是心血来潮的随手涂鸦。拥有一个CTRL朋友意味着什么？意味着你的人生导航系统会变得更加精准、高效。因为CTRL最会拿捏了！！CTRL会在你人生列车即将脱轨的前一秒，用一个”Ctrl+S”帮你硬核存档，再用一套无法拒绝的逻辑把你强行拽回正轨。他们是您混乱生活最后的备份盘，是宇宙崩塌前唯一还亮着的那个重启键。</p>
+                </div>
+                
+                <div class="back-action-bar">
+                    <a href="/index.html#test" class="btn-primary">⚡ 立即测试我的人格</a>
+                    <a href="/types.html" class="btn-secondary">返回图鉴图谱</a>
+                </div>
+            </article>
+        </div>
     </main>
 
-    <footer class="page-footer">
+    <footer class="main-footer">
         <div class="footer-inner">
             <p class="footer-copy">© 2026 SBTI 人格实验室 · 基于 15 维高阶心理模型</p>
             <p class="footer-kw">SBTI 人格测试 · AI 毒舌分析 · 赛博性格图谱</p>
         </div>
     </footer>
+
+    <script>
+        // 移动端汉堡菜单
+        const hamburger = document.getElementById('navHamburger');
+        if (hamburger) {
+            hamburger.addEventListener('click', function () {
+                document.getElementById('navMobileMenu').classList.toggle('active');
+            });
+        }
+    </script>
 </body>
 </html>

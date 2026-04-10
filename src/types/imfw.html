@@ -13,7 +13,7 @@
     <link rel="canonical" href="https://www.sbti-ai.com/types/imfw.html" />
     <link rel="icon" type="image/png" href="/image/favicon.png">
     <link rel="apple-touch-icon" href="/image/favicon.png">
-    <link rel="stylesheet" href="../style.css?v=1.5">
+    <link rel="stylesheet" href="/style.css?v=1.6">
 
     <meta property="og:type" content="article" />
     <meta property="og:title" content="废物 (IMFW) - SBTI 人格全维图鉴 | AI 赛博性格分析实验室" />
@@ -34,47 +34,69 @@
     }
     </script>
 </head>
-<body class="mesh-bg" style="padding-top: 80px;">
+<body class="mesh-bg">
+    <!-- 全局导航栏 -->
     <nav class="global-nav">
         <div class="nav-inner">
-            <a href="../index.html" class="nav-logo">
+            <a href="/index.html" class="nav-logo">
                 <img src="/image/logo.png" alt="SBTI Logo">
                 SBTI 人格实验室
             </a>
             <div class="nav-links">
-                <a href="../index.html" class="nav-link">首页</a>
-                <a href="../types.html" class="nav-link">人格类型</a>
-                <a href="../rankings.html" class="nav-link">人格排行榜</a>
-                <a href="../about.html" class="nav-link">关于测试</a>
+                <a href="/index.html" class="nav-link">首页</a>
+                <a href="/types.html" class="nav-link nav-link--active">人格类型</a>
+                <a href="/rankings.html" class="nav-link">人格排行榜</a>
+                <a href="/about.html" class="nav-link">关于测试</a>
+                <a href="/index.html#test" id="navStartBtn" class="nav-link nav-cta">开始测试 ⚡</a>
             </div>
+            <button class="nav-hamburger" id="navHamburger" aria-label="菜单">☰</button>
+        </div>
+        <div class="nav-mobile-menu" id="navMobileMenu">
+            <a href="/index.html" class="nav-mobile-link">🏠 首页</a>
+            <a href="/types.html" class="nav-mobile-link">🧬 人格类型</a>
+            <a href="/rankings.html" class="nav-mobile-link">🏆 人格排行榜</a>
+            <a href="/about.html" class="nav-mobile-link">📖 关于测试</a>
+            <a href="/index.html#test" id="navMobileStartBtn" class="nav-mobile-link nav-mobile-cta">⚡ 立即开始测试</a>
         </div>
     </nav>
 
-    <main class="type-detail-container">
-        <header class="type-header-hero">
-            <div class="type-code-pill">IMFW</div>
-            <h1 class="type-main-title">废物</h1>
-            <div class="type-golden-phrase">"我真的...是废物吗？"</div>
-        </header>
+    <main class="page-shell">
+        <div class="type-detail-container">
+            <header class="type-header-hero">
+                <div class="type-code-pill">IMFW</div>
+                <h1 class="type-main-title">废物</h1>
+                <div class="type-golden-phrase">"我真的...是废物吗？"</div>
+            </header>
 
-        <article class="detail-card">
-            <h2 class="detail-section-title">🧬 深度性格全维度档案</h2>
-            <div class="detail-content">
-                <p>恭喜您，您测出的不是一个人格，您是一种极其珍稀的、仅占世界人口0.0001％的——【废物】！废物们的自尊通常有些脆弱（这是一种高自尊的表现，因此看到废物一词，您也许会觉得我在骂您，但请别生气！）。废物缺乏安全感，偶尔也会缺乏主见，因此废物人格能精确地感知到周围最强的那个wifi信号（即他们认为最可靠的人），走进【废物】人格的生活，就像走进了一个顶级兰花的温室。需要精确控制温度（不能太冷淡）、湿度（不能太干涩）、以及每天定时进行”我爱你”的言语光合作用。给废物一颗糖，他们会还你一个完全信任你、亮晶晶的眼神——因此请相信我！您并非废物，而是这世界上最没有防备的、最纯粹的珍宝。</p>
-            </div>
-            
-            <div class="back-action-bar">
-                <a href="../index.html#test" class="btn-primary">⚡ 立即测试我的人格</a>
-                <a href="../types.html" class="btn-secondary">返回图鉴图谱</a>
-            </div>
-        </article>
+            <article class="detail-card">
+                <h2 class="detail-section-title">🧬 深度性格全维度档案</h2>
+                <div class="detail-content">
+                    <p>恭喜您，您测出的不是一个人格，您是一种极其珍稀的、仅占世界人口0.0001％的——【废物】！废物们的自尊通常有些脆弱（这是一种高自尊的表现，因此看到废物一词，您也许会觉得我在骂您，但请别生气！）。废物缺乏安全感，偶尔也会缺乏主见，因此废物人格能精确地感知到周围最强的那个wifi信号（即他们认为最可靠的人），走进【废物】人格的生活，就像走进了一个顶级兰花的温室。需要精确控制温度（不能太冷淡）、湿度（不能太干涩）、以及每天定时进行”我爱你”的言语光合作用。给废物一颗糖，他们会还你一个完全信任你、亮晶晶的眼神——因此请相信我！您并非废物，而是这世界上最没有防备的、最纯粹的珍宝。</p>
+                </div>
+                
+                <div class="back-action-bar">
+                    <a href="/index.html#test" class="btn-primary">⚡ 立即测试我的人格</a>
+                    <a href="/types.html" class="btn-secondary">返回图鉴图谱</a>
+                </div>
+            </article>
+        </div>
     </main>
 
-    <footer class="page-footer">
+    <footer class="main-footer">
         <div class="footer-inner">
             <p class="footer-copy">© 2026 SBTI 人格实验室 · 基于 15 维高阶心理模型</p>
             <p class="footer-kw">SBTI 人格测试 · AI 毒舌分析 · 赛博性格图谱</p>
         </div>
     </footer>
+
+    <script>
+        // 移动端汉堡菜单
+        const hamburger = document.getElementById('navHamburger');
+        if (hamburger) {
+            hamburger.addEventListener('click', function () {
+                document.getElementById('navMobileMenu').classList.toggle('active');
+            });
+        }
+    </script>
 </body>
 </html>

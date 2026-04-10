@@ -13,7 +13,7 @@
     <link rel="canonical" href="https://www.sbti-ai.com/types/poor.html" />
     <link rel="icon" type="image/png" href="/image/favicon.png">
     <link rel="apple-touch-icon" href="/image/favicon.png">
-    <link rel="stylesheet" href="../style.css?v=1.5">
+    <link rel="stylesheet" href="/style.css?v=1.6">
 
     <meta property="og:type" content="article" />
     <meta property="og:title" content="贫困者 (POOR) - SBTI 人格全维图鉴 | AI 赛博性格分析实验室" />
@@ -34,47 +34,69 @@
     }
     </script>
 </head>
-<body class="mesh-bg" style="padding-top: 80px;">
+<body class="mesh-bg">
+    <!-- 全局导航栏 -->
     <nav class="global-nav">
         <div class="nav-inner">
-            <a href="../index.html" class="nav-logo">
+            <a href="/index.html" class="nav-logo">
                 <img src="/image/logo.png" alt="SBTI Logo">
                 SBTI 人格实验室
             </a>
             <div class="nav-links">
-                <a href="../index.html" class="nav-link">首页</a>
-                <a href="../types.html" class="nav-link">人格类型</a>
-                <a href="../rankings.html" class="nav-link">人格排行榜</a>
-                <a href="../about.html" class="nav-link">关于测试</a>
+                <a href="/index.html" class="nav-link">首页</a>
+                <a href="/types.html" class="nav-link nav-link--active">人格类型</a>
+                <a href="/rankings.html" class="nav-link">人格排行榜</a>
+                <a href="/about.html" class="nav-link">关于测试</a>
+                <a href="/index.html#test" id="navStartBtn" class="nav-link nav-cta">开始测试 ⚡</a>
             </div>
+            <button class="nav-hamburger" id="navHamburger" aria-label="菜单">☰</button>
+        </div>
+        <div class="nav-mobile-menu" id="navMobileMenu">
+            <a href="/index.html" class="nav-mobile-link">🏠 首页</a>
+            <a href="/types.html" class="nav-mobile-link">🧬 人格类型</a>
+            <a href="/rankings.html" class="nav-mobile-link">🏆 人格排行榜</a>
+            <a href="/about.html" class="nav-mobile-link">📖 关于测试</a>
+            <a href="/index.html#test" id="navMobileStartBtn" class="nav-mobile-link nav-mobile-cta">⚡ 立即开始测试</a>
         </div>
     </nav>
 
-    <main class="type-detail-container">
-        <header class="type-header-hero">
-            <div class="type-code-pill">POOR</div>
-            <h1 class="type-main-title">贫困者</h1>
-            <div class="type-golden-phrase">"我穷，但我很专。"</div>
-        </header>
+    <main class="page-shell">
+        <div class="type-detail-container">
+            <header class="type-header-hero">
+                <div class="type-code-pill">POOR</div>
+                <h1 class="type-main-title">贫困者</h1>
+                <div class="type-golden-phrase">"我穷，但我很专。"</div>
+            </header>
 
-        <article class="detail-card">
-            <h2 class="detail-section-title">🧬 深度性格全维度档案</h2>
-            <div class="detail-content">
-                <p>恭喜您，您测出了【POOR - 贫困者】。这个“贫困”不是钱包余额的判决书，更像一种欲望断舍离后的资源再分配。别人把精力撒成漫天二维码，你把精力压成一束激光，照哪儿，哪儿就开始冒烟。POOR的世界很简单：不重要的东西一律降噪，重要的东西狠狠干到底。热闹、社交、虚荣、到处刷存在感？抱歉，没空。你不是资源少，你是把资源全部灌进了一个坑里，所以看起来像贫困，实际上像矿井。一旦某件事被你认定值得钻，外界再吵也只是背景杂音。</p>
-            </div>
-            
-            <div class="back-action-bar">
-                <a href="../index.html#test" class="btn-primary">⚡ 立即测试我的人格</a>
-                <a href="../types.html" class="btn-secondary">返回图鉴图谱</a>
-            </div>
-        </article>
+            <article class="detail-card">
+                <h2 class="detail-section-title">🧬 深度性格全维度档案</h2>
+                <div class="detail-content">
+                    <p>恭喜您，您测出了【POOR - 贫困者】。这个“贫困”不是钱包余额的判决书，更像一种欲望断舍离后的资源再分配。别人把精力撒成漫天二维码，你把精力压成一束激光，照哪儿，哪儿就开始冒烟。POOR的世界很简单：不重要的东西一律降噪，重要的东西狠狠干到底。热闹、社交、虚荣、到处刷存在感？抱歉，没空。你不是资源少，你是把资源全部灌进了一个坑里，所以看起来像贫困，实际上像矿井。一旦某件事被你认定值得钻，外界再吵也只是背景杂音。</p>
+                </div>
+                
+                <div class="back-action-bar">
+                    <a href="/index.html#test" class="btn-primary">⚡ 立即测试我的人格</a>
+                    <a href="/types.html" class="btn-secondary">返回图鉴图谱</a>
+                </div>
+            </article>
+        </div>
     </main>
 
-    <footer class="page-footer">
+    <footer class="main-footer">
         <div class="footer-inner">
             <p class="footer-copy">© 2026 SBTI 人格实验室 · 基于 15 维高阶心理模型</p>
             <p class="footer-kw">SBTI 人格测试 · AI 毒舌分析 · 赛博性格图谱</p>
         </div>
     </footer>
+
+    <script>
+        // 移动端汉堡菜单
+        const hamburger = document.getElementById('navHamburger');
+        if (hamburger) {
+            hamburger.addEventListener('click', function () {
+                document.getElementById('navMobileMenu').classList.toggle('active');
+            });
+        }
+    </script>
 </body>
 </html>
