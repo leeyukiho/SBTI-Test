@@ -501,19 +501,17 @@ function openShareModal(result) {
     const type = result.finalType;
 
     // 注入数据
-    document.getElementById('posterTypeCode').textContent = type.code;
-    document.getElementById('posterTypeCn').textContent = type.cn;
     document.getElementById('posterDescText').textContent = type.intro;
     document.getElementById('posterDate').textContent = new Date().toLocaleDateString('zh-CN').replace(/\//g, '.');
 
     const charImg = document.getElementById('posterCharImg');
     if (charImg) {
         // 如果是本地路径，确保图片已加载
-        charImg.src = `/image/character/${type.code}.png`;
+        charImg.src = `./image/${type.code}.png`;
     }
 
     // 双重保险：设置显式 display 并通过类名控制动画
-    modal.style.display = 'flex'; 
+    modal.style.display = 'flex';
     modal.classList.add('active');
 
     // 记录分享动作（如有埋点可在此执行）
@@ -602,7 +600,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bindBtn('restartBtn', startTest);
     bindBtn('toTopBtn', () => showScreen('intro'));
     bindBtn('aiTriggerBtn', triggerAiAnalysis);
-    
+
     // 分享与海报绑定
     bindBtn('shareResultBtn', executeResultShare);
     bindBtn('shareResultBtnTop', executeResultShare);
