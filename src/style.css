@@ -1007,4 +1007,48 @@ button:disabled {
         border-radius: 20px;
         padding: 16px;
     }
+}
+
+/* ─── SEO FAQ 区块样式 ────────────────────────────────────── */
+.seo-faq {
+    margin-top: 32px;
+    padding: 24px;
+    background: linear-gradient(180deg, #f9fbf9, #ffffff);
+    border-radius: 18px;
+    border: 1px solid var(--line);
+}
+
+.seo-faq h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: var(--accent-strong);
+    text-align: center;
+}
+
+.seo-faq details {
+    margin-bottom: 12px;
+    border-bottom: 1px dashed var(--line);
+    padding-bottom: 12px;
+}
+
+.seo-faq details:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.seo-faq summary {
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    color: var(--text);
+    padding: 8px 0;
+    outline: none;
+}
+
+.seo-faq p {
+    margin-top: 8px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.8;
 }

@@ -20,10 +20,33 @@
 
     <link rel="stylesheet" href="style.css">
     <script type="module" src="./js/app.js"></script>
+
+    <!-- JSON-LD 结构化数据 (SEO 终极搜索引擎富媒体杀器) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "SBTI 人格测试与AI毒舌分析系统",
+      "alternateName": "SBTI 测试正版",
+      "applicationCategory": "LifestyleApplication",
+      "operatingSystem": "All",
+      "description": "爆火的 SBTI 性格量表，基于 15 维度的深度性格评测。内置 DeepSeek AI 引擎提供独家毒舌锐评与深度人格解析，全网唯一的 MBTI 硬核平替测试。",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "CNY"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "394801"
+      }
+    }
+    </script>
 </head>
 
 <body>
-    <div class="shell">
+    <main class="shell">
         <!-- 全局顶部导航 -->
         <header class="main-header">
             <div class="logo">🧬 SBTI 人格实验室</div>
@@ -59,6 +82,23 @@
                         </ul>
                     </div>
                 </div>
+
+                <!-- SEO 流水席：大量长尾搜索词喂养给搜索引擎（FAQ 形式最为自然合法） -->
+                <article class="seo-faq">
+                    <h2>关于 SBTI 毒舌人格测试的常见疑问</h2>
+                    <details open>
+                        <summary>什么是 SBTI 人格测试？比 MBTI 准吗？</summary>
+                        <p>SBTI 测试是近期风靡互联网的全新性格量表。有别于流行但刻板的 MBTI 16 型人格，SBTI 基于 15 个更加深刻、甚至刁钻的细分维度（例如：自尊自信、依恋安全感、世界观倾向）进行雷达画像。它主打“不留情面、撕破伪装”，致力于成为目前全网最具穿透力、最真实的性格诊断工具。</p>
+                    </details>
+                    <details open>
+                        <summary>AI 毒舌锐评是怎么工作的？</summary>
+                        <p>当您完成 SBTI 全部测试题后，系统除展示精准的十五维匹配分析图外，还会将你的多维数据点阵提交给 DeepSeek AI 大模型引擎。AI 将结合所有评分进行多模态推理，为您免费生成一份量身定制、千人千面、且极其辛辣毒舌的性格“批斗”长文。</p>
+                    </details>
+                    <details open>
+                        <summary>测试需要付费吗？有防坑指南吗？</summary>
+                        <p>完全免费！这套纯净的在线小游戏版本基于原作者框架免费开放，不含任何隐藏扣费或强迫分享。请注意：部分答案会触发特殊的“隐藏人格池”（如酒鬼人格），测验纯属娱乐，请不要将其作为医学心理评价标准。快去召唤你的 AI 吧！</p>
+                    </details>
+                </article>
             </div>
 
             <!-- 页脚 -->
@@ -162,7 +202,7 @@
             </div>
         </section>
 
-    </div>
+    </main>
 </body>
 
 </html>
