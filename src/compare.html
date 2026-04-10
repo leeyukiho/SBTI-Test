@@ -461,7 +461,18 @@
         }
 
         collisionBtn.addEventListener('click', triggerAnalysis);
-        document.getElementById('reRoastBtn').addEventListener('click', triggerAnalysis);
+        
+        // 修改：点击“换个风格再撞一次”仅做状态切换
+        document.getElementById('reRoastBtn').addEventListener('click', () => {
+            // 切换到另一个风格
+            const nextStyle = currentStyle === 'roast' ? 'gentle' : 'roast';
+            const targetOpt = document.querySelector(`.style-option[data-style="${nextStyle}"]`);
+            if (targetOpt) targetOpt.click();
+            
+            // 隐藏结果区域并滚动回顶部
+            resultSection.style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
         initSelectors();
 
