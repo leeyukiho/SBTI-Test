@@ -512,22 +512,60 @@
             });
         }
 
-        // 伪实时计数器：每4~8秒随机加1~2
+        // 核心全球同步统计算法 (所有人看到的都是相同的数字)
+        function getSynchronizedFakeData() {
+            const BASE_COUNT = 2182030; 
+            const START_DAY = 20492; // 基准启动日：2026-04-10
+            
+            // 采用统一的东八区时间，保证所有人同一时刻截断日期一致
+            const utc8Time = Date.now() + 8 * 3600 * 1000;
+            const daysSinceEpoch = Math.floor(utc8Time / 86400000);
+            const msInToday = utc8Time % 86400000;
+            
+            // 基于天数种子的确定性伪随机数生成器
+            function seededRandom(seed) {
+                const x = Math.sin(seed) * 10000;
+                return x - Math.floor(x);
+            }
+            
+            let total = BASE_COUNT;
+            
+            // 累加过去每天的随机增量 (每天在 4000 ~ 8000 间波动)
+            for (let i = START_DAY; i < daysSinceEpoch; i++) {
+                total += Math.floor(4000 + seededRandom(i) * 4000);
+            }
+            
+            // 今天的增量与其在一天的进度
+            const todayTarget = Math.floor(4000 + seededRandom(daysSinceEpoch) * 4000);
+            const todayProgress = msInToday / 86400000;
+            const addedToday = Math.floor(todayTarget * todayProgress);
+            
+            return {
+                totalCount: total + addedToday,
+                todayCount: addedToday
+            };
+        }
+
+        // 绑定到首页DOM
         (function () {
             const el = document.getElementById('heroCounter');
             if (!el) return;
-            let count = 2187430;
+            
+            let currentData = getSynchronizedFakeData();
+            el.textContent = currentData.totalCount.toLocaleString();
+
             function tick() {
-                const inc = Math.random() < 0.6 ? 1 : Math.random() < 0.8 ? 2 : 0;
-                if (inc > 0) {
-                    count += inc;
-                    el.textContent = count.toLocaleString();
+                const newData = getSynchronizedFakeData();
+                if (newData.totalCount > currentData.totalCount) {
+                    currentData = newData;
+                    el.textContent = currentData.totalCount.toLocaleString();
                     el.classList.add('bump');
                     setTimeout(() => el.classList.remove('bump'), 300);
                 }
-                setTimeout(tick, Math.floor(Math.random() * 4000) + 4000);
+                // 每隔500毫秒高频嗅探，检测客观算法是否走入下一个整数
+                setTimeout(tick, 500);
             }
-            setTimeout(tick, 5000);
+            setTimeout(tick, 500);
         })();
     </script>
 </body>

@@ -255,24 +255,57 @@
             document.getElementById('updateTime').textContent = `今天 ${h}:${m}`;
         }
 
-        // 伪实时计数器：每3~8秒随机递增
+        // 核心全球同步统计算法 (所有人看到的都是相同的数字)
+        function getSynchronizedFakeData() {
+            const BASE_COUNT = 2182030; 
+            const START_DAY = 20492; // 基准启动日：2026-04-10
+            
+            // 采用统一的东八区时间，保证所有人同一时刻截断日期一致
+            const utc8Time = Date.now() + 8 * 3600 * 1000;
+            const daysSinceEpoch = Math.floor(utc8Time / 86400000);
+            const msInToday = utc8Time % 86400000;
+            
+            function seededRandom(seed) {
+                const x = Math.sin(seed) * 10000;
+                return x - Math.floor(x);
+            }
+            
+            let total = BASE_COUNT;
+            for (let i = START_DAY; i < daysSinceEpoch; i++) {
+                total += Math.floor(4000 + seededRandom(i) * 4000);
+            }
+            
+            const todayTarget = Math.floor(4000 + seededRandom(daysSinceEpoch) * 4000);
+            const todayProgress = msInToday / 86400000;
+            const addedToday = Math.floor(todayTarget * todayProgress);
+            
+            return {
+                totalCount: total + addedToday,
+                todayCount: addedToday
+            };
+        }
+
         function startFakeCounter() {
             const totalEl = document.getElementById('totalCount');
             const todayEl = document.getElementById('todayCount');
-            let total = 2187430;
-            let today = 4829;
-            setInterval(() => {
-                const inc = Math.floor(Math.random() * 3);
-                if (inc > 0) {
-                    total += inc;
-                    today += inc;
-                    totalEl.textContent = total.toLocaleString();
-                    todayEl.textContent = today.toLocaleString();
-                    // 数字跳动动画
+            
+            let currentData = getSynchronizedFakeData();
+            totalEl.textContent = currentData.totalCount.toLocaleString();
+            todayEl.textContent = currentData.todayCount.toLocaleString();
+
+            function tick() {
+                const newData = getSynchronizedFakeData();
+                if (newData.totalCount > currentData.totalCount) {
+                    currentData = newData;
+                    totalEl.textContent = currentData.totalCount.toLocaleString();
+                    todayEl.textContent = currentData.todayCount.toLocaleString();
+                    
                     totalEl.classList.add('count-bump');
                     setTimeout(() => totalEl.classList.remove('count-bump'), 400);
                 }
-            }, Math.floor(Math.random() * 4000) + 4000);
+                setTimeout(tick, 500);
+            }
+            setTimeout(tick, 500);
         }
 
         renderRankList();
