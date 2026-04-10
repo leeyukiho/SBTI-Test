@@ -516,51 +516,101 @@ bindBtn('toTopBtn',     () => showScreen('intro'));
 bindBtn('aiTriggerBtn', triggerAiAnalysis);
 
 // 核心分享逻辑（支持多入口触发）
-function executeResultShare() {
-    const result = app.lastResult;
     if (!result) {
         alert('⚠️ 请先完成测试！');
         return;
     }
     
+    // 打开精美海报模态框
+    openShareModal(result);
+}
+
+/**
+ * 打开分享海报模态框并注入数据
+ */
+function openShareModal(result) {
+    const modal = document.getElementById('posterModal');
+    if (!modal) return;
+
     const type = result.finalType;
-    const shareText = `【SBTI 赛博人格报告】\n我的人格类型是：${type.code}（${type.cn}）\n匹配度：${result.badge}\n人设简介：${type.intro}\n\n你想知道自己是什么“牛马”或者“大神”吗？\n你也快来测测吧，准到离谱！\n👇 点击链接立即开始：\nhttps://www.sbti-ai.com/`;
     
-    const showFeedback = () => {
-        const btns = [document.getElementById('shareResultBtnTop'), document.getElementById('shareResultBtn')];
-        btns.forEach(btn => {
-            if (!btn) return;
-            const oldHtml = btn.innerHTML;
-            btn.innerHTML = '✅ 已复制，快去分享吧';
-            setTimeout(() => btn.innerHTML = oldHtml, 2500);
+    // 注入数据
+    document.getElementById('posterTypeCode').textContent = type.code;
+    document.getElementById('posterTypeCn').textContent   = type.cn;
+    document.getElementById('posterDescText').textContent = type.intro;
+    document.getElementById('posterDate').textContent     = new Date().toLocaleDateString('zh-CN').replace(/\//g, '.');
+    
+    const charImg = document.getElementById('posterCharImg');
+    if (charImg) {
+        // 如果是本地路径，确保图片已加载
+        charImg.src = `/image/character/${type.code}.png`;
+    }
+
+    modal.classList.add('active');
+    
+    // 记录分享动作（如有埋点可在此执行）
+    console.log('Open Share Poster:', type.code);
+}
+
+/**
+ * 捕获海报区域并导出图片
+ */
+async function savePosterAsImage() {
+    const downloadBtn = document.getElementById('downloadPosterBtn');
+    const captureArea = document.getElementById('mainPosterCard');
+    
+    if (!captureArea || typeof html2canvas === 'undefined') {
+        alert('海报引擎加载中，请稍后再次重试');
+        return;
+    }
+
+    try {
+        downloadBtn.textContent = '⏳ 正在生成高清海报...';
+        downloadBtn.disabled = true;
+
+        const canvas = await html2canvas(captureArea, {
+            useCORS: true,
+            scale: 2, // 提升清晰度
+            backgroundColor: '#17211a',
+            logging: false
         });
-    };
 
-    const fallbackCopy = (text) => {
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        textArea.style.position = "fixed"; 
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        try {
-            document.execCommand('copy');
-            showFeedback();
-        } catch (err) {
-            alert('复制失败，请手动截屏分享');
+        // 手机端优先尝试 Web Share API (如果支持且是 HTTPS)
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        const file = new File([blob], `SBTI_Poster_${new Date().getTime()}.png`, { type: 'image/png' });
+
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+                files: [file],
+                title: 'SBTI 赛博人格报告',
+                text: '这是我的赛博人格测试结果，快来看看你的！'
+            });
+        } else {
+            // 回退方案：下载图片
+            const link = document.createElement('a');
+            link.download = `SBTI_Result_${new Date().getTime()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            alert('海报已生成！请在下载管理中查看，或长按图片保存。');
         }
-        document.body.removeChild(textArea);
-    };
-
-    if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(shareText).then(showFeedback).catch(() => fallbackCopy(shareText));
-    } else {
-        fallbackCopy(shareText);
+    } catch (err) {
+        console.error('Poster build failed:', err);
+        alert('海报生成失败，由于浏览器兼容性，请尝试手动截屏分享。');
+    } finally {
+        downloadBtn.textContent = '🔥 长按下方图片保存，或点我保存';
+        downloadBtn.disabled = false;
     }
 }
 
 bindBtn('shareResultBtn', executeResultShare);
 bindBtn('shareResultBtnTop', executeResultShare);
+
+// 海报模态框专用绑定
+bindBtn('downloadPosterBtn', savePosterAsImage);
+bindBtn('closePosterBtn', () => {
+    const modal = document.getElementById('posterModal');
+    if (modal) modal.classList.remove('active');
+});
 
 const navStartHandler = (e) => {
     e.preventDefault();

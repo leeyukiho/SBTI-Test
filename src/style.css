@@ -32,19 +32,9 @@
 html, body {
     margin: 0;
     padding: 0;
-}
-
-html {
-    scroll-padding-top: 80px; /* 防止锚点定位时被顶部悬浮导航区遮挡 */
-}
-
-body {
-    /* 极致流体排版字体群 */
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-    color: var(--text);
-    min-height: 100vh;
-    background-color: var(--bg-base);
+    width: 100%;
     overflow-x: hidden;
+    -webkit-overflow-scrolling: touch; /* 优化 iOS 滚动流畅度 */
 }
 
 body::before {
@@ -73,6 +63,16 @@ body::before {
     padding: 24px 20px 64px;
     position: relative;
     z-index: 1;
+    overflow: hidden; /* 防止子元素意外溢出 */
+}
+
+.page-shell {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 20px 64px;
+    position: relative;
+    z-index: 1;
+    overflow-x: hidden;
 }
 
 /* ─── 毛玻璃卡片核心 ────────────────────────────────────── */
@@ -2799,6 +2799,15 @@ button:disabled {
     margin-bottom: 32px;
 }
 
+@media (max-width: 500px) {
+    .index-hero-banner {
+        padding: 48px 20px;
+        margin-left: -5px;
+        margin-right: -5px;
+        border-radius: var(--radius-md);
+    }
+}
+
 .hero-glow-orb {
     position: absolute;
     border-radius: 50%;
@@ -3348,3 +3357,186 @@ button:disabled {
         gap: 16px;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   海报分享模态框与卡片 (Main Poster UI)
+   ═══════════════════════════════════════════════════════════ */
+.share-modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.share-modal.active { display: flex; }
+
+.share-card-container {
+    max-width: 420px;
+    width: 100%;
+    background: #fff;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+    position: relative;
+    animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalPop {
+    0% { transform: scale(0.9) translateY(20px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* 海报截图核心区 */
+.poster-capture-area {
+    background: linear-gradient(135deg, #17211a 0%, #2f4938 100%);
+    color: #fff;
+    padding: 40px 32px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.poster-char-glow {
+    position: absolute;
+    top: 15%; left: 50%;
+    transform: translateX(-50%);
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(94, 127, 100, 0.4) 0%, transparent 70%);
+    pointer-events: none;
+    filter: blur(30px);
+}
+
+.poster-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
+
+.poster-logo {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #a3c1a9;
+    text-transform: uppercase;
+}
+
+.poster-date {
+    font-size: 12px;
+    opacity: 0.6;
+    font-weight: 600;
+}
+
+.poster-char-img {
+    width: 100%;
+    max-height: 320px;
+    object-fit: contain;
+    z-index: 1;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+}
+
+.poster-info-box {
+    z-index: 1;
+    text-align: center;
+}
+
+.poster-type-code {
+    font-family: 'Outfit', sans-serif;
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 8px;
+    background: linear-gradient(90deg, #fff, #a3c1a9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.poster-type-cn {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.poster-desc {
+    font-size: 14px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 16px 20px;
+    border-radius: 16px;
+    border-left: 3px solid #5e7f64;
+    text-align: left;
+}
+
+.poster-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1;
+}
+
+.poster-url {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: #a3c1a9;
+}
+
+.poster-slogan {
+    font-size: 10px;
+    opacity: 0.5;
+    margin-top: 4px;
+}
+
+.poster-qr {
+    width: 48px;
+    height: 48px;
+    background: #fff;
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.poster-qr img { width: 100%; height: 100%; object-fit: contain; }
+
+.modal-actions {
+    padding: 24px;
+    background: #f8faf9;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-download {
+    background: linear-gradient(135deg, #273b2d 0%, #17211a 100%);
+    color: #fff;
+    border: none;
+    padding: 16px;
+    border-radius: 16px;
+    font-weight: 800;
+    font-size: 15px;
+    box-shadow: 0 8px 20px rgba(39, 59, 45, 0.2);
+}
+
+.btn-close-modal {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    padding: 12px;
+    border-radius: 14px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.btn-download:active { transform: scale(0.98); }
