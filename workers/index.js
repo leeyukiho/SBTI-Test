@@ -3,17 +3,10 @@
  * 隔离 AI API Key，对外仅暴露 /analyze 接口
  */
 
-// 允许的来源列表（本地开发 + 生产域名，按需修改）
-const ALLOWED_ORIGINS = [
-    'http://localhost:5500',
-    'http://127.0.0.1:5500',
-    'http://localhost:8080',
-    'https://sbti.pages.dev',  // CF Pages 默认域名，按实际替换
-];
-
-/** CORS 响应头生成 */
-function corsHeaders(origin) {
-    const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+/** CORS 响应头生成（来源列表从 env.ALLOWED_ORIGINS 读取，逗号分隔）*/
+function corsHeaders(origin, env) {
+    const list = (env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
+    const allowed = list.includes(origin) ? origin : (list[0] || '*');
     return {
         'Access-Control-Allow-Origin': allowed,
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -71,7 +64,7 @@ export default {
     async fetch(request, env, ctx) {
         const url = new URL(request.url);
         const origin = request.headers.get('Origin') || '';
-        const headers = corsHeaders(origin);
+        const headers = corsHeaders(origin, env);
 
         // 预检请求
         if (request.method === 'OPTIONS') {
