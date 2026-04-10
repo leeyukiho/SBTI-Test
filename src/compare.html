@@ -221,6 +221,41 @@
             margin-top: 24px;
             display: none;
         }
+
+        /* 风格选择器样式 */
+        .style-selector {
+            display: flex;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 4px;
+            border-radius: 50px;
+            margin: 20px auto;
+            width: fit-content;
+            border: 1px solid var(--border-color);
+        }
+
+        .style-option {
+            padding: 8px 24px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: var(--muted);
+        }
+
+        .style-option.active {
+            background: white;
+            color: var(--accent-strong);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .style-option[data-style="roast"].active {
+            color: #d32f2f;
+        }
+
+        .style-option[data-style="gentle"].active {
+            color: #2e7d32;
+        }
     </style>
 </head>
 
@@ -285,9 +320,13 @@
         </section>
 
         <div class="analyze-trigger-section">
+            <div class="style-selector" id="styleSelector">
+                <div class="style-option active" data-style="roast">🌶️ 毒舌锐评</div>
+                <div class="style-option" data-style="gentle">🍃 温和疗愈</div>
+            </div>
             <button id="collisionBtn" class="btn-collision">💥 开启人格碰撞分析</button>
             <p id="loadingTip" style="display:none; color: var(--accent-strong); margin-top:10px; font-weight:600;">正在连线
-                AI 情感拆解师...</p>
+                AI 人格拆解师...</p>
         </div>
 
         <section class="compatibility-result" id="resultSection">
@@ -359,6 +398,17 @@
             type();
         }
 
+        // 风格切换逻辑
+        let currentStyle = 'roast';
+        const styleOptions = document.querySelectorAll('.style-option');
+        styleOptions.forEach(opt => {
+            opt.addEventListener('click', () => {
+                styleOptions.forEach(o => o.classList.remove('active'));
+                opt.classList.add('active');
+                currentStyle = opt.dataset.style;
+            });
+        });
+
         async function triggerAnalysis() {
             const codeA = selectA.value;
             const codeB = selectB.value;
@@ -369,6 +419,7 @@
             }
 
             collisionBtn.disabled = true;
+            loadingTip.textContent = currentStyle === 'gentle' ? '正在邀请治愈系导师...' : '正在连线 AI 人格拆解师...';
             loadingTip.style.display = 'block';
             resultSection.style.display = 'none';
             retryActions.style.display = 'none';
@@ -380,7 +431,7 @@
                 const resp = await fetch('https://api.sbti-ai.com/analyze-cp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ typeA, typeB })
+                    body: JSON.stringify({ typeA, typeB, style: currentStyle })
                 });
 
                 if (!resp.ok) throw new Error('API 服务不可用');
@@ -389,6 +440,11 @@
 
                 loadingTip.style.display = 'none';
                 resultSection.style.display = 'block';
+                
+                // 根据模式调整结果卡片标签
+                const roastLabel = document.querySelector('.roast-label');
+                roastLabel.textContent = currentStyle === 'gentle' ? '专属关系深度分析 (温和模式)' : '专属关系锐评 (毒舌模式)';
+                
                 typeWriter(data.analysis, roastContent);
 
                 setTimeout(() => {
@@ -396,7 +452,7 @@
                 }, 2000);
 
             } catch (err) {
-                alert('系统拥挤，请稍后再试：' + err.message);
+                alert('分析失败：' + err.message);
                 collisionBtn.disabled = false;
                 loadingTip.style.display = 'none';
             } finally {

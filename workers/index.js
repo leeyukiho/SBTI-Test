@@ -61,23 +61,32 @@ ${dimLines}
 - 拒绝排版分点（1., 2.），要像连珠炮一样直接输出一段文字，让人喘不过气。`;
 }
 
-/** 构造双人性格碰撞（CP关系）Prompt */
-function buildCpPrompt(typeA, typeB) {
-    return `你是一个顶级毒舌的人格分析师，专门看人不顺眼，尤其擅长拆穿人际关系中的虚伪与自我感动。现在有两个人在一起了，他们的人格类型分别是：
-- A人：${typeA.code}（${typeA.cn}）
-- B人：${typeB.code}（${typeB.cn}）
+/** 构造双人人格碰撞（CP关系）Prompt */
+function buildCpPrompt(typeA, typeB, style = 'roast') {
+    const isGentle = style === 'gentle';
+    
+    const roleSetting = isGentle 
+        ? "你是一个极具洞察力的温情关系咨询导师，擅长发现不同性格间的互补之美。你说话温润、专业、充满智慧，字里行间透着包容。"
+        : "你是一个嘴臭但眼毒的人格分析师，专拆穿人际关系中的虚伪与自我感动。说话犀利、刻薄、有梗，字字见血。";
+
+    const styleInstructions = isGentle
+        ? "写一段 300 字左右的【深度互补性分析】。要求：1. 开头给出一个温暖的【CP名】。2. 分析这两种人格在一起时的灵魂共鸣点。3. 面对冲突时，他们如何用各自的优势去化解。4. 描述一个他们共同进步的理想生活画面。5. 拒绝肤浅的赞美，要写出那种'命运般契合'的宿命感。6. 语言优美，富有治愈力。"
+        : "写一段 250 字左右的【毒舌关系锐评】。要求：1. 开头给出一个讽刺的【CP名】。2. 撕开这两人在一起时互相折磨、互相嫌弃的真相。3. 描述一个他们吵架或冷战的车祸现场。4. 指出谁是那个受气包，谁是那个施压者。5. 拒绝任何‘虽然但是’的废话，火力全开。6. 语言尖酸，充满当代社交梗。";
+
+    const tokenControl = "【硬性约束】：内容要干练，禁止废话，禁止重复人格介绍，直接进入关系碰撞核心。总字数严格控制在 300 字以内。";
+
+    return `${roleSetting}
+
+## 碰撞目标
+- 角色 A：${typeA.code}（${typeA.cn}）
+- 角色 B：${typeB.code}（${typeB.cn}）
 
 ## 你的任务
-请针对这两个人格在一起的【相处现场】写一段 250 字左右的毒舌锐评。
+${styleInstructions}
 
-【要求】：
-1. 风格必须犀利、刻薄、有梗，拒绝任何温情的、高情商的废话。
-2. 核心分析：这两个性格在一起最容易发生什么碰撞？是谁在忍谁？还是两个人都已经在报警的路上了？
-3. 必须包含一个讽刺性的【CP名】（放在开头，类似于“薛定谔的恩爱组合”）。
-4. 场景化吐槽：结合两人的典型特征，描述他们吵架、冷战或互相折磨的日常（比如：一个在疯狂输出，一个在原地装死）。
-5. 结果不需要详细分析每个维度，要侧重于由于人格标签带来的【化学反应】。
-6. 收尾给出一句针对这对组合的【尖酸忠告】。
-7. 拒绝使用“虽然...但是”这种逻辑。全程火力全开！`;
+## 避坑指南
+${tokenControl}
+收尾给出一句极具代表性的【${isGentle ? '治愈箴言' : '尖酸忠告'}】。`;
 }
 
 /** 调用 DeepSeek API */
@@ -179,31 +188,32 @@ export default {
             } else if (url.pathname === '/analyze-cp') {
                 // ───── 双人碰撞逻辑 ─────
                 const body = await request.json();
-                const { typeA, typeB } = body;
+                const { typeA, typeB, style } = body;
                 if (!typeA || !typeB || !typeA.code || !typeB.code) {
                     return new Response(JSON.stringify({ error: '缺少 typeA 或 typeB' }), { status: 422, headers: { ...cors, 'Content-Type': 'application/json' } });
                 }
 
+                const targetStyle = style || 'roast';
                 // 排序以保证 A+B 和 B+A 共享缓存名，随机选择变体索引 v0-v9
                 const sortedTypes = [typeA.code, typeB.code].sort();
                 const vIdx = Math.floor(Math.random() * 10);
-                const cacheKeyRaw = `cp:${sortedTypes[0]}:${sortedTypes[1]}:v${vIdx}`;
+                const cacheKeyRaw = `${targetStyle}:cp:${sortedTypes[0]}:${sortedTypes[1]}:v${vIdx}`;
 
                 let cache = caches.default, cacheKey = null, cachedResponse = null;
                 try {
-                    const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(cacheKeyRaw + "_v5")); 
+                    const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(cacheKeyRaw + "_v6")); 
                     const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
                     cacheKey = new Request(`https://sbti.cache/analyze-cp/${hashHex}`, { method: 'GET' });
                     cachedResponse = await cache.match(cacheKey);
                 } catch (e) { cache = null; }
 
                 if (cachedResponse) {
-                    return new Response(cachedResponse.body, { status: 200, headers: { ...cors, 'Content-Type': 'application/json', 'X-Cache': 'HIT', 'X-Variant': vIdx } });
+                    return new Response(cachedResponse.body, { status: 200, headers: { ...cors, 'Content-Type': 'application/json', 'X-Cache': 'HIT', 'X-Variant': vIdx, 'X-Style': targetStyle } });
                 }
 
-                const prompt = buildCpPrompt(typeA, typeB);
+                const prompt = buildCpPrompt(typeA, typeB, targetStyle);
                 const analysis = await callDeepSeek(env, prompt);
-                const responseBody = JSON.stringify({ analysis, variant: vIdx });
+                const responseBody = JSON.stringify({ analysis, variant: vIdx, style: targetStyle });
 
                 if (cache && cacheKey) {
                     ctx.waitUntil(cache.put(cacheKey, new Response(responseBody, { status: 200, headers: { 'Content-Type': 'application/json', 'Cache-Control': 's-maxage=2592000' } })));
