@@ -133,7 +133,30 @@ export default {
             });
         }
 
-        // 调用 DeepSeek
+        // ======= Cache API 缓存拦截逻辑 =======
+        const cache = caches.default;
+        // 把会影响评价的字段打成一个特征字符串
+        const payloadStr = JSON.stringify({ typeCode, typeCn, similarity, exact, levels });
+        
+        // 生成对应哈希当做 Cache Key (Cache API 必须用 GET Request 做 Key)
+        const msgUint8 = new TextEncoder().encode(payloadStr);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        const cacheKey = new Request(`https://sbti.cache/analyze/${hashHex}`, { method: 'GET' });
+
+        // 尝试命中缓存
+        let cachedResponse = await cache.match(cacheKey);
+        if (cachedResponse) {
+            // 命中缓存，直接复制并加上跨域等基础头部
+            const newResp = new Response(cachedResponse.body, cachedResponse);
+            Object.entries(headers).forEach(([k, v]) => newResp.headers.set(k, v));
+            newResp.headers.set('X-Cache-Status', 'HIT');
+            return newResp;
+        }
+        // ===================================
+
+        // 没命中，老老实实调用 DeepSeek
         let analysis;
         try {
             const prompt = buildPrompt({ typeCode, typeCn, similarity, exact, levels });
@@ -147,9 +170,25 @@ export default {
             });
         }
 
-        return new Response(JSON.stringify({ analysis }), {
+        const responseData = JSON.stringify({ analysis });
+        
+        // 构造返回用户的响应（带 MISS）
+        const finalResponse = new Response(responseData, {
             status: 200,
-            headers: { ...headers, 'Content-Type': 'application/json' }
+            headers: { ...headers, 'Content-Type': 'application/json', 'X-Cache-Status': 'MISS' }
         });
+
+        // ======= 将结果推入缓存 =======
+        // Cache API 需要缓存响应带 Cache-Control 头部
+        const cacheResponse = new Response(responseData, {
+            status: 200,
+            headers: { 
+                'Content-Type': 'application/json',
+                'Cache-Control': 's-maxage=2592000' // 放缓存里存一个月 (30天)
+            }
+        });
+        ctx.waitUntil(cache.put(cacheKey, cacheResponse));
+
+        return finalResponse;
     }
 };
