@@ -45,7 +45,8 @@ ${dimLines}
 
 /** 调用 Cloudflare AI Workers (Workers AI) */
 async function runAI(env, prompt) {
-    const model = env.AI_MODEL || '@cf/qwen/qwen3-30b-a3b-fp8';
+    // qwen2.5-72b 稳定输出中文，无"思考模式"干扰
+    const model = env.AI_MODEL || '@cf/qwen/qwen2.5-72b-instruct-fp8';
     const maxTokens = Number(env.AI_MAX_TOKENS) || 512;
     const temperature = Number(env.AI_TEMPERATURE) || 0.85;
 
@@ -57,7 +58,8 @@ async function runAI(env, prompt) {
         max_tokens: maxTokens,
         temperature,
     });
-    return response.response || response.result || '';
+    // 兼容不同模型的返回结构
+    return response.response || response.result || response.content || response.text || JSON.stringify(response) || '';
 }
 
 /** 主请求处理器 */
