@@ -3214,4 +3214,137 @@ button:disabled {
     .page-hero { padding: 24px 20px; }
     .about-card { padding: 20px; }
     .nav-shortcut-grid { grid-template-columns: 1fr; }
-}
+}
+
+/* ─── 面包屑组件 (Breadcrumbs) ────────────────────────────────────── */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 32px;
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 600;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    width: fit-content;
+    backdrop-filter: blur(8px);
+}
+
+.breadcrumb a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.breadcrumb a:hover {
+    color: var(--accent-strong);
+}
+
+.breadcrumb-sep {
+    color: var(--line);
+    font-size: 10px;
+}
+
+.breadcrumb-current {
+    color: var(--muted);
+    opacity: 0.8;
+}
+
+/* ─── 404 页面专用 ────────────────────────────────────── */
+.hero-404 {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.hero-404 h1 {
+    font-size: clamp(80px, 15vw, 160px);
+    margin: 0;
+    line-height: 1;
+    opacity: 0.2;
+    font-family: 'Outfit', sans-serif;
+}
+
+.hero-404 .error-msg {
+    margin-top: -40px;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent-strong);
+}
+
+.hero-404 .error-desc {
+    margin-top: 16px;
+    color: var(--muted);
+    max-width: 480px;
+}
+
+/* ─── 全站统一页脚增强 (Page Footer) ────────────────────────────────────── */
+.page-footer {
+    padding: 60px 20px;
+    margin-top: 80px;
+    background: transparent;
+    border-top: 1px solid var(--line);
+    text-align: center;
+}
+
+.footer-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.footer-nav {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+}
+
+.footer-nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+.footer-nav a:hover {
+    color: var(--accent-strong);
+}
+
+.footer-copy {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin: 4px 0;
+}
+
+.footer-copy a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.footer-kw {
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--muted);
+    opacity: 0.5;
+    letter-spacing: 0.05em;
+}
+
+@media (max-width: 768px) {
+    .breadcrumb {
+        margin-bottom: 24px;
+        font-size: 13px;
+    }
+    
+    .footer-nav {
+        gap: 16px;
+    }
+}

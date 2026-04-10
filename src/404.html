@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - 页面迷失在赛博空间 | SBTI 人格实验室</title>
+    <meta name="robots" content="noindex, follow" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
+    
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    <link rel="stylesheet" href="/style.css?v=1.7">
+    <style>
+        .error-actions {
+            margin-top: 32px;
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="mesh-bg">
+    <!-- 全局导航栏 -->
+    <nav class="global-nav">
+        <div class="nav-inner">
+            <a href="https://sbti-ai.com/" class="nav-logo">
+                <img src="/image/logo.png" alt="SBTI Logo">
+                SBTI 人格实验室
+            </a>
+            <div class="nav-links">
+                <a href="https://sbti-ai.com/" class="nav-link">首页</a>
+                <a href="https://sbti-ai.com/types" class="nav-link">人格类型</a>
+                <a href="https://cp.sbti-ai.com/" class="nav-link">人格碰撞</a>
+                <a href="https://sbti-ai.com/rankings" class="nav-link">人格排行榜</a>
+                <a href="https://sbti-ai.com/about" class="nav-link">关于测试</a>
+            </div>
+            <button class="nav-hamburger" id="navHamburger" aria-label="菜单">☰</button>
+        </div>
+    </nav>
+
+    <main class="page-shell">
+        <section class="hero-404">
+            <h1>404</h1>
+            <div class="error-msg">灵魂迷失，连接中断</div>
+            <p class="error-desc">您访问的页面可能在赛博空间的压缩中消失了，或者原本就不存在于本维度。请选择下方的导航点重新校准位置。</p>
+            
+            <div class="error-actions">
+                <a href="https://sbti-ai.com/" class="btn-primary">⚡ 返回首页</a>
+                <a href="https://sbti-ai.com/types" class="btn-secondary">🧬 查看人格图鉴</a>
+            </div>
+
+            <div class="nav-shortcut-grid" style="margin-top: 60px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 500px; width: 100%;">
+                <a href="https://cp.sbti-ai.com/" class="mini-panel" style="text-decoration: none; text-align: left; transition: transform 0.3s ease;">
+                    <h3 style="color: var(--accent-strong); margin: 0;">💥 人格碰撞</h3>
+                    <p style="font-size: 12px; margin: 4px 0 0;">深度关系契合度分析</p>
+                </a>
+                <a href="https://sbti-ai.com/rankings" class="mini-panel" style="text-decoration: none; text-align: left; transition: transform 0.3s ease;">
+                    <h3 style="color: var(--accent-strong); margin: 0;">🏆 查看排行榜</h3>
+                    <p style="font-size: 12px; margin: 4px 0 0;">全球稀有人格统计</p>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="page-footer">
+        <div class="footer-inner">
+            <p class="footer-copy">© 2026 SBTI 人格实验室 · 基于 15 维高阶心理模型</p>
+            <p class="footer-kw">SBTI 人格实验室项目 404 引导页</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('navHamburger').onclick = () => {
+            document.getElementById('navMobileMenu').classList.toggle('active');
+        };
+    </script>
+</body>
+</html>
