@@ -264,19 +264,27 @@ async function triggerAiAnalysis() {
     }
 
     const actionZone = document.getElementById('aiActionZone');
-    const aiText = document.getElementById('aiAnalysisText');
-    const btn = document.getElementById('aiTriggerBtn');
+    const aiText    = document.getElementById('aiAnalysisText');
+    const btn       = document.getElementById('aiTriggerBtn');
 
-    // 切换到 loading 状态：按钮变为加载中
-    btn.disabled = true;
-    btn.innerHTML = '⏳ 正在读取你的牛马基因…';
+    // 防御：DOM 元素缺失时直接报错
+    if (!actionZone || !aiText || !btn) {
+        console.error('[AI锐评] DOM 元素未找到，请检查 HTML 结构');
+        return;
+    }
 
     try {
+        // 切换到 loading 状态
+        btn.disabled = true;
+        btn.textContent = '⏳ 正在读取你的牛马基因…';
+
         const analysis = await fetchAiAnalysis(result);
+
         // 隐藏按钮区，显示结果
         actionZone.style.display = 'none';
         aiText.style.display = 'block';
         aiText.textContent = '';
+
         // 逐字打印效果
         let i = 0;
         const print = () => {
@@ -287,9 +295,16 @@ async function triggerAiAnalysis() {
         };
         print();
     } catch (err) {
-        btn.disabled = false;
-        btn.innerHTML = '⚠️ 锐评失败，再试一次';
-        console.error('AI 解读失败：', err);
+        // 错误信息显示在页面内，而不只是 console
+        if (btn) {
+            btn.disabled = false;
+            btn.textContent = '⚠️ 锐评失败，点我重试';
+        }
+        if (aiText) {
+            aiText.style.display = 'block';
+            aiText.textContent = `[错误] ${err.message || String(err)}`;
+        }
+        console.error('[AI锐评] 请求失败：', err);
     }
 }
 
