@@ -378,9 +378,8 @@ function renderResult() {
     resetAiZone();
 
     // 动态更新 Personality Collision 链接 (NEW)
-    const collisionLink = document.getElementById('collisionLink');
     if (collisionLink) {
-        collisionLink.href = `compare.html?codeA=${encodeURIComponent(type.code)}`;
+        collisionLink.href = `https://cp.sbti-ai.com/?codeA=${encodeURIComponent(type.code)}`;
     }
 
     showScreen('result');
