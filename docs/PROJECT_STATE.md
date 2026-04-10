@@ -13,7 +13,7 @@
 
 ## 当前 Sprint 的 TODO
 - [x] 自动化注入全站结构化数据 (JSON-LD BreadcrumbList)
-- [x] 视觉面包屑导航添加 (UI)
+- [ ] 视觉面包屑导航添加 (UI) [已弃用]
 - [ ] 基础设施 SEO 更新 (404.html, robots.txt, sitemap.xml)
 - [ ] 全站图片关键词 (Alt Tags) 优化
 - [ ] 404 页面设计与实现
