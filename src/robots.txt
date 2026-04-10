@@ -1,3 +1,37 @@
+# 开放所有主流国内外搜索引擎爬虫
 User-agent: *
 Allow: /
+
+# 百度专项（Baiduspider 最挑剔，单独列出确保无误）
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 1
+
+# 搜狗
+User-agent: Sogou web spider
+Allow: /
+
+# 360搜索
+User-agent: 360Spider
+Allow: /
+
+# 神马搜索（UCWeb移动端）
+User-agent: MJ12bot
+Allow: /
+
+# 必应
+User-agent: Bingbot
+Allow: /
+
+# Google
+User-agent: Googlebot
+Allow: /
+
+# 禁止爬取 JS/CSS 源文件（节省爬取配额、保护核心逻辑）
+Disallow: /js/
+Disallow: /*.js$
+Disallow: /*.css$
+
+# 优先爬取 Sitemap
 Sitemap: https://www.sbti-ai.com/sitemap.xml
+Sitemap: https://www.sbti-ai.com/sitemap_index.xml
