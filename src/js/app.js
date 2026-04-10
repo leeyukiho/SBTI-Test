@@ -15,7 +15,7 @@ import {
 import { computeResult } from './algorithm.js';
 
 // ─── AI Worker 接口地址（部署后替换为你的 Worker 域名）─────
-const AI_WORKER_URL = 'https://sbti-test-ai-analysis.leeyukiho-bdf.workers.dev/analyze';
+const AI_WORKER_URL = 'https://api.sbti-ai.com/analyze';
 
 // ─── 应用状态 ─────────────────────────────────────────────
 const app = {
@@ -226,16 +226,16 @@ function updateProgress() {
 
 function handleSubmit() {
     const visibleQuestions = getVisibleQuestions();
-    const missingIndex = visibleQuestions.findIndex(q => app.answers[q.id] === undefined);
+    const missingQ = visibleQuestions.find(q => app.answers[q.id] === undefined);
     
-    if (missingIndex !== -1) {
-        const questionCards = questionList.querySelectorAll('.question');
-        if (questionCards[missingIndex]) {
-            questionCards[missingIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (missingQ) {
+        const targetCard = document.getElementById('dom_' + missingQ.id);
+        if (targetCard) {
+            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
             
-            questionCards.forEach(card => {
-                const oldAlert = card.querySelector('.missing-alert');
-                if (oldAlert) oldAlert.remove();
+            // 清理旧警告
+            questionList.querySelectorAll('.missing-alert').forEach(alert => {
+                alert.remove();
             });
 
             const alertMsg = document.createElement('div');
@@ -244,7 +244,7 @@ function handleSubmit() {
             alertMsg.style.marginTop = '12px';
             alertMsg.style.fontWeight = 'bold';
             alertMsg.textContent = '👆 这道题还没选呢！请补充';
-            questionCards[missingIndex].appendChild(alertMsg);
+            targetCard.appendChild(alertMsg);
         }
         testHint.textContent = '❌ 有题目未完成，已为您滚动到该题上方';
         testHint.style.color = '#ff4d4f';
@@ -293,14 +293,32 @@ async function fetchAiAnalysis(result) {
         exact: result.bestNormal?.exact ?? 15,
         levels: result.levels,
     };
-    const resp = await fetch(AI_WORKER_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-    });
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const data = await resp.json();
-    return data.analysis || '';
+    
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+    
+    try {
+        const resp = await fetch(AI_WORKER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        
+        if (!resp.ok) {
+            const txt = await resp.text();
+            throw new Error(`HTTP ${resp.status}`);
+        }
+        const data = await resp.json();
+        return data.analysis || '';
+    } catch (err) {
+        clearTimeout(timeoutId);
+        if (err.name === 'AbortError') {
+            throw new Error('网络请求超时（国内网络直接访问 workers.dev 可能被墙拦截，请开启代理或绑定自定义域名）');
+        }
+        throw err;
+    }
 }
 
 /**
