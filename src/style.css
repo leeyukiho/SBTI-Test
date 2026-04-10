@@ -928,4 +928,83 @@ button:disabled {
     line-height: 1.95;
     white-space: pre-wrap;
     letter-spacing: 0.01em;
+}
+
+/* ─── 全局头部导航 (官网感) ────────────────────────────────────── */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(219, 232, 221, 0.8);
+    padding: 14px 20px;
+    border-radius: 999px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(47, 73, 55, 0.04);
+}
+
+.main-header .logo {
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--accent-strong);
+    letter-spacing: -0.02em;
+}
+
+.header-ai-badge {
+    font-size: 11px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #6c8d71, #4d6a53);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+    box-shadow: 0 2px 8px rgba(77, 106, 83, 0.3);
+}
+
+/* ─── 底部声明区 (官网感) ────────────────────────────────────── */
+.main-footer {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px dashed var(--line);
+    text-align: center;
+}
+
+.main-footer .credits {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+}
+
+.main-footer .credits p {
+    margin-bottom: 6px;
+}
+
+.main-footer a {
+    color: var(--accent-strong);
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(108, 141, 113, 0.3);
+    transition: all 0.2s ease;
+}
+
+.main-footer a:hover {
+    color: #2f4937;
+    border-bottom-color: #2f4937;
+}
+
+.main-footer .hosting-info {
+    margin-top: 12px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+    .main-header {
+        flex-direction: column;
+        gap: 12px;
+        border-radius: 20px;
+        padding: 16px;
+    }
 }

@@ -24,27 +24,51 @@
 
 <body>
     <div class="shell">
+        <!-- 全局顶部导航 -->
+        <header class="main-header">
+            <div class="logo">🧬 SBTI 人格实验室</div>
+            <div class="header-ai-badge">DeepSeek AI 强力驱动</div>
+        </header>
+
         <section id="intro" class="screen active">
-            <div class="hero card hero-minimal">
-                <h1>MBTI已经过时，SBTI来了。</h1>
-                <div class="hero-actions hero-actions-single">
-                    <button id="startBtn" class="btn-primary">开始测试</button>
+            <!-- 主视觉 Banner -->
+            <div class="hero card">
+                <div class="eyebrow">全网最无情的性格透视镜</div>
+                <h1>MBTI已经过时，<br>SBTI来了。</h1>
+                <p class="sub">15个硬核维度精准扫射，抛弃刻板的四字母标签。不仅一针见血判定你的隐藏人设，还为你生成千人千面的 <strong>AI 毒舌批斗报告</strong>。</p>
+                
+                <div class="hero-actions">
+                    <button id="startBtn" class="btn-primary" style="font-size: 16px; padding: 16px 32px;">⚡ 立即开始测试 (约 3 分钟)</button>
                 </div>
-                <div class="credits"
-                    style="padding-top: 2rem; display: flex; flex-direction: column; font-size: 0.9em; opacity: 0.8; gap: 4px;">
-                    <span>
-                        📚 <b>测试题库＆核心框架原作者</b>：<br>
-                        <a href="https://space.bilibili.com/417038183" target="_blank" rel="noopener">B站 @蛆肉儿串儿</a>
-                    </span>
-                    <span style="margin-top: 8px;">
-                        🤖 <b>二开申明</b>：<br>
-                        本项目仅在原作者框架基础上，接入了 AI 毒舌锐评以及分析功能。
-                    </span>
-                    <span style="margin-top: 8px; font-size: 0.85em;">
-                        ☁️ 托管：Cloudflare | 域名：Spaceship
-                    </span>
+
+                <div class="hero-grid">
+                    <div class="mini-panel">
+                        <h3>🎯 为什么不是 MBTI？</h3>
+                        <ul>
+                            <li>MBTI 只给你贴 16 个美好的标签</li>
+                            <li>SBTI 把你的痛点扒得底裤不剩</li>
+                            <li>引入极端的特殊分层与隐藏的独立人格池</li>
+                        </ul>
+                    </div>
+                    <div class="mini-panel">
+                        <h3>🤖 AI 毒舌加持</h3>
+                        <ul>
+                            <li>深度解析你的 15 维细分性格参数</li>
+                            <li>生成“损但真诚”的量身定制灵魂拷问</li>
+                            <li>十四万种结果分型，告别千篇一律</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+
+            <!-- 页脚 -->
+            <footer class="main-footer">
+                <div class="credits">
+                    <p>📚 <b>测试题库＆核心框架原作者</b>：<a href="https://space.bilibili.com/417038183" target="_blank" rel="noopener">B站 @蛆肉儿串儿</a></p>
+                    <p>🤖 <b>二开申明</b>：本项目仅在原作者框架基础上，全链接入 DeepSeek AI 增加毒舌锐评与深度分析模块。</p>
+                    <p class="hosting-info">☁️ 基础设施托管：Cloudflare Pages | 域名提供商：Spaceship</p>
+                </div>
+            </footer>
         </section>
 
         <section id="test" class="screen">
