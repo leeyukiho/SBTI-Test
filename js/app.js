@@ -1,0 +1,235 @@
+/**
+ * app.js — 应用层，负责 DOM 渲染、交互与事件绑定
+ * 依赖 dataset.js（数据）与 algorithm.js（算法）
+ */
+
+import {
+    questions,
+    specialQuestions,
+    dimensionMeta,
+    dimensionOrder,
+    DIM_EXPLANATIONS,
+    TYPE_IMAGES
+} from './dataset.js';
+
+import { computeResult } from './algorithm.js';
+
+// ─── 应用状态 ─────────────────────────────────────────────
+const app = {
+    shuffledQuestions: [],
+    answers: {},
+    previewMode: false
+};
+
+// ─── DOM 节点引用 ──────────────────────────────────────────
+const screens = {
+    intro: document.getElementById('intro'),
+    test:  document.getElementById('test'),
+    result: document.getElementById('result')
+};
+const questionList = document.getElementById('questionList');
+const progressBar  = document.getElementById('progressBar');
+const progressText = document.getElementById('progressText');
+const submitBtn    = document.getElementById('submitBtn');
+const testHint     = document.getElementById('testHint');
+
+// ─── 屏幕切换 ─────────────────────────────────────────────
+function showScreen(name) {
+    Object.entries(screens).forEach(([key, el]) => {
+        el.classList.toggle('active', key === name);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── 工具函数 ─────────────────────────────────────────────
+/**
+ * Fisher-Yates 洗牌
+ * @param {Array} array
+ * @returns {Array} 新数组
+ */
+function shuffle(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+/**
+ * 获取当前应该渲染的题目列表（含饮酒条件题）
+ * @returns {Array}
+ */
+function getVisibleQuestions() {
+    const visible = [...app.shuffledQuestions];
+    const gateIndex = visible.findIndex(q => q.id === 'drink_gate_q1');
+    if (gateIndex !== -1 && app.answers['drink_gate_q1'] === 3) {
+        visible.splice(gateIndex + 1, 0, specialQuestions[1]);
+    }
+    return visible;
+}
+
+/**
+ * 获取题目的维度标签文本
+ * @param {Object} q - 题目对象
+ * @returns {string}
+ */
+function getQuestionMetaLabel(q) {
+    if (q.special) return '补充题';
+    return app.previewMode ? dimensionMeta[q.dim].name : '维度已隐藏';
+}
+
+// ─── 渲染逻辑 ─────────────────────────────────────────────
+/**
+ * 渲染题目列表到 DOM
+ */
+function renderQuestions() {
+    const visibleQuestions = getVisibleQuestions();
+    questionList.innerHTML = '';
+    visibleQuestions.forEach((q, index) => {
+        const card = document.createElement('article');
+        card.className = 'question';
+        card.innerHTML = `
+          <div class="question-meta">
+            <div class="badge">第 ${index + 1} 题</div>
+            <div>${getQuestionMetaLabel(q)}</div>
+          </div>
+          <div class="question-title">${q.text}</div>
+          <div class="options">
+            ${q.options.map((opt, i) => {
+                const code = ['A', 'B', 'C', 'D'][i] || String(i + 1);
+                const checked = app.answers[q.id] === opt.value ? 'checked' : '';
+                return `
+                <label class="option">
+                  <input type="radio" name="${q.id}" value="${opt.value}" ${checked} />
+                  <div class="option-code">${code}</div>
+                  <div>${opt.label}</div>
+                </label>
+              `;
+            }).join('')}
+          </div>
+        `;
+        questionList.appendChild(card);
+    });
+
+    // 绑定单选框变化事件
+    questionList.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.addEventListener('change', (e) => {
+            const { name, value } = e.target;
+            app.answers[name] = Number(value);
+
+            // 饮酒门控题：切换后重新渲染
+            if (name === 'drink_gate_q1') {
+                if (Number(value) !== 3) {
+                    delete app.answers['drink_gate_q2'];
+                }
+                renderQuestions();
+                return;
+            }
+
+            updateProgress();
+        });
+    });
+
+    updateProgress();
+}
+
+/**
+ * 更新进度条与提交按钮状态
+ */
+function updateProgress() {
+    const visibleQuestions = getVisibleQuestions();
+    const total  = visibleQuestions.length;
+    const done   = visibleQuestions.filter(q => app.answers[q.id] !== undefined).length;
+    const percent = total ? (done / total) * 100 : 0;
+    progressBar.style.width  = `${percent}%`;
+    progressText.textContent = `${done} / ${total}`;
+    const complete = done === total && total > 0;
+    submitBtn.disabled  = !complete;
+    testHint.textContent = complete
+        ? '都做完了。现在可以把你的电子魂魄交给结果页审判。'
+        : '全选完才会放行。世界已经够乱了，起码把题做完整。';
+}
+
+/**
+ * 渲染十五维度评分列表
+ * @param {Object} result - computeResult 返回值
+ */
+function renderDimList(result) {
+    const dimList = document.getElementById('dimList');
+    dimList.innerHTML = dimensionOrder.map(dim => {
+        const level       = result.levels[dim];
+        const explanation = DIM_EXPLANATIONS[dim][level];
+        return `
+          <div class="dim-item">
+            <div class="dim-item-top">
+              <div class="dim-item-name">${dimensionMeta[dim].name}</div>
+              <div class="dim-item-score">${level} / ${result.rawScores[dim]}分</div>
+            </div>
+            <p>${explanation}</p>
+          </div>
+        `;
+    }).join('');
+}
+
+/**
+ * 渲染结果页
+ */
+function renderResult() {
+    // 调用算法层，传入当前答案和题库
+    const result = computeResult(app.answers, questions);
+    const type   = result.finalType;
+
+    document.getElementById('resultModeKicker').textContent = result.modeKicker;
+    document.getElementById('resultTypeName').textContent   = `${type.code}（${type.cn}）`;
+    document.getElementById('matchBadge').textContent       = result.badge;
+    document.getElementById('resultTypeSub').textContent    = result.sub;
+    document.getElementById('resultDesc').textContent       = type.desc;
+    document.getElementById('posterCaption').textContent    = type.intro;
+    document.getElementById('funNote').textContent          = result.special
+        ? '本测试仅供娱乐。隐藏人格和傻乐兜底都属于作者故意埋的损招，请勿把它当成医学、心理学、相学、命理学或灵异学依据。'
+        : '本测试仅供娱乐，别拿它当诊断、面试、相亲、分手、招魂、算命或人生判决书。你可以笑，但别太当真。';
+
+    // 图片处理
+    const posterBox   = document.getElementById('posterBox');
+    const posterImage = document.getElementById('posterImage');
+    const imageSrc    = TYPE_IMAGES[type.code];
+    if (imageSrc) {
+        posterImage.src = imageSrc;
+        posterImage.alt = `${type.code}（${type.cn}）`;
+        posterBox.classList.remove('no-image');
+    } else {
+        posterImage.removeAttribute('src');
+        posterImage.alt = '';
+        posterBox.classList.add('no-image');
+    }
+
+    renderDimList(result);
+    showScreen('result');
+}
+
+// ─── 测试启动 ─────────────────────────────────────────────
+/**
+ * 初始化并进入测试页
+ * @param {boolean} preview - 是否显示维度标签（开发用）
+ */
+function startTest(preview = false) {
+    app.previewMode = preview;
+    app.answers     = {};
+    const shuffledRegular = shuffle(questions);
+    const insertIndex     = Math.floor(Math.random() * shuffledRegular.length) + 1;
+    app.shuffledQuestions = [
+        ...shuffledRegular.slice(0, insertIndex),
+        specialQuestions[0],
+        ...shuffledRegular.slice(insertIndex)
+    ];
+    renderQuestions();
+    showScreen('test');
+}
+
+// ─── 事件绑定 ─────────────────────────────────────────────
+document.getElementById('startBtn').addEventListener('click', () => startTest(false));
+document.getElementById('backIntroBtn').addEventListener('click', () => showScreen('intro'));
+document.getElementById('submitBtn').addEventListener('click', renderResult);
+document.getElementById('restartBtn').addEventListener('click', () => startTest(false));
+document.getElementById('toTopBtn').addEventListener('click', () => showScreen('intro'));
