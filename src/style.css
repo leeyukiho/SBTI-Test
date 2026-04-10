@@ -341,11 +341,11 @@ button:disabled {
 }
 
 .screen {
-    display: none;
+    display: none !important;
 }
 
 .screen.active {
-    display: block;
+    display: block !important;
 }
 
 .test-wrap,
@@ -3368,13 +3368,13 @@ button:disabled {
     background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(12px);
     z-index: 2000;
-    display: none;
+    display: none !important;
     align-items: center;
     justify-content: center;
     padding: 20px;
 }
 
-.share-modal.active { display: flex; }
+.share-modal.active { display: flex !important; }
 
 .share-card-container {
     max-width: 420px;

@@ -515,14 +515,17 @@ bindBtn('restartBtn', startTest);
 bindBtn('toTopBtn', () => showScreen('intro'));
 bindBtn('aiTriggerBtn', triggerAiAnalysis);
 
-// 核心分享逻辑（支持多入口触发）
-if (!result) {
-    alert('⚠️ 请先完成测试！');
-    return;
+/**
+ * 执行结果分享逻辑，唤起海报模态框
+ */
+function executeResultShare() {
+    if (app.lastResult) {
+        openShareModal(app.lastResult);
+    } else {
+        alert('⚠️ 请先完成测试以生成分享海报！');
+    }
 }
 
-// 打开精美海报模态框
-openShareModal(result);
 
 /**
  * 打开分享海报模态框并注入数据
