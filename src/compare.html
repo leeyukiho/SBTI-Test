@@ -476,6 +476,16 @@
 
         initSelectors();
 
+        // 处理 URL 参数
+        (function handleUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            const codeA = params.get('codeA');
+            if (codeA && TYPE_LIBRARY[codeA]) {
+                selectA.value = codeA;
+                updateCard(selectA, introA);
+            }
+        })();
+
         // 移动端菜单
         document.getElementById('navHamburger').onclick = () => {
             document.getElementById('navMobileMenu').classList.toggle('active');

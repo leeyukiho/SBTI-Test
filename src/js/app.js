@@ -376,6 +376,13 @@ function renderResult() {
     // 保存结果，重置 AI 区块为待触发状态
     app.lastResult = result;
     resetAiZone();
+
+    // 动态更新 Personality Collision 链接 (NEW)
+    const collisionLink = document.getElementById('collisionLink');
+    if (collisionLink) {
+        collisionLink.href = `compare.html?codeA=${encodeURIComponent(type.code)}`;
+    }
+
     showScreen('result');
 }
 

@@ -3077,6 +3077,96 @@ button:disabled {
 }
 
 
+/* ─── 人格碰撞引导区块 (NEW) ────────────────────────────────── */
+.result-collision-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    background: linear-gradient(135deg, #273b2d 0%, #17211a 100%);
+    border-radius: 24px;
+    padding: 40px;
+    margin: 20px 0;
+    color: white;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.result-collision-cta::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(108, 141, 113, 0.2) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.cta-content {
+    flex: 1;
+}
+
+.cta-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #a3c1a9;
+}
+
+.cta-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    background: linear-gradient(90deg, #fff 0%, #a3c1a9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.cta-desc {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+}
+
+.cta-btn {
+    flex-shrink: 0;
+    background: #fff;
+    color: #17211a;
+    padding: 16px 32px;
+    border-radius: 50px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.cta-btn:hover {
+    transform: scale(1.05) rotate(-1deg);
+    background: #a3c1a9;
+    color: #17211a;
+    box-shadow: 0 15px 30px rgba(108, 141, 113, 0.4);
+}
+
+@media (max-width: 768px) {
+    .result-collision-cta {
+        flex-direction: column;
+        padding: 32px 24px;
+        text-align: center;
+        gap: 24px;
+    }
+    .cta-btn {
+        width: 100%;
+    }
+}
+
 /* ═══════════════════════════════════════════════════════════
    响应式适配
    ═══════════════════════════════════════════════════════════ */
