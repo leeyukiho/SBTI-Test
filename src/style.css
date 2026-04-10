@@ -336,6 +336,7 @@ button:disabled {
 .question-list {
     display: grid;
     gap: 24px;
+    counter-reset: question-counter;
 }
 
 .question {
@@ -348,6 +349,18 @@ button:disabled {
     box-shadow: 0 8px 32px rgba(47, 73, 56, 0.04), inset 0 1px 2px rgba(255,255,255,0.8);
     transition: transform 0.4s ease;
     animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.question:not(.hidden-q) {
+    counter-increment: question-counter;
+}
+
+.num::after {
+    content: counter(question-counter);
+}
+
+.hidden-q {
+    display: none !important;
 }
 
 /* 根据 nth-child 添加 staggered 动效延迟，最多覆盖前10题单次渲染量 */

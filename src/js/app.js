@@ -110,12 +110,12 @@ function shuffle(array) {
  * @returns {Array}
  */
 function getVisibleQuestions() {
-    const visible = [...app.shuffledQuestions];
-    const gateIndex = visible.findIndex(q => q.id === 'drink_gate_q1');
-    if (gateIndex !== -1 && app.answers['drink_gate_q1'] === 3) {
-        visible.splice(gateIndex + 1, 0, specialQuestions[1]);
-    }
-    return visible;
+    return app.shuffledQuestions.filter(q => {
+        if (q.id === 'drink_gate_q2') {
+            return app.answers['drink_gate_q1'] === 3;
+        }
+        return true;
+    });
 }
 
 /**
@@ -133,14 +133,16 @@ function getQuestionMetaLabel(q) {
  * 渲染题目列表到 DOM
  */
 function renderQuestions() {
-    const visibleQuestions = getVisibleQuestions();
+    // 渲染时注入所有题目节点，由 CSS 类控制显隐，避免交互后的重绘闪跳
     questionList.innerHTML = '';
-    visibleQuestions.forEach((q, index) => {
+    app.shuffledQuestions.forEach((q) => {
         const card = document.createElement('article');
-        card.className = 'question';
+        const isHidden = q.id === 'drink_gate_q2' && app.answers['drink_gate_q1'] !== 3;
+        card.className = 'question' + (isHidden ? ' hidden-q' : '');
+        card.id = 'dom_' + q.id;
         card.innerHTML = `
           <div class="question-meta">
-            <div class="badge">第 <span class="num">${index + 1}</span> 题</div>
+            <div class="badge">第 <span class="num"></span> 题</div>
             <div class="dim-label">${getQuestionMetaLabel(q)}</div>
           </div>
           <fieldset class="question-fieldset">
@@ -170,13 +172,20 @@ function renderQuestions() {
             const { name, value } = e.target;
             app.answers[name] = Number(value);
 
-            // 饮酒门控题：切换后重新渲染
+            // 饮酒门控题：无刷新修改后续题目的 CSS 显隐
             if (name === 'drink_gate_q1') {
-                if (Number(value) !== 3) {
+                const q2DOM = document.getElementById('dom_drink_gate_q2');
+                if (Number(value) === 3) {
+                    if (q2DOM) q2DOM.classList.remove('hidden-q');
+                } else {
                     delete app.answers['drink_gate_q2'];
+                    if (q2DOM) {
+                        q2DOM.classList.add('hidden-q');
+                        q2DOM.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+                    }
                 }
                 saveState();
-                renderQuestions();
+                updateProgress();
                 return;
             }
 
@@ -406,6 +415,7 @@ function startTest() {
     app.shuffledQuestions = [
         ...shuffledRegular.slice(0, insertIndex),
         specialQuestions[0],
+        specialQuestions[1],
         ...shuffledRegular.slice(insertIndex)
     ];
     clearState();
