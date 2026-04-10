@@ -311,51 +311,54 @@
                 </div>
             </div>
 
-            <!-- Bento Box 功能模块网格 -->
+            <!-- 核心功能展示区 (Featured Showcase) -->
+            <div class="feature-showcase-title">
+                <h2>核心实验室 <span>EXPERIMENTAL</span></h2>
+            </div>
+
+            <div class="feature-headline-grid">
+                <!-- 人格碰撞报告 -->
+                <a href="compare.html" class="headline-card headline-card--collision">
+                    <div class="headline-badge">NEW</div>
+                    <div class="headline-icon">💥</div>
+                    <h3>人格碰撞分析</h3>
+                    <p>输入两人的人格代码，由 AI 深度解析你们的灵魂契合度。是天作之合，还是赛博车祸？</p>
+                    <div class="headline-action">立即开启对比</div>
+                </a>
+
+                <!-- AI 锐评 -->
+                <a href="#test" class="headline-card headline-card--ai" onclick="document.getElementById('startBtn').click();">
+                    <div class="headline-badge">MOST POPULAR</div>
+                    <div class="headline-icon">🤖</div>
+                    <h3>AI 毒舌锐评</h3>
+                    <p>基于 15 维度建模的顶级“批斗”体验。做完测试即可解锁，直面你最真实、最拧巴的底层人设。</p>
+                    <div class="headline-action">去测出我的报告</div>
+                </a>
+            </div>
+
+            <!-- 资源导航网格 (Bento Grid) -->
+            <div class="feature-showcase-title">
+                <h2>探索与发现 <span>RESOURCES</span></h2>
+            </div>
+
             <div class="bento-grid">
-                <!-- 导航模块群 -->
                 <a href="types.html" class="bento-card hoverable">
                     <div class="bento-icon types-icon">🧬</div>
-                    <h3 class="bento-title">全部 27 种人格图鉴</h3>
-                    <p class="bento-desc">包含常规人格与隐藏人格，详细查看稀有度分布和触发条件。</p>
+                    <h3 class="bento-title">27 种人格图鉴</h3>
+                    <p class="bento-desc">浏览完整的人格百科，了解从“拿捏者”到“傻乐者”的每一种灵魂特质。</p>
                 </a>
 
                 <a href="rankings.html" class="bento-card hoverable">
                     <div class="bento-icon rank-icon">🏆</div>
-                    <h3 class="bento-title">实时人格排行榜</h3>
-                    <p class="bento-desc">看一看你的人格在全球数百万名玩家中，到底有多稀有？</p>
+                    <h3 class="bento-title">人格稀有度排行</h3>
+                    <p class="bento-desc">在全球数百万测试者中，你的人格到底是“大众脸”还是“独苗苗”？</p>
                 </a>
 
                 <a href="about.html" class="bento-card hoverable">
                     <div class="bento-icon about-icon">📖</div>
-                    <h3 class="bento-title">背后的惊艳原理</h3>
-                    <p class="bento-desc">深度了解15维度模型设计、与MBTI的本质区别及AI算法机制。</p>
+                    <h3 class="bento-title">模型设计原理</h3>
+                    <p class="bento-desc">深度解析 15 维度心理行为建模，看 SBTI 如何做到比传统测试更精准。</p>
                 </a>
-
-                <!-- 新增：人格碰撞分析 -->
-                <a href="compare.html" class="bento-card hoverable" style="background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(108, 141, 113, 0.2)); border: 2px solid var(--accent-strong);">
-                    <div class="bento-icon compare-icon">💥</div>
-                    <h3 class="bento-title" style="color: var(--accent-strong);">双人人格碰撞报告</h3>
-                    <p class="bento-desc">你们在一起是上天注定，还是大难临头？输入两人人格，获取 AI 专属 CP 锐评。</p>
-                </a>
-
-                <!-- 差异化特性模块 (跨列) -->
-                <div class="bento-card span-2 feature-panel ai-panel">
-                    <div class="feature-header">
-                        <span class="feature-icon">🤖</span>
-                        <h3>专属 AI 毒舌锐评</h3>
-                    </div>
-                    <p style="color: var(--muted); font-size: 14px; line-height: 1.6;">
-                        做完测试后即可解锁隐藏功能：系统将基于你的全部答题数据，为你生成一份千人千面、毫不留情的 AI 毒舌性格批斗报告。
-                    </p>
-                </div>
-
-                <div class="bento-card hoverable feature-panel"
-                    style="justify-content: center; align-items: center; text-align: center; background: rgba(255,255,255,0.4);"
-                    onclick="document.getElementById('navStartBtn').click();">
-                    <h3 style="font-size: 18px; color: var(--accent-strong); margin-bottom: 8px;">⚡ 立即开测</h3>
-                    <p style="font-size: 12px; color: var(--muted);">仅需 3 分钟</p>
-                </div>
             </div>
 
             <!-- 免责声明 -->
