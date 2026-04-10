@@ -163,9 +163,9 @@ function renderQuestions() {
             </div>
           </fieldset>
         `;
-        // 非隐藏题默认设为不可见，由 IntersectionObserver 动画后再显现，消除滚动白块
+        // 非隐藏题直接可见，不通过 JS 控制动画，防止滚动白屏闪烁
         if (!isHidden) {
-            card.style.opacity = '0';
+            card.style.opacity = '1';
         }
         questionList.appendChild(card);
     });
@@ -198,31 +198,8 @@ function renderQuestions() {
         });
     });
 
-    // 使用 IntersectionObserver 实现"进入视口时才触发入场动画"
-    // 卡片初始 opacity:0，进入视口后立刻开始动画，动画结束后清除内联样式回归 opacity:1
-    const animatedCards = new Set();
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting || animatedCards.has(entry.target)) return;
-            animatedCards.add(entry.target);
-            observer.unobserve(entry.target);
-            // 移除内联 opacity:0，让动画从 CSS keyframe 的 opacity:0 接管
-            entry.target.style.opacity = '';
-            // requestAnimationFrame 确保浏览器已完成一帧渲染后再挂动画，避免重排闪烁
-            requestAnimationFrame(() => {
-                entry.target.classList.add('q-enter');
-                entry.target.addEventListener('animationend', () => {
-                    entry.target.classList.remove('q-enter');
-                    // 动画结束后显式设为可见，防止任何情况下的回弹
-                    entry.target.style.opacity = '1';
-                }, { once: true });
-            });
-        });
-    }, { threshold: 0.01, rootMargin: '0px 0px 60px 0px' });
-
-    questionList.querySelectorAll('.question:not(.hidden-q)').forEach(card => {
-        observer.observe(card);
-    });
+    // 已移除 IntersectionObserver 延迟渲染机制，解决上下滑动时的白屏和闪现问题
+    // 题目默认全部在 DOM 中渲染完毕，交由浏览器原生性能处理
 
     updateProgress();
 }
