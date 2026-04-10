@@ -5,12 +5,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>人格碰撞 - SBTI性格测试两人关系分析 | 赛博CP兼容性深度报告</title>
-    <meta name="description" content="SBTI人格碰撞实验室是一款基于AI的两人性格关系分析工具。输入任何SBTI人格代码，瞬间生成精准、毒舌的CP关系深度解读。探索你们的赛博匹配度，直面最真实的灵魂交锋。" />
+    <meta name="description"
+        content="SBTI人格碰撞实验室是一款基于AI的两人性格关系分析工具。输入任何SBTI人格代码，瞬间生成精准、毒舌的CP关系深度解读。探索你们的赛博匹配度，直面最真实的灵魂交锋。" />
     <meta name="keywords" content="人格碰撞,SBTI测试,SBTI关系分析,CP测试,性格兼容性,AI锐评,关系实验室,赛博匹配度,MBTI平替" />
     <link rel="canonical" id="dynamicCanonical" href="https://cp.sbti-ai.com/" />
     <script>
         // 动态调整 Canonical 和 OG 链接，确保 SEO 权重集中在 cp.sbti-ai.com
-        (function() {
+        (function () {
             const canonical = document.getElementById('dynamicCanonical');
             const isSubdomain = window.location.hostname === 'cp.sbti-ai.com';
             if (!isSubdomain && window.location.hostname !== 'localhost') {
@@ -597,20 +598,23 @@
 
         <!-- SEO FAQ 区域 -->
         <section class="seo-faq" style="max-width: 800px; margin: 60px auto 20px; padding: 0 20px;">
-            <h2 style="font-family: 'Outfit', sans-serif; font-size: 24px; margin-bottom: 24px; color: var(--accent-strong);">
+            <h2
+                style="font-family: 'Outfit', sans-serif; font-size: 24px; margin-bottom: 24px; color: var(--accent-strong);">
                 常见问题解析 <span>Q&A</span></h2>
-            
+
             <details style="margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
                 <summary style="font-weight: 600; cursor: pointer; padding: 10px 0;">什么是 SBTI 人格碰撞？分析结果准吗？</summary>
                 <p style="color: var(--muted); font-size: 14px; line-height: 1.6; padding: 10px 0;">
-                    SBTI 人格碰撞是基于 15 维度心理建模的深度关系分析工具。与传统的 MBTI 兼容性表不同，它通过 AI 引擎对两人的具体分值进行底层逻辑拆解。分析结果旨在揭示两人相处中可能出现的化学反应，虽然带有一定的“毒舌”娱乐色彩，但也反映了真实的性格交互模式。
+                    SBTI 人格碰撞是基于 15 维度心理建模的深度关系分析工具。与传统的 MBTI 兼容性表不同，它通过 AI
+                    引擎对两人的具体分值进行底层逻辑拆解。分析结果旨在揭示两人相处中可能出现的化学反应，虽然带有一定的“毒舌”娱乐色彩，但也反映了真实的性格交互模式。
                 </p>
             </details>
 
             <details style="margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
                 <summary style="font-weight: 600; cursor: pointer; padding: 10px 0;">如何解读“毒舌锐评”和“温和疗愈”报告？</summary>
                 <p style="color: var(--muted); font-size: 14px; line-height: 1.6; padding: 10px 0;">
-                    “毒舌锐评”模式会一针见血地指出两人的性格冲突点，适合直面问题（或纯属找乐子）；“温和疗愈”模式则侧重于双方的互补优势，提供建设性的相处建议。AI 会根据两人的 SBTI 代码动态生成内容，确保千人千面。
+                    “毒舌锐评”模式会一针见血地指出两人的性格冲突点，适合直面问题（或纯属找乐子）；“温和疗愈”模式则侧重于双方的互补优势，提供建设性的相处建议。AI 会根据两人的 SBTI
+                    代码动态生成内容，确保千人千面。
                 </p>
             </details>
 
@@ -719,7 +723,7 @@
                 if (!resp.ok) throw new Error('API 服务不可用');
 
                 const data = await resp.json();
-                
+
                 // --- 文字清洗逻辑 (Strip Markdown) ---
                 function stripMarkdown(text) {
                     return text
@@ -735,11 +739,11 @@
 
                 loadingTip.style.display = 'none';
                 resultSection.style.display = 'block';
-                
+
                 // 根据模式调整结果卡片标签
                 const roastLabel = document.querySelector('.roast-label');
                 roastLabel.textContent = currentStyle === 'gentle' ? '专属关系深度分析 (温和模式)' : '专属关系锐评 (毒舌模式)';
-                
+
                 typeWriter(cleanedAnalysis, roastContent);
 
                 setTimeout(() => {
@@ -756,21 +760,21 @@
         }
 
         collisionBtn.addEventListener('click', triggerAnalysis);
-        
+
         // 修改：点击“换个风格再撞一次”仅做状态切换
         document.getElementById('reRoastBtn').addEventListener('click', () => {
             // 切换到另一个风格
             const nextStyle = currentStyle === 'roast' ? 'gentle' : 'roast';
             const targetOpt = document.querySelector(`.style-option[data-style="${nextStyle}"]`);
             if (targetOpt) targetOpt.click();
-            
+
             // 隐藏结果区域并滚动回顶部
             resultSection.style.display = 'none';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
         initSelectors();
-        
+
         // 分享卡片逻辑
         const shareModal = document.getElementById('shareModal');
         const shareCardBtn = document.getElementById('shareCardBtn');
@@ -780,13 +784,13 @@
         shareCardBtn.addEventListener('click', () => {
             const codeA = selectA.value;
             const codeB = selectB.value;
-            
+
             document.getElementById('cardA_code').textContent = codeA;
             document.getElementById('cardA_cn').textContent = TYPE_LIBRARY[codeA].cn;
             document.getElementById('cardB_code').textContent = codeB;
             document.getElementById('cardB_cn').textContent = TYPE_LIBRARY[codeB].cn;
             document.getElementById('cardAnalysisText').textContent = roastContent.textContent;
-            
+
             shareModal.classList.add('active');
         });
 
@@ -809,7 +813,7 @@
                 link.download = `SBTI_Collision_${selectA.value}_${selectB.value}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-                
+
                 btn.textContent = '✅ 保存成功';
                 setTimeout(() => {
                     btn.textContent = '🔥 保存为图片分享';
