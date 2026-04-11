@@ -503,6 +503,19 @@ function executeResultShare() {
 }
 
 /**
+ * 关闭海报模态框，同时解除背景滚动锁定
+ */
+function closeShareModal() {
+    const modal = document.getElementById('posterModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    document.body.classList.remove('modal-open');
+    // 恢复 iOS Safari position:fixed 锁封后页面滚动位置，防止页面跳顶
+    const scrollY = parseInt(document.documentElement.style.getPropertyValue('--scroll-y') || '0', 10);
+    window.scrollTo(0, scrollY);
+}
+
+/**
  * 打开分享海报模态框并注入数据
  */
 function openShareModal(result) {
@@ -517,18 +530,15 @@ function openShareModal(result) {
 
     const charImg = document.getElementById('posterCharImg');
     if (charImg) {
-        // 如果是本地路径，确保图片已加载
         charImg.src = `./image/${type.code}.png`;
     }
 
-    // 切换显示状态并锁定背景滚动
     // iOS Safari 的 position:fixed 锁屏方案：先把当前 scrollY 存入 CSS 变量
     const scrollY = window.scrollY;
     document.documentElement.style.setProperty('--scroll-y', `${scrollY}px`);
     modal.classList.add('active');
     document.body.classList.add('modal-open');
 
-    // 记录分享动作（如有埋点可在此执行）
     console.log('Open Share Poster:', type.code);
 }
 
@@ -619,16 +629,38 @@ document.addEventListener('DOMContentLoaded', () => {
     bindBtn('shareResultBtn', executeResultShare);
     bindBtn('shareResultBtnTop', executeResultShare);
     bindBtn('downloadPosterBtn', savePosterAsImage);
-    bindBtn('closePosterBtn', () => {
-        const modal = document.getElementById('posterModal');
-        if (modal) {
-            modal.classList.remove('active');
-            document.body.classList.remove('modal-open');
-            // 恢复 iOS Safari position:fixed 锁封后页面滚动位置，防止页面跳顶
-            const scrollY = parseInt(document.documentElement.style.getPropertyValue('--scroll-y') || '0', 10);
-            window.scrollTo(0, scrollY);
-        }
-    });
+
+    // 取消按钮：同时绑定 click（PC）和 touchend（移动端），防止 iOS 点击穿透导致按钮失效
+    const closePosterBtn = document.getElementById('closePosterBtn');
+    if (closePosterBtn) {
+        closePosterBtn.addEventListener('click', closeShareModal);
+        closePosterBtn.addEventListener('touchend', (e) => {
+            e.preventDefault(); // 阻止 touchend 后触发的 click 事件重复执行
+            closeShareModal();
+        });
+    }
+
+    // 点击模态框背景（遮罩层）也可关闭
+    const posterModal = document.getElementById('posterModal');
+    if (posterModal) {
+        posterModal.addEventListener('click', (e) => {
+            // 仅当点击的是遮罩本身（而非内部卡片）时关闭
+            if (e.target === posterModal) closeShareModal();
+        });
+        posterModal.addEventListener('touchend', (e) => {
+            if (e.target === posterModal) {
+                e.preventDefault();
+                closeShareModal();
+            }
+        });
+        // 阻止模态框内部的 touchmove 事件穿透到 body，彻底防止背景滚动
+        posterModal.addEventListener('touchmove', (e) => {
+            // 如果触摸目标在内部滚动容器内则放行，否则全部阻止
+            const container = posterModal.querySelector('.share-card-container');
+            if (container && container.contains(e.target)) return;
+            e.preventDefault();
+        }, { passive: false });
+    }
 
     // 导航与移动端控制
     const navStartHandler = (e) => {
@@ -663,11 +695,7 @@ window.addEventListener('popstate', (e) => {
     // 优先关闭海报模态框，而不是直接切换页面
     const modal = document.getElementById('posterModal');
     if (modal && modal.classList.contains('active')) {
-        modal.classList.remove('active');
-        document.body.classList.remove('modal-open');
-        // 恢复 iOS Safari position:fixed 锁封后页面滚动位置
-        const scrollY = parseInt(document.documentElement.style.getPropertyValue('--scroll-y') || '0', 10);
-        window.scrollTo(0, scrollY);
+        closeShareModal();
         return;
     }
     if (e.state && e.state.screen) {

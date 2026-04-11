@@ -3379,6 +3379,7 @@ button:disabled {
 .share-modal.active { 
     display: flex !important; 
     pointer-events: auto; /* 激活时恢复交互 */
+    touch-action: none;   /* 阻止 iOS Safari 触摸事件穿透到背景 */
 }
 
 /* 背景滚动锁定类（iOS Safari 需要 position:fixed 才能彻底锁住） */
@@ -3400,6 +3401,12 @@ body.modal-open {
     box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
     position: relative;
     animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* 移动端小屏保护：卡片最大高度为视口90%，内部可独立滚动 */
+    max-height: 90vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    /* 防止内部滚动事件向上冒泡导致背景滚动 */
+    overscroll-behavior: contain;
 }
 
 @keyframes modalPop {
