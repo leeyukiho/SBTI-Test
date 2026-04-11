@@ -508,11 +508,16 @@ function executeResultShare() {
 function closeShareModal() {
     const modal = document.getElementById('posterModal');
     if (!modal) return;
+    // 第 1 帧：先删除 active 类，让 display:none 进入渲染队列
     modal.classList.remove('active');
     document.body.classList.remove('modal-open');
-    // 恢复 iOS Safari position:fixed 锁封后页面滚动位置，防止页面跳顶
-    const scrollY = parseInt(document.documentElement.style.getPropertyValue('--scroll-y') || '0', 10);
-    window.scrollTo(0, scrollY);
+    // 第 2 帧：用 RAF 延迟恢复滚动位置
+    // 移动端在 touchend.preventDefault() 后多个帧内渲染引擎才处理 display:none
+    // 如果在同一动画帧内就调 scrollTo，会导致模态框渲染残影
+    requestAnimationFrame(() => {
+        const scrollY = parseInt(document.documentElement.style.getPropertyValue('--scroll-y') || '0', 10);
+        window.scrollTo(0, scrollY);
+    });
 }
 
 /**
@@ -636,7 +641,9 @@ document.addEventListener('DOMContentLoaded', () => {
         closePosterBtn.addEventListener('click', closeShareModal);
         closePosterBtn.addEventListener('touchend', (e) => {
             e.preventDefault(); // 阻止 touchend 后触发的 click 事件重复执行
-            closeShareModal();
+            // 用 RAF 延迟关闭操作，确保浏览器先处理完成 touchend 的内部链路再更新 DOM
+            // 解决移动端 Edge/Safari 常见的模态框渲染残影问题
+            requestAnimationFrame(closeShareModal);
         });
     }
 
