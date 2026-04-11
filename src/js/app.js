@@ -72,11 +72,15 @@ let questionList, progressBar, progressText, submitBtn, testHint;
 
 // ─── 屏幕切换 ─────────────────────────────────────────────
 function showScreen(name, pushState = true) {
-    // 切换屏幕时同步清理海报模态框状态
-    const modal = document.getElementById('posterModal');
-    if (modal) {
-        modal.classList.remove('active');
-        document.body.classList.remove('modal-open');
+    // 切换屏幕时才清理海报模态框——只有当目标页面与当前页面不同时执行
+    // 避免在结果页内打开海报后因内部逻辑再次调用 showScreen('result') 导致海报被关闭
+    const currentActive = Object.keys(screens).find(k => screens[k] && screens[k].classList.contains('active'));
+    if (currentActive !== name) {
+        const modal = document.getElementById('posterModal');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.classList.remove('modal-open');
+        }
     }
 
     Object.entries(screens).forEach(([key, el]) => {
@@ -518,6 +522,9 @@ function openShareModal(result) {
     }
 
     // 切换显示状态并锁定背景滚动
+    // iOS Safari 的 position:fixed 锁屏方案：先把当前 scrollY 存入 CSS 变量
+    const scrollY = window.scrollY;
+    document.documentElement.style.setProperty('--scroll-y', `${scrollY}px`);
     modal.classList.add('active');
     document.body.classList.add('modal-open');
 
@@ -617,6 +624,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modal) {
             modal.classList.remove('active');
             document.body.classList.remove('modal-open');
+            // 恢复 iOS Safari position:fixed 锁封后页面滚动位置，防止页面跳顶
+            const scrollY = parseInt(document.documentElement.style.getPropertyValue('--scroll-y') || '0', 10);
+            window.scrollTo(0, scrollY);
         }
     });
 
@@ -650,11 +660,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // 监听浏览器返回按钮（移动端侧边滑动返回 / 物理返回键）
 window.addEventListener('popstate', (e) => {
+    // 优先关闭海报模态框，而不是直接切换页面
+    const modal = document.getElementById('posterModal');
+    if (modal && modal.classList.contains('active')) {
+        modal.classList.remove('active');
+        document.body.classList.remove('modal-open');
+        // 恢复 iOS Safari position:fixed 锁封后页面滚动位置
+        const scrollY = parseInt(document.documentElement.style.getPropertyValue('--scroll-y') || '0', 10);
+        window.scrollTo(0, scrollY);
+        return;
+    }
     if (e.state && e.state.screen) {
         showScreen(e.state.screen, false);
     } else {
         showScreen('intro', false);
     }
 });
+
 
 // 脚本结束

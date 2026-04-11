@@ -3381,10 +3381,14 @@ button:disabled {
     pointer-events: auto; /* 激活时恢复交互 */
 }
 
-/* 背景滚动锁定类 */
+/* 背景滚动锁定类（iOS Safari 需要 position:fixed 才能彻底锁住） */
 body.modal-open {
     overflow: hidden !important;
-    height: 100%;
+    /* iOS Safari 鸭决防滑动穿透问题 */
+    position: fixed;
+    width: 100%;
+    /* 保留滚动位置，平时由 JS 刀牨5 scroll top 写入 --scroll-y 变量 */
+    top: calc(-1 * var(--scroll-y, 0px));
 }
 
 .share-card-container {
@@ -3548,6 +3552,10 @@ body.modal-open {
     border-radius: 14px;
     font-weight: 600;
     font-size: 14px;
+    cursor: pointer; /* 显示手型光标，确认可点击 */
+    touch-action: manipulation; /* 消除移动端 300ms 点击延迟 */
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1); /* 防止 iOS 点击点失灵 */
+    min-height: 44px; /* 账本视单位：移动端最小可点击区域 */
 }
 
 .btn-download:active { transform: scale(0.98); }
