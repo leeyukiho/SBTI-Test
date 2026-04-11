@@ -50,23 +50,15 @@
       <mobile:mobile/>
    </url>
 
-   <!-- 测试页（Hash路由锚点） -->
+
+   <!-- 测试结果页：引导用户了解测试价值 -->
    <url>
-      <loc>https://www.sbti-ai.com/#test</loc>
-      <lastmod>2026-04-10</lastmod>
+      <loc>https://www.sbti-ai.com/types</loc>
+      <lastmod>2026-04-11</lastmod>
       <changefreq>monthly</changefreq>
-      <priority>0.7</priority>
-      <mobile:mobile/>
+      <priority>0.8</priority>
    </url>
 
-   <!-- 结果页（Hash路由锚点） -->
-   <url>
-      <loc>https://www.sbti-ai.com/#result</loc>
-      <lastmod>2026-04-10</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>0.6</priority>
-      <mobile:mobile/>
-   </url>
 
     <url>
         <loc>https://www.sbti-ai.com/types/ctrl</loc>
